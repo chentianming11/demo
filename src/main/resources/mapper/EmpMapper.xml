@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lianjia.mapper.EmpMapper">
+	<select id="findEmpJoinDeptAndJob" resultType="EmpView">
+		SELECT emp.*,dept.name dept_name,job.name job_name FROM 
+			emp LEFT JOIN dept ON emp.dept_id = dept.id
+			LEFT JOIN job ON emp.job_id = job.id
+			<where>
+				<if test="query.idOrName != null">
+					<if test="query.flag == true">
+				         AND emp.id = #{query.idOrName}
+				    </if> 
+				    <if test="query.flag == false">
+				         AND emp.name LIKE #{query.idOrName}
+				    </if> 
+				</if>
+			    <if test="query.status != null">
+			         AND emp.status = #{query.status}
+			    </if>
+			    <if test="query.start != null">
+			         AND emp.hire_date &gt; #{query.start}
+			    </if>
+			    <if test="query.end != null">
+			         AND emp.hire_date &lt; #{query.end}
+			    </if>
+			</where>
+	</select>
+
+	<select id="findEmpViewById" resultType="EmpView">
+		SELECT emp.*,dept.name dept_name,job.name job_name FROM
+		emp LEFT JOIN dept ON emp.dept_id = dept.id
+		LEFT JOIN job ON emp.job_id = job.id
+		WHERE emp.id = #{id}
+	</select>
+	
+	<delete id="deleteByIds">
+		DELETE FROM emp WHERE id in 
+		<foreach collection="ids" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	
+</mapper>
