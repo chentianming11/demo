@@ -76,6 +76,9 @@ public class TestStrman {
         // 字符串人名化
         System.out.println(Strman.humanize("chen_tian_ming"));
 
+        System.out.println(Strman.isBlank("     "));
         
+
+
     }
 }

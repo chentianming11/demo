@@ -24,4 +24,21 @@ public class User {
     private LocalDate birthday;
     @JSONField(serialize = false) // 该字段不进行序列化
     private String ignore;
+
+    public enum QuestionEnum{
+
+        交易管家(1,"交易管家好看吗？",1),
+        交易员(2,"交易员好看吗？",1);
+
+        public final Integer id;
+        public final String question;
+        public final Integer valid;
+
+        QuestionEnum(Integer id, String question, Integer valid){
+            this.id = id;
+            this.question = question;
+            this.valid = valid;
+        }
+    }
+
 }
