@@ -41,4 +41,21 @@ public class User {
         }
     }
 
+    public enum ValidEnum{
+        有效,
+        无效
+    }
+
+    public enum StatusEnum{
+
+        未评价(0),
+        已评价(1);
+
+        public final Integer status;
+
+        StatusEnum(Integer status) {
+            this.status = status;
+        }
+    }
+
 }
