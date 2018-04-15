@@ -1,7 +1,6 @@
 package com.lianjia.guava.reflection;
 
 import com.google.common.reflect.Invokable;
-import com.lianjia.entity.Employee;
 import org.junit.Test;
 
 import javax.annotation.Nullable;

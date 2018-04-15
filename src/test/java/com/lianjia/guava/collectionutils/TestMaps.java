@@ -1,6 +1,5 @@
 package com.lianjia.guava.collectionutils;
 
-import com.google.common.base.Converter;
 import com.google.common.collect.*;
 import com.lianjia.entity.Employee;
 import org.junit.Test;

@@ -1,14 +1,11 @@
 package com.lianjia.guava.collectionutils;
 
 import com.google.common.collect.*;
-import com.google.common.primitives.Ints;
 import com.lianjia.entity.Employee;
-import org.apache.ibatis.javassist.util.HotSwapAgent;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

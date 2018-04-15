@@ -1,6 +1,5 @@
 package com.lianjia.java8.stream;
 
-import com.lianjia.entity.Emp;
 import com.lianjia.entity.Employee;
 import org.junit.Test;
 

@@ -4,7 +4,6 @@ import com.lianjia.entity.Employee;
 import org.junit.Test;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
 /**
  * Optional类的常用方法：
@@ -33,6 +32,12 @@ public class TestOptional {
     }
     @Test
     public  void test3(){
+        Employee employee = null;
+        Optional<Employee> employeeOptional = Optional.ofNullable(employee);
+        employeeOptional.ifPresent(employee1 -> {
+            // 操作对象
+
+        });
 
 
     }

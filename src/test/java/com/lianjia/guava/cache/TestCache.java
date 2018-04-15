@@ -1,13 +1,11 @@
 package com.lianjia.guava.cache;
 
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.lianjia.entity.Employee;
-import org.apache.tomcat.jni.Time;
 import org.junit.Test;
 
 import java.util.ArrayList;

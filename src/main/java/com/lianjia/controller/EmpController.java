@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 
@@ -39,7 +37,7 @@ public class EmpController {
         if (empQuery.getPageSize() == null) {
             empQuery.setPageSize(5);
         }
-        return empService.findByPageWithES(empQuery);
+        return empService.findByPage(empQuery);
 
 
     }

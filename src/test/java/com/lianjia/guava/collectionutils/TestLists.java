@@ -26,8 +26,5 @@ public class TestLists {
         List<List<Integer>> partition = Lists.partition(list, 2);
         System.out.println(partition);
 
-
-
-
     }
 }
