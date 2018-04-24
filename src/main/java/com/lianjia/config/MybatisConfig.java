@@ -11,10 +11,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MybatisConfig {
 
-    @Bean
-    public Interceptor getInterceptor(){
-        SQLStatsInterceptor sqlStatsInterceptor = new SQLStatsInterceptor();
 
-       return sqlStatsInterceptor;
-    }
 }

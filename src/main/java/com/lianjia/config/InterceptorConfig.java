@@ -1,23 +1,26 @@
 package com.lianjia.config;
 
 import com.lianjia.interceptor.MyInterceptor;
-import com.lianjia.interceptor.MyInterceptor2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
+ * 配置拦截器
  * Created by chen on 2018/4/5.
  */
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
+    @Autowired
+    MyInterceptor myInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(new MyInterceptor())
+        registry.addInterceptor(myInterceptor)
                 .addPathPatterns("/**");
-        registry.addInterceptor(new MyInterceptor2())
-                .addPathPatterns("/hello/**");
+
     }
 }
