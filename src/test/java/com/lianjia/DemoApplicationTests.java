@@ -6,6 +6,7 @@ import com.lianjia.entity.EmpQuery;
 import com.lianjia.entity.view.EmpView;
 import com.lianjia.mapper.DeptMapper;
 import com.lianjia.mapper.EmpMapper;
+import com.lianjia.service.HttpAPIService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class DemoApplicationTests {
 
 	@Autowired
 	EmpMapper empMapper;
+
+	@Autowired
+	private HttpAPIService httpAPIService;
 
 	@Test
 	public void testSelectAll(){
@@ -48,6 +52,15 @@ public class DemoApplicationTests {
 		List<EmpView> empViewList = empMapper.findEmpJoinDeptAndJob(empQuery);
 		Map<Long, String> map = empViewList.stream().collect(Collectors.toMap(Emp::getId, Emp::getName));
 		System.out.println(map);
+	}
+
+	/**
+	 * 测试HttpApiService
+	 */
+	@Test
+	public void test5() throws Exception {
+		String s = httpAPIService.doGet("http://www.baidu.com");
+		System.out.println(s);
 	}
 
 }
