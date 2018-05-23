@@ -5,8 +5,9 @@ import com.lianjia.exception.AppException;
 
 import java.util.Objects;
 
+
 /**
- * Created by chen on 2018/3/21.
+ * @author chenTianMing
  */
 public final class AppAssert {
 

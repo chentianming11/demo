@@ -9,7 +9,7 @@ import java.net.URLEncoder;
 
 /**
  * 下载工具类
- * Created by chen on 2018/5/23.
+ * @author chenTianMing
  */
 public class DownloadUtils {
 

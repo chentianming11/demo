@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * 枚举工具类
- * Created by chen on 2018/3/11.
+ * @author chenTianMing
  */
 public class EnumUtils {
 

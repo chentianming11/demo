@@ -1,7 +1,7 @@
 package com.lianjia.util;
 
 /**
- * Created by chen on 2018/5/13.
+ * @author chenTianMing
  */
 public class WxUtils {
 
