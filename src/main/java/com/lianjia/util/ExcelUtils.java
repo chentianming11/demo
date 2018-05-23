@@ -3,13 +3,19 @@ package com.lianjia.util;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.util.CollectionUtils;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.function.Function;
 
 /**
+ * Excel工具类
  * Created by chen on 2018/5/23.
  */
 public class ExcelUtils {
@@ -62,6 +68,13 @@ public class ExcelUtils {
         for (int i = 0; i < data.length; i++) {
             row.createCell(i).setCellValue(data[i] == null ? "" : data[i]);
         }
+    }
+
+    /**
+     * 导出excel
+     */
+    public static void export(HttpServletResponse response, SXSSFWorkbook workbook, String fileName) throws Exception {
+        DownloadUtils.downloadExcel(response, workbook, fileName + DateFormatUtils.format(new Date(), "yyyyMMdd") + ".xlsx");
     }
 
 }
