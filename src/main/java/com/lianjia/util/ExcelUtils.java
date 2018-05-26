@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.function.Function;
 
@@ -29,17 +32,19 @@ public class ExcelUtils {
 
     public static void main(String[] args) {
 
-        String[] head = {"姓名", "年龄", "生日"};
-        String[] keyList = {"name", "age", "birthday"};
+        String[] head = {"姓名", "年龄", "电话","生日"};
+        String[] keyList = {"name", "age", "phone","birthday"};
         File file = new File("D:/test.xlsx");
         List<Map<String, Object>> list = ExcelUtils.readExcelToList(file, head, keyList);
+        System.out.println(list);
 
         List<Person> personList = ExcelUtils.readExcelToList(file, head, keyList, Person.class);
-        System.out.println(list);
         System.out.println(personList);
+
     }
 
     /**
+     *
      * 读取一个excel到List<T> 中
      */
     @SneakyThrows
@@ -137,20 +142,7 @@ public class ExcelUtils {
                     Class<?> type = field.getType();
                     if (!Objects.equals(type, cellValue.getClass())) {
                         // 类型不一致，进行类型转换
-                        if (cellValue instanceof Double){
-                            // Double 转 其他数值类型
-                            if (Objects.equals(type, Integer.class)){
-                                cellValue = ((Double) cellValue).intValue();
-                            }else if (Objects.equals(type, Long.class)){
-                                cellValue =  ((Double) cellValue).longValue();
-                            }else if (Objects.equals(type, Float.class)){
-                                cellValue =  ((Double) cellValue).floatValue();
-                            }else if (Objects.equals(type, Short.class)){
-                                cellValue =  ((Double) cellValue).shortValue();
-                            }else if (Objects.equals(type, Byte.class)){
-                                cellValue =  ((Double) cellValue).byteValue();
-                            }
-                        }else if (cellValue instanceof Date){
+                        if (cellValue instanceof Date){
                             // Date 转其他类型
                             if (Objects.equals(type, String.class)){
                                 cellValue =  DateFormatUtils.format(((Date) cellValue),dateFormatPattern);
@@ -159,6 +151,18 @@ public class ExcelUtils {
                             // String 转其他类型
                             if (Objects.equals(type, Date.class)){
                                 cellValue = DateUtils.parseDate((String)cellValue, dateFormatPattern);
+                            }else if (Objects.equals(type, Integer.class)){
+                                cellValue = Integer.valueOf(((String)cellValue));
+                            }else if (Objects.equals(type, Long.class)){
+                                cellValue =  Long.valueOf(((String)cellValue));
+                            }else if (Objects.equals(type, Float.class)){
+                                cellValue =  Float.valueOf(((String)cellValue));
+                            }else if (Objects.equals(type, Short.class)){
+                                cellValue =  Short.valueOf(((String)cellValue));
+                            }else if (Objects.equals(type, Byte.class)){
+                                cellValue =  Byte.valueOf(((String)cellValue));
+                            }else if (Objects.equals(type, Double.class)){
+                                cellValue =  Double.valueOf(((String)cellValue));
                             }
                         }
                     }
@@ -227,7 +231,8 @@ public class ExcelUtils {
                     // 日期
                     value = cell.getDateCellValue();
                 }else {
-                    value = cell.getNumericCellValue();
+                    DecimalFormat decimalFormat = new DecimalFormat();
+                    value = decimalFormat.format(cell.getNumericCellValue());
                 }
                 break;
             }
@@ -238,12 +243,6 @@ public class ExcelUtils {
             case Cell.CELL_TYPE_BLANK: {
                 // 空白
                 value = "";
-                break;
-            }
-
-            case Cell.CELL_TYPE_BOOLEAN: {
-                // 布尔
-                value = cell.getBooleanCellValue();
                 break;
             }
             case Cell.CELL_TYPE_FORMULA: {

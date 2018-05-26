@@ -17,6 +17,7 @@ import java.util.Date;
 @Builder
 public class Person {
     private String name;
+    private String phone;
     private Integer age;
     private Date birthday;
 }
