@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Multimap;
+import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -24,9 +25,9 @@ public class EnumUtils {
      * @param enumClass
      * @param <E>
      * @return
-     * @throws IllegalAccessException
      */
-    public static <E extends Enum<E>> BiMap<String, Object> getNameAndValueMap(Class<E> enumClass, String filedName) throws Exception {
+    @SneakyThrows
+    public static <E extends Enum<E>> BiMap<String, Object> getNameAndValueMap(Class<E> enumClass, String filedName) {
 
         BiMap<String, Object> biMap = HashBiMap.create();
         Field field = enumClass.getField(filedName);
@@ -45,10 +46,9 @@ public class EnumUtils {
      * @param filedName
      * @param <E>
      * @return
-     * @throws IllegalAccessException
-     * @throws NoSuchFieldException
      */
-    public static <E extends Enum<E>> Map<Integer, String> getValueAndNameMap(Class<E> enumClass, String filedName) throws Exception {
+    @SneakyThrows
+    public static <E extends Enum<E>> Map<Integer, String> getValueAndNameMap(Class<E> enumClass, String filedName) {
 
         Map<Integer, String> map = new HashMap<>();
         Field field = enumClass.getField(filedName);
