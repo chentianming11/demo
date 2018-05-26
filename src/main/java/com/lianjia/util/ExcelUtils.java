@@ -237,7 +237,7 @@ public class ExcelUtils {
             }
             case Cell.CELL_TYPE_BLANK: {
                 // 空白
-                value = null;
+                value = "";
                 break;
             }
 
