@@ -24,6 +24,14 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+	<!--<repositories>
+		<repository>
+			<id>chentianming11-mvn-repo</id>
+			<url>https://raw.githubusercontent.com/chentianming11/maven-repo/master/repository</url>
+		</repository>
+	</repositories>-->
+
+
 	<dependencies>
 		<!--spring start-->
 		<dependency>
@@ -98,6 +106,11 @@
 			<version>3.4</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.3</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>4.1</version>
@@ -129,8 +142,12 @@
 			<version>3.3.2</version>
 		</dependency>
 
-
 		<!--util end-->
+		<!--<dependency>
+			<groupId>com.chentianming</groupId>
+			<artifactId>common-utils</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>-->
 
 	</dependencies>
 
@@ -140,8 +157,21 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<compilerArgument>-parameters</compilerArgument>
+					<encoding>UTF-8</encoding>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
 
 
 </project>
