@@ -44,10 +44,15 @@ public class EmpController {
 
     @PostMapping("/emp")
     public void save(@RequestBody Emp emp) {
-
-
         empService.save(emp);
     }
+    @PostMapping("/emp/test")
+    public void saveTest(Emp emp) {
+        System.out.println(emp);
+    }
+
+
+
 
     @PutMapping("/emp")
     public void update(@RequestBody Emp emp) {
