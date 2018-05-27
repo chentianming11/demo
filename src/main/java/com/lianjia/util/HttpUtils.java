@@ -1,6 +1,7 @@
 package com.lianjia.util;
 
 import com.alibaba.fastjson.JSON;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -17,12 +18,10 @@ import org.apache.http.util.EntityUtils;
 import org.apache.tomcat.util.bcel.Const;
 import org.springframework.http.MediaType;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Http工具类
@@ -34,23 +33,23 @@ public class HttpUtils {
 
 
     public static void main(String[] args) throws Exception {
-//        String url = "http://127.0.0.1:8080/emp";
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("pageNum",1);
-//        params.put("pageSize",3);
-//        params.put("idOrName","王也");
-//
-//        String s = HttpUtils.doGet(url, params);
-//        System.out.println(s);
+        String url = "http://127.0.0.1:8080/emp";
+        Map<String, Object> params = new HashMap<>();
+        params.put("pageNum",1);
+        params.put("pageSize",3);
+        params.put("idOrName","王也");
 
-
-        String url="http://127.0.0.1:8080/emp";
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", "额发放");
-        map.put("deptId", 1);
-        map.put("jobId", 1);
-        String s = doPostByJSON(url, map);
+        String s = HttpUtils.doGet(url);
         System.out.println(s);
+
+
+//        String url="http://127.0.0.1:8080/emp";
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("name", "额发放");
+//        map.put("deptId", 1);
+//        map.put("jobId", 1);
+//        String s = doPostByJSON(url, map);
+//        System.out.println(s);
 
     }
 
@@ -127,17 +126,29 @@ public class HttpUtils {
      */
     @SneakyThrows
     public static String doGet(String url, Map<String, Object> params){
-        List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
-        URI uri = new URIBuilder(url)
-                .setParameters(nameValuePairList)
-                .build();
+        URIBuilder uriBuilder = new URIBuilder(url);
+        if (Objects.nonNull(params)){
+            List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
+            uriBuilder.setParameters(nameValuePairList);
+        }
         //2.使用get方法
-        HttpGet httpGet = new HttpGet(uri);
+        HttpGet httpGet = new HttpGet(uriBuilder.build());
         //3.执行请求，获取响应
         CloseableHttpResponse response = client.execute(httpGet);
         String result = getStringResultFromResponse(response);
         return result;
     }
+
+    /**
+     * 发送get请求
+     * @param url
+     * @return
+     */
+    @SneakyThrows
+    public static String doGet(String url){
+        return doGet(url, null);
+    }
+
 
     /**
      * 发送delete请求
@@ -146,16 +157,27 @@ public class HttpUtils {
      */
     @SneakyThrows
     public static String doDelete(String url, Map<String, Object> params){
-        List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
-        URI uri = new URIBuilder(url)
-                .setParameters(nameValuePairList)
-                .build();
-        HttpDelete httpDelete = new HttpDelete(uri);
+        URIBuilder uriBuilder = new URIBuilder(url);
+        if (Objects.nonNull(params)){
+            List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
+            uriBuilder.setParameters(nameValuePairList);
+        }
+        HttpDelete httpDelete = new HttpDelete(uriBuilder.build());
         //3.执行请求，获取响应
         CloseableHttpResponse response = client.execute(httpDelete);
         String result = getStringResultFromResponse(response);
         return result;
     }
+    /**
+     * 发送delete请求
+     * @param url
+     * @return
+     */
+    @SneakyThrows
+    public static String doDelete(String url){
+        return doDelete(url, null);
+    }
+
 
     private static String getStringResultFromResponse(CloseableHttpResponse response) throws IOException {
         //4.获取响应的实体内容，就是我们所要抓取得网页内容
@@ -169,7 +191,7 @@ public class HttpUtils {
         return result;
     }
 
-    private static List<NameValuePair> getNameValuePairsFromMap(Map<String, Object> params) {
+    private static List<NameValuePair> getNameValuePairsFromMap(@NotNull Map<String, Object> params) {
         // 处理请求参数
         List<NameValuePair> nameValuePairList = new ArrayList<>();
         params.entrySet().forEach(entry ->{
