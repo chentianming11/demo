@@ -59,7 +59,7 @@ public class HttpUtils {
      * @return
      */
     @SneakyThrows
-    public static String doPutByJSON(String url, Map<String, Object> params){
+    public static String doPutWithJSON(String url, Map<String, Object> params){
         String jsonString = JSON.toJSONString(params);
         HttpPut httpPut = new HttpPut(url);
         StringEntity entity = new StringEntity(jsonString,"utf-8");
@@ -77,7 +77,7 @@ public class HttpUtils {
      * @return
      */
     @SneakyThrows
-    public static String doPostByJSON(String url, Map<String, Object> params){
+    public static String doPostWithJSON(String url, Map<String, Object> params){
         String jsonString = JSON.toJSONString(params);
         HttpPost httpPost = new HttpPost(url);
         StringEntity entity = new StringEntity(jsonString,"utf-8");
@@ -95,7 +95,7 @@ public class HttpUtils {
      * @return
      */
     @SneakyThrows
-    public static String doPutByFormData(String url, Map<String, Object> params){
+    public static String doPutWithFormData(String url, Map<String, Object> params){
         List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
         HttpPut httpPut = new HttpPut(url);
         httpPut.setEntity(new UrlEncodedFormEntity(nameValuePairList, "utf-8"));
@@ -110,7 +110,7 @@ public class HttpUtils {
      * @return
      */
     @SneakyThrows
-    public static String doPostByFormData(String url, Map<String, Object> params){
+    public static String doPostWithFormData(String url, Map<String, Object> params){
         List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
         HttpPost httpPost = new HttpPost(url);
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, "utf-8"));
