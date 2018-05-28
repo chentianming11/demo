@@ -1,9 +1,7 @@
 package com.lianjia.util;
 
 import com.alibaba.fastjson.JSON;
-import lombok.NonNull;
 import lombok.SneakyThrows;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -13,21 +11,18 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.http.MediaType;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.net.URI;
 import java.util.*;
 
 /**
  * Http工具类
  * Created by chenTianMing on 2018/5/27.
  */
-public class HttpUtils {
+public class HttpClientUtils {
 
    private static CloseableHttpClient client = HttpClients.createDefault();
 
@@ -39,7 +34,7 @@ public class HttpUtils {
         params.put("pageSize",3);
         params.put("idOrName","王也");
 
-        String s = HttpUtils.doGet(url);
+        String s = HttpClientUtils.doGet(url);
         System.out.println(s);
 
 
