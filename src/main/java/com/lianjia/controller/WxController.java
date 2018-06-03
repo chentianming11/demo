@@ -46,7 +46,7 @@ public class WxController {
     @GetMapping("/auth")
     @SneakyThrows
     public void auth(String backUrl, HttpServletResponse response) {
-        String url = wxService.auth(backUrl);
+        String url = wxService.getWxAuthUrl(backUrl);
         response.sendRedirect(url);
     }
 

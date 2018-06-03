@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.http.MediaType;
+import org.springframework.util.CollectionUtils;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -120,15 +121,20 @@ public class HttpClientUtils {
      * @return
      */
     @SneakyThrows
-    public static String doGet(String url, Map<String, Object> params){
+    public static String doGet(String url, Map<String, Object> params, Map<String, String> header ){
         URIBuilder uriBuilder = new URIBuilder(url);
-        if (Objects.nonNull(params)){
+        // 设置参数
+        if (!CollectionUtils.isEmpty(params)){
             List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
             uriBuilder.setParameters(nameValuePairList);
         }
-        //2.使用get方法
+        // 获取httpGet对象
         HttpGet httpGet = new HttpGet(uriBuilder.build());
-        //3.执行请求，获取响应
+        // 设置请求头
+        if (!CollectionUtils.isEmpty(header)){
+            header.entrySet().forEach(entry -> httpGet.setHeader(entry.getKey(), entry.getValue()));
+        }
+        // 执行请求，获取响应
         CloseableHttpResponse response = client.execute(httpGet);
         String result = getStringResultFromResponse(response);
         return result;
@@ -141,7 +147,17 @@ public class HttpClientUtils {
      */
     @SneakyThrows
     public static String doGet(String url){
-        return doGet(url, null);
+        return doGet(url, null, null);
+    }
+
+    /**
+     * 发送get请求
+     * @param url
+     * @return
+     */
+    @SneakyThrows
+    public static String doGet(String url, Map<String, Object> params){
+        return doGet(url, params, null);
     }
 
 
@@ -151,13 +167,17 @@ public class HttpClientUtils {
      * @return
      */
     @SneakyThrows
-    public static String doDelete(String url, Map<String, Object> params){
+    public static String doDelete(String url, Map<String, Object> params, Map<String, String> header){
         URIBuilder uriBuilder = new URIBuilder(url);
-        if (Objects.nonNull(params)){
+        if (!CollectionUtils.isEmpty(params)){
             List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
             uriBuilder.setParameters(nameValuePairList);
         }
         HttpDelete httpDelete = new HttpDelete(uriBuilder.build());
+        // 设置请求头
+        if (!CollectionUtils.isEmpty(header)){
+            header.entrySet().forEach(entry -> httpDelete.setHeader(entry.getKey(), entry.getValue()));
+        }
         //3.执行请求，获取响应
         CloseableHttpResponse response = client.execute(httpDelete);
         String result = getStringResultFromResponse(response);
@@ -170,7 +190,16 @@ public class HttpClientUtils {
      */
     @SneakyThrows
     public static String doDelete(String url){
-        return doDelete(url, null);
+        return doDelete(url, null, null);
+    }
+ /**
+     * 发送delete请求
+     * @param url
+     * @return
+     */
+    @SneakyThrows
+    public static String doDelete(String url, Map<String, Object> params){
+        return doDelete(url, params, null);
     }
 
 

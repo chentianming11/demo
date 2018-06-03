@@ -1,5 +1,6 @@
 package com.lianjia.config;
 
+import com.lianjia.interceptor.LoginInterceptor;
 import com.lianjia.interceptor.MyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +17,17 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
     @Autowired
     MyInterceptor myInterceptor;
 
+    @Autowired
+    LoginInterceptor loginInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(myInterceptor)
                 .addPathPatterns("/**");
 
+        registry.addInterceptor(loginInterceptor)
+                .addPathPatterns("/account/**")
+                .excludePathPatterns("/account/login/**");
     }
 }

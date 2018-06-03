@@ -23,7 +23,7 @@ public class WxService {
      * @return
      */
     @SneakyThrows
-    public String auth(String backUrl){
+    public String getWxAuthUrl(String backUrl){
         String url = "https://open.weixin.qq.com/connect/oauth2/authorize" +
                 "?appid=" + WxUtils.APP_ID +
                 "&redirect_uri=" + URLEncoder.encode(WxUtils.REDIRECT_URL, "utf-8") +
