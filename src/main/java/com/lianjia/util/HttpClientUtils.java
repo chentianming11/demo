@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSON;
 import lombok.SneakyThrows;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.config.ConnectionConfig;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -25,16 +29,24 @@ import java.util.*;
  */
 public class HttpClientUtils {
 
-   private static CloseableHttpClient client = HttpClients.createDefault();
+   private static CloseableHttpClient client ;
 
+    static {
+        RequestConfig defaultRequestConfig = RequestConfig.custom()
+                .setSocketTimeout(30000)
+                .setConnectTimeout(30000)
+                .setConnectionRequestTimeout(30000)
+                .setStaleConnectionCheckEnabled(true)
+                .build();
 
+        client = HttpClients.custom().setDefaultRequestConfig(defaultRequestConfig).build();
+    }
     public static void main(String[] args) throws Exception {
         String url = "http://127.0.0.1:8080/emp";
         Map<String, Object> params = new HashMap<>();
         params.put("pageNum",1);
         params.put("pageSize",3);
         params.put("idOrName","王也");
-
         String s = HttpClientUtils.doGet(url);
         System.out.println(s);
 
