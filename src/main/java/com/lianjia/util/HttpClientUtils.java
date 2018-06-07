@@ -61,15 +61,18 @@ public class HttpClientUtils {
 
     }
 
+
     /**
      * put请求 -- json提交
      * @param url
      * @return
      */
     @SneakyThrows
-    public static String doPutWithJSON(String url, Map<String, Object> params){
+    public static String doPutWithJSON(String url, Map<String, Object> params, Map<String, String> header){
         String jsonString = JSON.toJSONString(params);
         HttpPut httpPut = new HttpPut(url);
+        // 设置请求头
+        setHttpHeader(header, httpPut);
         StringEntity entity = new StringEntity(jsonString,"utf-8");
         entity.setContentType(MediaType.APPLICATION_JSON_VALUE);
         entity.setContentEncoding("UTF-8");
@@ -80,14 +83,36 @@ public class HttpClientUtils {
     }
 
     /**
+     * put请求 -- json提交
+     * @param url
+     * @return
+     */
+    @SneakyThrows
+    public static String doPutWithJSON(String url, Map<String, Object> params){
+        return doPutWithJSON(url, params, null);
+    }
+
+    /**
      * post请求 -- json提交
      * @param url
      * @return
      */
     @SneakyThrows
     public static String doPostWithJSON(String url, Map<String, Object> params){
+        return doPostWithJSON(url, params, null);
+    }
+
+    /**
+     * post请求 -- json提交
+     * @param url
+     * @return
+     */
+    @SneakyThrows
+    public static String doPostWithJSON(String url, Map<String, Object> params, Map<String, String> header){
         String jsonString = JSON.toJSONString(params);
         HttpPost httpPost = new HttpPost(url);
+        // 设置请求头
+        setHttpHeader(header, httpPost);
         StringEntity entity = new StringEntity(jsonString,"utf-8");
         entity.setContentType(MediaType.APPLICATION_JSON_VALUE);
         entity.setContentEncoding("UTF-8");
@@ -104,8 +129,20 @@ public class HttpClientUtils {
      */
     @SneakyThrows
     public static String doPutWithFormData(String url, Map<String, Object> params){
+        return doPutWithFormData(url, params, null);
+    }
+
+    /**
+     * put请求 -- 表单提交
+     * @param url
+     * @return
+     */
+    @SneakyThrows
+    public static String doPutWithFormData(String url, Map<String, Object> params, Map<String, String> header){
         List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
         HttpPut httpPut = new HttpPut(url);
+        // 设置请求头
+        setHttpHeader(header, httpPut);
         httpPut.setEntity(new UrlEncodedFormEntity(nameValuePairList, "utf-8"));
         CloseableHttpResponse response = client.execute(httpPut);
         String result = getStringResultFromResponse(response);
@@ -119,8 +156,20 @@ public class HttpClientUtils {
      */
     @SneakyThrows
     public static String doPostWithFormData(String url, Map<String, Object> params){
+        return doPostWithFormData(url, params, null);
+    }
+
+    /**
+     * post请求 -- 表单提交
+     * @param url
+     * @return
+     */
+    @SneakyThrows
+    public static String doPostWithFormData(String url, Map<String, Object> params, Map<String, String> header ){
         List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
         HttpPost httpPost = new HttpPost(url);
+        // 设置请求头
+        setHttpHeader(header, httpPost);
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, "utf-8"));
         CloseableHttpResponse response = client.execute(httpPost);
         String result = getStringResultFromResponse(response);
@@ -143,9 +192,7 @@ public class HttpClientUtils {
         // 获取httpGet对象
         HttpGet httpGet = new HttpGet(uriBuilder.build());
         // 设置请求头
-        if (!CollectionUtils.isEmpty(header)){
-            header.entrySet().forEach(entry -> httpGet.setHeader(entry.getKey(), entry.getValue()));
-        }
+        setHttpHeader(header, httpGet);
         // 执行请求，获取响应
         CloseableHttpResponse response = client.execute(httpGet);
         String result = getStringResultFromResponse(response);
@@ -172,7 +219,6 @@ public class HttpClientUtils {
         return doGet(url, params, null);
     }
 
-
     /**
      * 发送delete请求
      * @param url
@@ -187,14 +233,14 @@ public class HttpClientUtils {
         }
         HttpDelete httpDelete = new HttpDelete(uriBuilder.build());
         // 设置请求头
-        if (!CollectionUtils.isEmpty(header)){
-            header.entrySet().forEach(entry -> httpDelete.setHeader(entry.getKey(), entry.getValue()));
-        }
+        setHttpHeader(header, httpDelete);
         //3.执行请求，获取响应
         CloseableHttpResponse response = client.execute(httpDelete);
         String result = getStringResultFromResponse(response);
         return result;
     }
+
+
     /**
      * 发送delete请求
      * @param url
@@ -204,7 +250,7 @@ public class HttpClientUtils {
     public static String doDelete(String url){
         return doDelete(url, null, null);
     }
- /**
+    /**
      * 发送delete请求
      * @param url
      * @return
@@ -213,8 +259,6 @@ public class HttpClientUtils {
     public static String doDelete(String url, Map<String, Object> params){
         return doDelete(url, params, null);
     }
-
-
     private static String getStringResultFromResponse(CloseableHttpResponse response) throws IOException {
         //4.获取响应的实体内容，就是我们所要抓取得网页内容
         HttpEntity entity = response.getEntity();
@@ -227,6 +271,7 @@ public class HttpClientUtils {
         return result;
     }
 
+
     private static List<NameValuePair> getNameValuePairsFromMap(@NotNull Map<String, Object> params) {
         // 处理请求参数
         List<NameValuePair> nameValuePairList = new ArrayList<>();
@@ -235,5 +280,11 @@ public class HttpClientUtils {
             nameValuePairList.add(nameValuePair);
         });
         return nameValuePairList;
+    }
+
+    private static void setHttpHeader(Map<String, String> header, HttpRequestBase http) {
+        if (!CollectionUtils.isEmpty(header)){
+            header.entrySet().forEach(entry -> http.setHeader(entry.getKey(), entry.getValue()));
+        }
     }
 }

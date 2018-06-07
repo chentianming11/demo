@@ -2,6 +2,7 @@ package com.lianjia.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,9 +17,11 @@ import java.util.Date;
  *
  * Created by chen on 2018/1/25.
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table
 public class Emp implements Serializable {
 	private static final long serialVersionUID = -8810759070461959819L;

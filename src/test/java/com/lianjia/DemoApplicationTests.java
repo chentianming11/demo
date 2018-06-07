@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,7 +37,6 @@ public class DemoApplicationTests {
 		List<Dept> depts = deptMapper.selectAll();
 		for (Dept dept : depts) {
 			System.out.println(dept);
-			
 		}
 	}
 
@@ -61,6 +61,24 @@ public class DemoApplicationTests {
 	public void test5() throws Exception {
 		String s = httpAPIService.doGet("http://www.baidu.com");
 		System.out.println(s);
+	}
+
+	/**
+	 *
+	 * 1w条  批量插入  5880ms
+	 * 1w条  全量插入  1538ms
+	 * 测试通用Mapper的批量插入
+	 */
+	@Test
+	public void test6() throws Exception {
+		List<Emp> emps = new ArrayList<>();
+		for (int i = 0; i < 10000; i++) {
+			emps.add(Emp.builder().name("111").status(1).build());
+		}
+		long start = System.currentTimeMillis();
+		empMapper.insertBatchSkipId(emps);
+		long end = System.currentTimeMillis();
+		System.out.println("耗时：" + (end - start) + "ms");
 	}
 
 }

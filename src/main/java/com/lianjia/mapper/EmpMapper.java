@@ -5,6 +5,7 @@ import java.util.List;
 import com.lianjia.entity.Emp;
 import com.lianjia.entity.EmpQuery;
 import com.lianjia.entity.view.EmpView;
+import com.lianjia.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -13,7 +14,7 @@ import tk.mybatis.mapper.common.Mapper;
  * @author chen
  *
  */
-public interface EmpMapper extends Mapper<Emp>{
+public interface EmpMapper extends MyMapper<Emp> {
 
 	/**
 	 * 员工表连接部门表和岗位表，分页查询员工详细信息列表

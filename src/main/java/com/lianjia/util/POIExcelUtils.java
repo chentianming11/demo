@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.*;
 import java.util.function.Function;
 
@@ -26,7 +24,7 @@ import java.util.function.Function;
  *
  * @author chenTianMing
  */
-public class ExcelUtils {
+public class POIExcelUtils {
 
     public static final String dateFormatPattern = "yyyy-MM-dd HH:ss:mm";
 
@@ -35,17 +33,19 @@ public class ExcelUtils {
         String[] head = {"姓名", "年龄", "电话","生日"};
         String[] keyList = {"name", "age", "phone","birthday"};
         File file = new File("D:/test.xlsx");
-        List<Map<String, Object>> list = ExcelUtils.readExcelToList(file, head, keyList);
+        List<Map<String, Object>> list = POIExcelUtils.readExcelToList(file, head, keyList);
         System.out.println(list);
 
-        List<Person> personList = ExcelUtils.readExcelToList(file, head, keyList, Person.class);
+        List<Person> personList = POIExcelUtils.readExcelToList(file, head, keyList, Person.class);
         System.out.println(personList);
 
     }
 
     /**
-     *
      * 读取一个excel到List<T> 中
+     * @param head excel第一行中的列名，顺序必须和excel中的一致
+     * @param keyList 实体属性键的映射list，与 head 一一对应。
+     * @return
      */
     @SneakyThrows
     public static <T> List<T> readExcelToList(File file, String[] head, String[] keyList, Class<T> clz) {
@@ -56,6 +56,8 @@ public class ExcelUtils {
     }
 
     /**
+     * @param head excel第一行中的列名，顺序必须和excel中的一致
+     * @param keyList 实体属性键的映射list，与 head 一一对应。
      * 读取一个excel到List<T> 中
      */
     @SneakyThrows
@@ -65,6 +67,8 @@ public class ExcelUtils {
     }
 
     /**
+     * @param head excel第一行中的列名，顺序必须和excel中的一致
+     * @param keyList 实体属性键的映射list，与 head 一一对应。
      * 读取一个excel到List<T> 中
      */
     @SneakyThrows
@@ -76,6 +80,8 @@ public class ExcelUtils {
     }
 
     /**
+     * @param head excel第一行中的列名，顺序必须和excel中的一致
+     * @param keyList map的键映射list，与 head 一一对应。
      * 读取一个excel到List<Map<String,Object>> 中
      */
     @SneakyThrows
@@ -88,6 +94,8 @@ public class ExcelUtils {
     }
 
     /**
+     * @param head excel第一行中的列名，顺序必须和excel中的一致
+     * @param keyList map的键映射list，与 head 一一对应。
      * 读取一个excel到List<Map<String,Object>> 中
      */
     @SneakyThrows
@@ -98,6 +106,8 @@ public class ExcelUtils {
     }
 
     /**
+     * @param head excel第一行中的列名，顺序必须和excel中的一致
+     * @param keyList map的键映射list，与 head 一一对应。
      * 读取一个excel到List<Map<String,Object>> 中
      */
     @SneakyThrows
@@ -269,7 +279,7 @@ public class ExcelUtils {
     public static SXSSFWorkbook createSXSSFWorkbookByPageQuery(Integer pageSize, String[] head, String[] columnNameList, Function<Integer, List<Map<String, Object>>> function) {
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         Sheet detailSheet = workbook.createSheet("sheet1");
-        ExcelUtils.sheetAppendRows(detailSheet, head);
+        POIExcelUtils.sheetAppendRows(detailSheet, head);
         Integer pageNum = 1;
         List<Map<String, Object>> result;
         do {
@@ -288,7 +298,7 @@ public class ExcelUtils {
                     }
                     list.add(String.valueOf(o));
                 }
-                ExcelUtils.sheetAppendRows(detailSheet, list.toArray(new String[list.size()]));
+                POIExcelUtils.sheetAppendRows(detailSheet, list.toArray(new String[list.size()]));
             });
 
         } while (!CollectionUtils.isEmpty(result) && result.size() == pageSize);

@@ -1,5 +1,6 @@
 package com.lianjia.other;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.*;
@@ -8,6 +9,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by chenTianMing on 2018/5/24.
@@ -82,5 +85,13 @@ public class TestPoi {
 //        }
 
 
+    }
+
+    @Test
+    public void test3(){
+        String s = "asdf  afasdfdsf  sadfas sdfd a";
+        System.out.println(s.replaceAll("\\s+", ""));
+        String s2 = "sdfas-dsfds--dadf-dff";
+        System.out.println(s2.replaceAll("-*", ""));
     }
 }
