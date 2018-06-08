@@ -1,9 +1,13 @@
 package com.lianjia.util;
 
 import org.apache.ibatis.mapping.MappedStatement;
+import tk.mybatis.mapper.entity.EntityColumn;
+import tk.mybatis.mapper.mapperhelper.EntityHelper;
 import tk.mybatis.mapper.mapperhelper.MapperHelper;
 import tk.mybatis.mapper.mapperhelper.MapperTemplate;
 import tk.mybatis.mapper.mapperhelper.SqlHelper;
+
+import java.util.Set;
 
 public class MySelectProvider extends MapperTemplate {
 
@@ -33,11 +37,10 @@ public class MySelectProvider extends MapperTemplate {
     private String insertAll(MappedStatement ms, boolean skipId) {
         final Class<?> entityClass = getEntityClass(ms);
         //修改返回值类型为实体类型
-        setResultType(ms, entityClass);
         StringBuilder sql = new StringBuilder();
         sql.append(SqlHelper.insertIntoTable(entityClass, tableName(entityClass)));
         sql.append(SqlHelper.insertColumns(entityClass, skipId, false, isNotEmpty()));
-        sql.append("VALUES\t");
+        sql.append("VALUES ");
         sql.append("<foreach collection=\"collection\" item=\"item\" separator=\",\" > ");
         sql.append(SqlHelper.insertValuesColumns(entityClass, skipId, false, isNotEmpty()).replaceAll("VALUES", ""));
         sql.append(" </foreach>");

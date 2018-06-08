@@ -6,7 +6,6 @@ import com.lianjia.entity.EmpQuery;
 import com.lianjia.entity.view.EmpView;
 import com.lianjia.mapper.DeptMapper;
 import com.lianjia.mapper.EmpMapper;
-import com.lianjia.service.HttpAPIService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,6 @@ public class DemoApplicationTests {
 	@Autowired
 	EmpMapper empMapper;
 
-	@Autowired
-	private HttpAPIService httpAPIService;
 
 	@Test
 	public void testSelectAll(){
@@ -54,14 +51,6 @@ public class DemoApplicationTests {
 		System.out.println(map);
 	}
 
-	/**
-	 * 测试HttpApiService
-	 */
-	@Test
-	public void test5() throws Exception {
-		String s = httpAPIService.doGet("http://www.baidu.com");
-		System.out.println(s);
-	}
 
 	/**
 	 *
@@ -71,14 +60,18 @@ public class DemoApplicationTests {
 	 */
 	@Test
 	public void test6() throws Exception {
-		List<Emp> emps = new ArrayList<>();
-		for (int i = 0; i < 10000; i++) {
-			emps.add(Emp.builder().name("111").status(1).build());
-		}
-		long start = System.currentTimeMillis();
-		empMapper.insertBatchSkipId(emps);
-		long end = System.currentTimeMillis();
-		System.out.println("耗时：" + (end - start) + "ms");
+//		List<Emp> emps = new ArrayList<>();
+//		for (int i = 0; i < 10000; i++) {
+//			emps.add(Emp.builder().name("111").status(1).build());
+//		}
+//		long start = System.currentTimeMillis();
+//		empMapper.insertBatchSkipId(emps);
+//		long end = System.currentTimeMillis();
+//		System.out.println("耗时：" + (end - start) + "ms");
+		Emp emp = Emp.builder().name("111").status(1).build();
+		int i = empMapper.insertSelective(emp);
+		System.out.println(i + "    " + emp.getId());
+
 	}
 
 }

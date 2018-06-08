@@ -16,7 +16,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 通过对称加密方式实现一个简单登录
@@ -37,7 +36,7 @@ public class AccountController {
     @PostMapping("login")
     public Map login(String username, String password, HttpServletRequest request, HttpServletResponse response){
         Account account = accountService.selectByUsernameAndPassword(username, password);
-        AppAssert.assertNotNull(account, "用户名或者密码错误");
+        AppAssert.notNull(account, "用户名或者密码错误");
         // 登录成功 将账号id加密后写入cookie
         log.info("[" + account.getNickname() + "] 登录成功, " + request.getHeader("host"));
         String encrypt = aes.encrypt(account.getId() + "-" + System.currentTimeMillis());

@@ -8,35 +8,36 @@ import java.util.Objects;
 
 
 /**
+ * 断言工具类
  * @author chenTianMing
  */
 public abstract class AppAssert {
 
-    public static void assertNotNull(Object o, String errorMessage){
+    public static void notNull(Object o, String errorMessage){
         if (o == null){
             throw new AppException(errorMessage);
         }
     }
 
-    public static void assertNull(Object o, String errorMessage){
+    public static void isNull(Object o, String errorMessage){
         if (o != null){
             throw new AppException(errorMessage);
         }
     }
 
-    public static void assertEquals(Object o1, Object o2 , String errorMessage){
+    public static void equals(Object o1, Object o2 , String errorMessage){
         if (!Objects.equals(o1, o2)){
             throw new AppException(errorMessage);
         }
     }
 
-    public static void assertNotEquals(Object o1, Object o2 , String errorMessage){
+    public static void notEquals(Object o1, Object o2 , String errorMessage){
         if (Objects.equals(o1, o2)){
             throw new AppException(errorMessage);
         }
     }
 
-    public static void assertDateLessThan(Date o1, Date o2 , String errorMessage){
+    public static void dateLessThan(Date o1, Date o2 , String errorMessage){
         if (o1 == null || o2 == null){
             return;
         }
@@ -47,19 +48,19 @@ public abstract class AppAssert {
     }
 
 
-    public static void assertStringMoreThan(String remark, int i, String errorMessage) {
+    public static void stringLengthMoreThan(String remark, int i, String errorMessage) {
         if (Objects.nonNull(remark) && remark.length() < i){
             throw new AppException(errorMessage);
         }
     }
 
-    public static void assertTrue(boolean b, String errorMessage) {
+    public static void isTrue(boolean b, String errorMessage) {
         if (b == false){
             throw new AppException(errorMessage);
         }
     }
 
-    public static void assertFalse(boolean b, String errorMessage) {
+    public static void isFalse(boolean b, String errorMessage) {
         if (b == true){
             throw new AppException(errorMessage);
         }

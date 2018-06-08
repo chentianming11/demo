@@ -21,7 +21,7 @@ public interface MyMapper<T> extends Mapper<T> {
     }
 
     /**
-     *  忽略id列批量插入
+     *  不忽略id列批量插入
      * @param list
      */
     default void insertBatchNotSkipId(List<T> list){
@@ -36,11 +36,10 @@ public interface MyMapper<T> extends Mapper<T> {
      void insertAllSkipId(List<T> list);
 
     /**
-     * 不id列全量插入
+     * 不忽略id列全量插入
      * @param list
      */
     @InsertProvider(type = MySelectProvider.class, method = "dynamicSQL")
     void insertAllNotSkipId(List<T> list);
-
 
 }

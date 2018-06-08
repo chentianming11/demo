@@ -4,12 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.lianjia.service.HttpAPIService;
 import com.lianjia.service.WxService;
-import com.lianjia.util.WxUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.CharSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,8 +25,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class WxController {
 
-    @Autowired
-    private HttpAPIService httpAPIService;
+
     @Autowired
     private WxService wxService;
 

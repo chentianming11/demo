@@ -1,6 +1,6 @@
 package com.lianjia.service;
 
-import com.lianjia.util.WxUtils;
+import com.lianjia.util.HttpClientUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,11 @@ import java.net.URLEncoder;
 @Slf4j
 public class WxService {
 
-    @Autowired
-    HttpAPIService httpAPIService;
+    public static final String APP_ID = "wxcf54a8dffb6feb15";
+    public static final String APP_SEERET = "fc83b4e146dc6681f989655b2a633c99";
+    public static final String REDIRECT_URL = "http://iit3h6.natappfree.cc/wx/callback";
+
+
 
     /**
      * 微信授权
@@ -25,8 +28,8 @@ public class WxService {
     @SneakyThrows
     public String getWxAuthUrl(String backUrl){
         String url = "https://open.weixin.qq.com/connect/oauth2/authorize" +
-                "?appid=" + WxUtils.APP_ID +
-                "&redirect_uri=" + URLEncoder.encode(WxUtils.REDIRECT_URL, "utf-8") +
+                "?appid=" + APP_ID +
+                "&redirect_uri=" + URLEncoder.encode(REDIRECT_URL, "utf-8") +
                 "&response_type=code" +
                 "&scope=snsapi_userinfo" +
                 "&state=" + URLEncoder.encode(backUrl, "utf-8") +
@@ -45,11 +48,11 @@ public class WxService {
     @SneakyThrows
     public String getAccseToken(String code){
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token" +
-                "?appid=" + WxUtils.APP_ID +
-                "&secret=" + WxUtils.APP_SEERET +
+                "?appid=" + APP_ID +
+                "&secret=" + APP_SEERET +
                 "&code=" + code +
                 "&grant_type=authorization_code";
-        String jsonString = httpAPIService.doGet(url);
+        String jsonString = HttpClientUtils.doGet(url);
         return jsonString;
     }
 
@@ -72,7 +75,7 @@ public class WxService {
                 "?access_token=" + access_token +
                 "&openid=" + openid +
                 "&lang=zh_CN";
-        return httpAPIService.doGet(url);
+        return HttpClientUtils.doGet(url);
     }
 
     /**
@@ -86,10 +89,10 @@ public class WxService {
     @SneakyThrows
     public String refreshToken(String refresh_token, String openid) {
         String url = "https://api.weixin.qq.com/sns/oauth2/refresh_token" +
-                "?appid=" + WxUtils.APP_ID +
+                "?appid=" + APP_ID +
                 "&grant_type=refresh_token" +
                 "&refresh_token=" + refresh_token;
-        return httpAPIService.doGet(url);
+        return HttpClientUtils.doGet(url);
     }
 
     /**
@@ -103,6 +106,6 @@ public class WxService {
         String url = "https://api.weixin.qq.com/sns/auth" +
                 "?access_token=" + access_token +
                 "&openid=" + openid;
-        return httpAPIService.doGet(url);
+        return HttpClientUtils.doGet(url);
     }
 }
