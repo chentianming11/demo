@@ -1,6 +1,7 @@
 package com.lianjia.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -42,22 +43,7 @@ public class HttpClientUtils {
         client = HttpClients.custom().setDefaultRequestConfig(defaultRequestConfig).build();
     }
     public static void main(String[] args) throws Exception {
-        String url = "http://127.0.0.1:8080/emp";
-        Map<String, Object> params = new HashMap<>();
-        params.put("pageNum",1);
-        params.put("pageSize",3);
-        params.put("idOrName","王也");
-        String s = HttpClientUtils.doGet(url);
-        System.out.println(s);
 
-
-//        String url="http://127.0.0.1:8080/emp";
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("name", "额发放");
-//        map.put("deptId", 1);
-//        map.put("jobId", 1);
-//        String s = doPostByJSON(url, map);
-//        System.out.println(s);
 
     }
 
