@@ -1,4 +1,4 @@
-package com.lianjia.qrcode;
+package com.lianjia.other.qrcode;
 
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
@@ -7,7 +7,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.junit.Test;
-import org.springframework.boot.test.autoconfigure.filter.TypeExcludeFilters;
 
 import javax.imageio.ImageIO;
 import java.io.File;

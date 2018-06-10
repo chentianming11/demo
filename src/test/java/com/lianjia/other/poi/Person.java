@@ -1,4 +1,4 @@
-package com.lianjia.other;
+package com.lianjia.other.poi;
 
 
 import lombok.AllArgsConstructor;

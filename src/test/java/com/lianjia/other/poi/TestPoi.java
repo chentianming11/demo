@@ -1,4 +1,4 @@
-package com.lianjia.other;
+package com.lianjia.other.poi;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
