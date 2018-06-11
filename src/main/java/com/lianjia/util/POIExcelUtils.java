@@ -1,10 +1,10 @@
 package com.lianjia.util;
 
 import com.lianjia.test.Person;
-import lombok.SneakyThrows;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.util.CollectionUtils;
@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -28,7 +29,7 @@ public class POIExcelUtils {
 
     public static final String dateFormatPattern = "yyyy-MM-dd HH:ss:mm";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InvalidFormatException, IllegalAccessException, InstantiationException {
 
         String[] head = {"姓名", "年龄", "电话","生日"};
         String[] keyList = {"name", "age", "phone","birthday"};
@@ -47,8 +48,7 @@ public class POIExcelUtils {
      * @param keyList 实体属性键的映射list，与 head 一一对应。
      * @return
      */
-    @SneakyThrows
-    public static <T> List<T> readExcelToList(File file, String[] head, String[] keyList, Class<T> clz) {
+    public static <T> List<T> readExcelToList(File file, String[] head, String[] keyList, Class<T> clz) throws IOException, InvalidFormatException, InstantiationException, IllegalAccessException {
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         Workbook workbook = WorkbookFactory.create(file);
         return readExcelToListFromWorkbook(head, keyList, clz, workbook);
@@ -60,8 +60,7 @@ public class POIExcelUtils {
      * @param keyList 实体属性键的映射list，与 head 一一对应。
      * 读取一个excel到List<T> 中
      */
-    @SneakyThrows
-    public static <T> List<T> readExcelToList(MultipartFile file, String[] head, String[] keyList, Class<T> clz) {
+    public static <T> List<T> readExcelToList(MultipartFile file, String[] head, String[] keyList, Class<T> clz) throws IOException, InvalidFormatException, IllegalAccessException, InstantiationException {
         return readExcelToList(file.getInputStream() ,head, keyList, clz);
 
     }
@@ -71,8 +70,7 @@ public class POIExcelUtils {
      * @param keyList 实体属性键的映射list，与 head 一一对应。
      * 读取一个excel到List<T> 中
      */
-    @SneakyThrows
-    public static <T> List<T> readExcelToList(InputStream inputStream, String[] head, String[] keyList, Class<T> clz) {
+    public static <T> List<T> readExcelToList(InputStream inputStream, String[] head, String[] keyList, Class<T> clz) throws IOException, InvalidFormatException, InstantiationException, IllegalAccessException {
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         Workbook workbook = WorkbookFactory.create(inputStream);
         return readExcelToListFromWorkbook(head, keyList, clz, workbook);
@@ -84,8 +82,7 @@ public class POIExcelUtils {
      * @param keyList map的键映射list，与 head 一一对应。
      * 读取一个excel到List<Map<String,Object>> 中
      */
-    @SneakyThrows
-    public static List<Map<String, Object>> readExcelToList(File file, String[] head, String[] keyList) {
+    public static List<Map<String, Object>> readExcelToList(File file, String[] head, String[] keyList) throws IOException, InvalidFormatException {
 
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         Workbook workbook = WorkbookFactory.create(file);
@@ -98,8 +95,7 @@ public class POIExcelUtils {
      * @param keyList map的键映射list，与 head 一一对应。
      * 读取一个excel到List<Map<String,Object>> 中
      */
-    @SneakyThrows
-    public static List<Map<String, Object>> readExcelToList(MultipartFile file, String[] head, String[] keyList) {
+    public static List<Map<String, Object>> readExcelToList(MultipartFile file, String[] head, String[] keyList) throws IOException, InvalidFormatException {
 
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         return readExcelToList(file.getInputStream() ,head, keyList);
@@ -110,8 +106,7 @@ public class POIExcelUtils {
      * @param keyList map的键映射list，与 head 一一对应。
      * 读取一个excel到List<Map<String,Object>> 中
      */
-    @SneakyThrows
-    public static List<Map<String, Object>> readExcelToList(InputStream inputStream, String[] head, String[] keyList) {
+    public static List<Map<String, Object>> readExcelToList(InputStream inputStream, String[] head, String[] keyList) throws IOException, InvalidFormatException {
 
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         Workbook workbook = WorkbookFactory.create(inputStream);
@@ -119,8 +114,7 @@ public class POIExcelUtils {
 
     }
 
-    @SneakyThrows
-    private static <T> List<T> readExcelToListFromWorkbook(String[] head, String[] keyList, Class<T> clz, Workbook workbook){
+    private static <T> List<T> readExcelToListFromWorkbook(String[] head, String[] keyList, Class<T> clz, Workbook workbook) throws IllegalAccessException, InstantiationException {
         // 获取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
         // 需要读取的列索引集合
@@ -189,7 +183,6 @@ public class POIExcelUtils {
 
 
 
-    @SneakyThrows
     private static List<Map<String, Object>> readExcelToListFromWorkbook(String[] head, String[] keyList, Workbook workbook) {
         // 获取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);

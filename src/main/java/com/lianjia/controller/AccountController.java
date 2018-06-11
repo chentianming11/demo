@@ -5,6 +5,7 @@ import com.lianjia.entity.Account;
 import com.lianjia.service.AccountService;
 import com.lianjia.util.AppAssert;
 import com.lianjia.util.EncryptUtils;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,7 @@ public class AccountController {
      * 登录接口
      */
     @PostMapping("login")
+    @SneakyThrows
     public Map login(String username, String password, HttpServletRequest request, HttpServletResponse response){
         Account account = accountService.selectByUsernameAndPassword(username, password);
         AppAssert.notNull(account, "用户名或者密码错误");

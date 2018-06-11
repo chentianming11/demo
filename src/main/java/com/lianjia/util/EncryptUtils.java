@@ -2,15 +2,11 @@ package com.lianjia.util;
 
 import lombok.SneakyThrows;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.NoSuchAlgorithmException;
+import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by chenTianMing on 2018/6/3.
@@ -55,8 +51,7 @@ public class EncryptUtils {
          * @param content 加密前的原内容
          * @return
          */
-        @SneakyThrows
-        public String encrypt(String content) {
+        public String encrypt(String content) throws UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException {
             //获取加密内容的字节数组
             byte[] contentBytes = content.getBytes("utf-8");
             byte[] aesBytes = encryptCipher.doFinal(contentBytes);
@@ -71,8 +66,7 @@ public class EncryptUtils {
          * @param content 加密后的内容
          * @return
          */
-        @SneakyThrows
-        public String decrypt(String content) {
+        public String decrypt(String content) throws BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
             //先将密文进行Base64解码
             byte[] aesBytes = Base64.getDecoder().decode(content);
             //将密文进行解密

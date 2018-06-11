@@ -1,19 +1,14 @@
 package com.lianjia.util;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import lombok.SneakyThrows;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.config.ConnectionConfig;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -22,7 +17,10 @@ import org.springframework.util.CollectionUtils;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.*;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Http工具类
@@ -37,7 +35,6 @@ public class HttpClientUtils {
                 .setSocketTimeout(30000)
                 .setConnectTimeout(30000)
                 .setConnectionRequestTimeout(30000)
-                .setStaleConnectionCheckEnabled(true)
                 .build();
 
         client = HttpClients.custom().setDefaultRequestConfig(defaultRequestConfig).build();
@@ -53,8 +50,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doPutWithJSON(String url, Map<String, Object> params, Map<String, String> header){
+    public static String doPutWithJSON(String url, Map<String, Object> params, Map<String, String> header) throws IOException {
         String jsonString = JSON.toJSONString(params);
         HttpPut httpPut = new HttpPut(url);
         // 设置请求头
@@ -73,8 +69,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doPutWithJSON(String url, Map<String, Object> params){
+    public static String doPutWithJSON(String url, Map<String, Object> params) throws IOException {
         return doPutWithJSON(url, params, null);
     }
 
@@ -83,8 +78,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doPostWithJSON(String url, Map<String, Object> params){
+    public static String doPostWithJSON(String url, Map<String, Object> params) throws IOException {
         return doPostWithJSON(url, params, null);
     }
 
@@ -93,8 +87,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doPostWithJSON(String url, Map<String, Object> params, Map<String, String> header){
+    public static String doPostWithJSON(String url, Map<String, Object> params, Map<String, String> header) throws IOException {
         String jsonString = JSON.toJSONString(params);
         HttpPost httpPost = new HttpPost(url);
         // 设置请求头
@@ -113,8 +106,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doPutWithFormData(String url, Map<String, Object> params){
+    public static String doPutWithFormData(String url, Map<String, Object> params) throws IOException {
         return doPutWithFormData(url, params, null);
     }
 
@@ -123,8 +115,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doPutWithFormData(String url, Map<String, Object> params, Map<String, String> header){
+    public static String doPutWithFormData(String url, Map<String, Object> params, Map<String, String> header) throws IOException {
         List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
         HttpPut httpPut = new HttpPut(url);
         // 设置请求头
@@ -140,8 +131,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doPostWithFormData(String url, Map<String, Object> params){
+    public static String doPostWithFormData(String url, Map<String, Object> params) throws IOException {
         return doPostWithFormData(url, params, null);
     }
 
@@ -150,8 +140,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doPostWithFormData(String url, Map<String, Object> params, Map<String, String> header ){
+    public static String doPostWithFormData(String url, Map<String, Object> params, Map<String, String> header ) throws IOException {
         List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
         HttpPost httpPost = new HttpPost(url);
         // 设置请求头
@@ -167,8 +156,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doGet(String url, Map<String, Object> params, Map<String, String> header ){
+    public static String doGet(String url, Map<String, Object> params, Map<String, String> header ) throws URISyntaxException, IOException {
         URIBuilder uriBuilder = new URIBuilder(url);
         // 设置参数
         if (!CollectionUtils.isEmpty(params)){
@@ -190,8 +178,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doGet(String url){
+    public static String doGet(String url) throws IOException, URISyntaxException {
         return doGet(url, null, null);
     }
 
@@ -200,8 +187,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doGet(String url, Map<String, Object> params){
+    public static String doGet(String url, Map<String, Object> params) throws IOException, URISyntaxException {
         return doGet(url, params, null);
     }
 
@@ -210,8 +196,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doDelete(String url, Map<String, Object> params, Map<String, String> header){
+    public static String doDelete(String url, Map<String, Object> params, Map<String, String> header) throws URISyntaxException, IOException {
         URIBuilder uriBuilder = new URIBuilder(url);
         if (!CollectionUtils.isEmpty(params)){
             List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
@@ -232,8 +217,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doDelete(String url){
+    public static String doDelete(String url) throws IOException, URISyntaxException {
         return doDelete(url, null, null);
     }
     /**
@@ -241,8 +225,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    @SneakyThrows
-    public static String doDelete(String url, Map<String, Object> params){
+    public static String doDelete(String url, Map<String, Object> params) throws IOException, URISyntaxException {
         return doDelete(url, params, null);
     }
     private static String getStringResultFromResponse(CloseableHttpResponse response) throws IOException {

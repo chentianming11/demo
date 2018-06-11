@@ -1,10 +1,7 @@
 package com.lianjia.service;
 
-import com.lianjia.common.RedisDistributedLock;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
 
 /**
  * Created by chenTianMing on 2018/6/8.
