@@ -77,7 +77,7 @@ public class PageUtils {
             return null;
         }
         Date date1 = DateUtils.addDays(date, 1);
-        return DateUtils.addMilliseconds(date1, -1);
+        return DateUtils.addMilliseconds(date1, -2);
     }
 
 }
