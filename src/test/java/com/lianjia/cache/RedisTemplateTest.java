@@ -1,6 +1,7 @@
 package com.lianjia.cache;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,6 +139,50 @@ public class RedisTemplateTest {
          */
         redisTemplate.opsForList().remove("list3",2,"bbb");
         System.out.println(redisTemplate.opsForList().range("list3", 0, -1));
+    }
+
+    /**
+     * Redis的散列可以让用户将多个键值对存储到一个Redis键里面。
+     */
+    @Test
+    public void hash(){
+        // 向hash中put 单个键值对
+        redisTemplate.opsForHash().put("redisHash", "name", "tom");
+        redisTemplate.opsForHash().put("redisHash","age",26);
+        redisTemplate.opsForHash().put("redisHash","class",6);
+        // 向hash中putAll一个map （放置多个键值对）
+        redisTemplate.opsForHash().putAll("redisHash1", ImmutableMap.of("name", "jax","age", 15));
+
+        // 删除给定的哈希hashKeys
+        redisTemplate.opsForHash().delete("redisHash1", "name", "age");
+
+        // 判断hashKey是否存在
+        System.out.println(redisTemplate.opsForHash().hasKey("redisHash","ttt"));
+
+        // 从键中的哈希获取给定hashKey的值
+        System.out.println(redisTemplate.opsForHash().get("redisHash","name"));
+
+        // 从哈希中获取给定hashKey的值
+        List<Object> kes = new ArrayList<Object>();
+        kes.add("name");
+        kes.add("age");
+        System.out.println(redisTemplate.opsForHash().multiGet("redisHash",kes));
+
+        // 通过给定的delta增加散列hashKey的值（整型） 也可以支持浮点型
+        System.out.println(redisTemplate.opsForHash().increment("redisHash","age",1));
+
+        // 获取key所对应的所有散列表的key
+        System.out.println(redisTemplate.opsForHash().keys("redisHash"));
+
+        // 获取key所对应的散列表的大小个数
+        System.out.println(redisTemplate.opsForHash().size("redisHash"));
+
+        // 根据key获取整个哈希存储的值
+        System.out.println(redisTemplate.opsForHash().values("redisHash"));
+
+        // 根据key获取整个哈希存储的键值
+        System.out.println(redisTemplate.opsForHash().entries("redisHash"));
+
     }
 
 }
