@@ -1,4 +1,4 @@
-package com.lianjia.jsengine;
+package com.lianjia.java8.js.engine;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.junit.Test;
