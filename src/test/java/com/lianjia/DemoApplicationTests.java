@@ -41,10 +41,7 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testSelectAll(){
-		List<Dept> depts = deptMapper.selectAll();
-		for (Dept dept : depts) {
-			System.out.println(dept);
-		}
+		System.out.println("启动完成");
 	}
 
 
@@ -78,9 +75,9 @@ public class DemoApplicationTests {
 //		empMapper.insertBatchSkipId(emps);
 //		long end = System.currentTimeMillis();
 //		System.out.println("耗时：" + (end - start) + "ms");
-		Emp emp = Emp.builder().name("111").status(1).build();
-		int i = empMapper.insertSelective(emp);
-		System.out.println(i + "    " + emp.getId());
+//		Emp emp = Emp.builder().name("111").status(1).build();
+//		int i = empMapper.insertSelective(emp);
+//		System.out.println(i + "    " + emp.getId());
 
 	}
 

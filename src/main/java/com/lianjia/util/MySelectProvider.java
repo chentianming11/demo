@@ -44,8 +44,9 @@ public class MySelectProvider extends MapperTemplate {
         sql.append("<foreach collection=\"collection\" item=\"item\" separator=\",\" > ");
         sql.append(SqlHelper.insertValuesColumns(entityClass, skipId, false, isNotEmpty()).replaceAll("VALUES", ""));
         sql.append(" </foreach>");
-        String s = sql.toString().replaceAll("(#)(\\{)", "#{item.")
+        String s = sql.toString().replaceAll("#\\{", "#{item.")
                 .replaceAll("test=\"", "test=\"item.");
+//        System.out.println(s);
         return s;
     }
 }

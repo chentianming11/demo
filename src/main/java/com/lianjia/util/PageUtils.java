@@ -41,33 +41,6 @@ public class PageUtils {
     }
 
 
-    /**
-     * 获取员工状态信息集合
-     * @param empStatus
-     * @return
-     */
-    public static List<String> getEmpStatusList(String empStatus) {
-        List<String> empStatusList = null;
-        if (Objects.equals("在职", empStatus)) {
-            empStatusList = ImmutableList.of("试用期", "正式", "申请离职");
-        } else if (Objects.equals("离职", empStatus)) {
-            empStatusList = ImmutableList.of("离职");
-        }
-        return empStatusList;
-    }
-
-    /**
-     * 将关键字转换成一个整数
-     * @param keyword
-     * @return  整数或者null
-     */
-    public static Integer parseInteger(String keyword) {
-        Integer number = null;
-        if(StringUtils.isNumeric(keyword)){
-            number = Integer.valueOf(keyword);
-        }
-        return number;
-    }
 
     /**
      * 获取一天的最后时刻
