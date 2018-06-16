@@ -2,6 +2,8 @@ package com.lianjia.other.lock;
 
 import com.lianjia.common.lock.MysqlLock;
 import com.lianjia.common.lock.ZkLock;
+import com.lianjia.common.lock.ZookeeperLock;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
  * 测试卖火车票的多线程问题
  * Created by chenTianMing on 2018/6/9.
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class TicketTest {
 
     private int count = 100; // 100张票
@@ -34,7 +36,7 @@ public class TicketTest {
         t3.start();
         t4.start();
 
-        Thread.currentThread().join();
+        Thread.sleep(Integer.MAX_VALUE);
 
     }
 
@@ -42,12 +44,16 @@ public class TicketTest {
 
         @Override
         public void run() {
-            ZkLock lock = new ZkLock();
+//            ZkLock lock = new ZkLock();
             while (count > 0){
+                ZookeeperLock lock = new ZookeeperLock();
+                lock.lock("test");
                 if (count > 0){
-                    lock.lock();
                     try {
                         System.out.println(Thread.currentThread().getName() + "售出第" + (count--) + "张票" );
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     } finally {
                         lock.unlock();
                     }
