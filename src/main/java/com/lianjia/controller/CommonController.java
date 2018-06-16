@@ -20,17 +20,27 @@ import java.util.Map;
 public class CommonController {
 
 
-//    @Autowired
-//    CommonService commonService;
-//
-//    /**
-//     * 测试redis实现的分布式锁
-//     */
-//    @GetMapping("/redis/lock")
-//    @ResponseBody
-//    public Map<String, Object> testRedisLock(Integer number){
-//        Integer store = commonService.spike(number);
-//        return ImmutableMap.of("序号：",number, "剩余库存：" , store);
-//    }
+    @Autowired
+    CommonService commonService;
+
+    /**
+     * 测试zk实现的分布式锁
+     */
+    @GetMapping("/lock")
+    @ResponseBody
+    public Map<String, Object> testRedisLock(Integer number){
+        Integer store = commonService.spike(number);
+        return ImmutableMap.of("序号：",number, "剩余库存：" , store);
+    }
+
+    /**
+     * 测试zk实现动态刷新配置
+     */
+    @GetMapping("/refresh")
+    @ResponseBody
+    public Map<String, Object> refresh(String data){
+        commonService.refresh(data);
+        return ImmutableMap.of("status","ok");
+    }
 
 }

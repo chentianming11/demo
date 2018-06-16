@@ -1,7 +1,12 @@
 package com.lianjia.service;
 
+import com.lianjia.common.lock.ZookeeperLock;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.zookeeper.ZooKeeper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 /**
  * Created by chenTianMing on 2018/6/8.
@@ -10,26 +15,31 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CommonService {
 
-//    @Autowired
-//    Jedis jedis;
+
+    @Autowired
+    ZooKeeper zooKeeper;
+
+    private static Integer store = 100;
 //
-//    ZookeeperDistributedLock lock;
-//
-//    /**
-//     * 秒杀
-//     * @param number
-//     * @return
-//     */
-//    public Integer spike(Integer number) {
-//        lock = new ZookeeperDistributedLock("127.0.0.1:2181", "test1");
-//        lock.lock();
-//
-//        Integer store = Integer.valueOf(jedis.get("store"));
-//        store--;
-//        System.out.println(Thread.currentThread().getName() + "正在运行");
-//        jedis.set("store", String.valueOf(store));
-//
-//        lock.unlock();
-//        return store;
-//    }
+    /**
+     * 秒杀
+     * @param number
+     * @return
+     */
+    @SneakyThrows
+    public Integer spike(Integer number) {
+        ZookeeperLock lock = new ZookeeperLock(zooKeeper);
+        lock.lock("spike");
+        store--;
+        log.info("正在进行减库存");
+        Thread.sleep(5000);
+        System.out.println(Thread.currentThread().getName() + "正在运行");
+        lock.unlock();
+        return store;
+    }
+
+    @SneakyThrows
+    public void refresh(String data) {
+        zooKeeper.setData("/conf", data.getBytes(), -1);
+    }
 }

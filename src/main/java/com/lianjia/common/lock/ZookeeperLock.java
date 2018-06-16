@@ -3,6 +3,7 @@ package com.lianjia.common.lock;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -17,26 +18,13 @@ import java.util.concurrent.CountDownLatch;
 @Slf4j
 public class ZookeeperLock {
 
-    private static final String connectionStr = "127.0.0.1:2181";
     private static final String rootPath = "/lock";
-    private static ZooKeeper zooKeeper;
-    private static CountDownLatch countDownLatch = new CountDownLatch(1);
     private String currentPath;
     private String beforePath;
+    ZooKeeper zooKeeper;
 
-    static {
-        try {
-            log.info("开始连接zookeeper服务器");
-            zooKeeper = new ZooKeeper(connectionStr, 200000, event -> {
-                if (Objects.equals(event.getState(), Watcher.Event.KeeperState.SyncConnected)) {
-                    countDownLatch.countDown();
-                    // 连接zookeeper服务器成功
-                    log.info("连接zookeeper服务器成功");
-                }
-            });
-        } catch (IOException e) {
-            log.error("连接zookeeper服务器失败", e);
-        }
+    public ZookeeperLock(ZooKeeper zooKeeper){
+        this.zooKeeper = zooKeeper;
     }
 
     /**
@@ -44,7 +32,6 @@ public class ZookeeperLock {
      */
     public void lock(String path) {
         try {
-            countDownLatch.await();
             // 如果lock根目录不存在，创建根目录
             if (zooKeeper.exists(rootPath, false) == null) {
                 zooKeeper.create(rootPath, "lock".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
