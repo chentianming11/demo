@@ -17,7 +17,7 @@ public interface MyMapper<T> extends Mapper<T> {
      * @param list
      */
     default void insertBatchSkipId(List<T> list){
-        Lists.partition(list, 50).forEach(partitionList -> insertAllSkipId(partitionList));
+        Lists.partition(list, 100).forEach(partitionList -> insertAllSkipId(partitionList));
     }
 
     /**
@@ -25,8 +25,11 @@ public interface MyMapper<T> extends Mapper<T> {
      * @param list
      */
     default void insertBatchNotSkipId(List<T> list){
-        Lists.partition(list, 50).forEach(partitionList -> insertAllNotSkipId(partitionList));
+        Lists.partition(list, 100).forEach(partitionList -> insertAllNotSkipId(partitionList));
     }
+
+
+
 
     /**
      * 忽略id列全量插入

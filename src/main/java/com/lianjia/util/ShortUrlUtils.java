@@ -27,8 +27,10 @@ public class ShortUrlUtils {
     public static String encode(int num) {
         // 异或
         String toBinaryString = Integer.toBinaryString(num ^ eo);
+        System.out.println(num ^ eo);
         // 前置补0 凑足24位
         String binaryString = Strman.leftPad(toBinaryString, "0", 24);
+        System.out.println(binaryString);
         // 3位一组， 分成8段
         StringBuilder stringBuilder = new StringBuilder();
         String[] chop = Strman.chop(binaryString, 3);
@@ -69,7 +71,7 @@ public class ShortUrlUtils {
 
 
     public static void main(String[] args) {
-        String encode = encode(20);
+        String encode = encode(1);
         System.out.println(encode);
 
     }

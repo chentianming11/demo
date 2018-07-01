@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ES6语法</title>
+</head>
+<body>
+
+<script>
+
+    // reduce函数
+    // 参数1：回调函数  参数2：accu的初始值
+    // accu就是上一次循环返回的值
+    [1,2,3,4].reduce((accu, elt, i) => {
+        console.log(accu, elt);
+        return accu;
+    }, 9);
+
+</script>
+</body>
+</html>
