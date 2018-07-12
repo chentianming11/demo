@@ -7,14 +7,15 @@
 <body>
 
 <script>
+   let a = ['a', 'b', 'c'].fill(7)
+    // [7, 7, 7]
 
-    // reduce函数
-    // 参数1：回调函数  参数2：accu的初始值
-    // accu就是上一次循环返回的值
-    [1,2,3,4].reduce((accu, elt, i) => {
-        console.log(accu, elt);
-        return accu;
-    }, 9);
+    let b = new Array(3).fill(7)
+    // [7, 7, 7]
+    console.log(a, b)
+       let c = ['a', 'b', 'c'].fill(7, 1, 2)
+   // ['a', 7, 'c']
+    console.log(c)
 
 </script>
 </body>
