@@ -1,10 +1,8 @@
 package com.lianjia.util;
 
-import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 分页工具类
@@ -41,16 +39,5 @@ public class PageUtils {
     }
 
 
-
-    /**
-     * 获取一天的最后时刻
-     */
-    public static Date getLastMoment(Date date){
-        if (date == null){
-            return null;
-        }
-        Date date1 = DateUtils.addDays(date, 1);
-        return DateUtils.addMilliseconds(date1, -2);
-    }
 
 }
