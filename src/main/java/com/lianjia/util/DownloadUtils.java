@@ -9,7 +9,6 @@ import java.net.URLEncoder;
 
 /**
  * 下载工具类
- * @author chenTianMing
  */
 public class DownloadUtils {
 
