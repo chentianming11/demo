@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lianjia.mapper.EmpMapper">
+<mapper namespace="com.study.demo.mapper.EmpMapper">
     <select id="findEmpJoinDeptAndJob" resultType="EmpView">
         SELECT emp.*,dept.name dept_name,job.name job_name FROM
         emp LEFT JOIN dept ON emp.dept_id = dept.id
