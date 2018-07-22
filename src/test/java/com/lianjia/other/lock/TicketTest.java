@@ -1,9 +1,7 @@
 package com.lianjia.other.lock;
 
-import com.lianjia.common.lock.MysqlLock;
 import com.lianjia.common.lock.ZookeeperLock;
 import org.apache.zookeeper.ZooKeeper;
-import org.assertj.core.api.ThrowableAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class TicketTest {
 
-    private int count = 100; // 100张票
     @Autowired
     ZooKeeper zooKeeper;
-
+    private int count = 100; // 100张票
 
     @Test
     public void test1() throws InterruptedException {

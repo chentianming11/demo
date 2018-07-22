@@ -41,33 +41,4 @@
     </delete>
 
 
-    <insert id="sdasfd">
-        INSERT INTO emp
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="name != null">name,</if>
-            <if test="deptId != null">dept_id,</if>
-            <if test="jobId != null">job_id,</if>
-            <if test="hireDate != null">hire_date,</if>
-            <if test="status != null">status,</if>
-        </trim>
-        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
-            <if test="name != null">#{name,javaType=java.lang.String},</if>
-            <if test="deptId != null">#{deptId,javaType=java.lang.Long},</if>
-            <if test="jobId != null">#{jobId,javaType=java.lang.Long},</if>
-            <if test="hireDate != null">#{hireDate,javaType=java.util.Date},</if>
-            <if test="status != null">#{status,javaType=java.lang.Integer},</if>
-        </trim>
-    </insert>
-
-    <insert id="sss">
-        INSERT INTO emp <trim prefix="(" suffix=")" suffixOverrides=",">name,dept_id,job_id,hire_date,status,</trim>(
-        name,status ) VALUES
-        <foreach collection="collection" item="item" separator=",">
-            <trim prefix=" (" suffix=")" suffixOverrides=",">
-                #{item.name,javaType=java.lang.String},#{item.deptId,javaType=java.lang.Long},#{item.jobId,javaType=java.lang.Long},#{item.hireDate,javaType=java.util.Date},#{item.status,javaType=java.lang.Integer},
-            </trim>
-        </foreach>
-    </insert>
-
-
 </mapper>

@@ -1,6 +1,5 @@
 package com.lianjia.util;
 
-import com.lianjia.test.Person;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -28,19 +27,6 @@ import java.util.function.Function;
 public class POIExcelUtils {
 
     public static final String dateFormatPattern = "yyyy-MM-dd HH:ss:mm";
-
-    public static void main(String[] args) throws IOException, InvalidFormatException, IllegalAccessException, InstantiationException {
-
-        String[] head = {"姓名", "年龄", "电话","生日"};
-        String[] keyList = {"name", "age", "phone","birthday"};
-        File file = new File("D:/test.xlsx");
-        List<Map<String, Object>> list = POIExcelUtils.readExcelToList(file, head, keyList);
-        System.out.println(list);
-
-        List<Person> personList = POIExcelUtils.readExcelToList(file, head, keyList, Person.class);
-        System.out.println(personList);
-
-    }
 
     /**
      * 读取一个excel到List<T> 中
