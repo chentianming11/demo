@@ -25,9 +25,11 @@ public class SpringAMQPMessageHandle {
 
     @RabbitHandler
     @RabbitListener(queues = {"roberto.order.add"})
-    public void add(String msg) {
+    public String add(String msg) throws InterruptedException {
         System.out.println("----------roberto.order.add----------");
         System.out.println(msg);
+        Thread.sleep(500);
+        return RPCMethod.addOrder(msg);
     }
 
     @RabbitHandler

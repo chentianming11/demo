@@ -70,4 +70,17 @@ public class RabbitAnnotationTest {
         Thread.sleep(10000);
     }
 
+    /**
+     * 发送字符串消息
+     */
+    @Test
+    public void sendStringRPC() throws InterruptedException {
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+        messageProperties.setContentType("UTF-8");
+        Message message = new Message("订单信息".getBytes(), messageProperties);
+        Object retMessage = rabbitTemplate.convertSendAndReceive("roberto.order", "add", message, new CorrelationData("201210704116"));
+        System.out.println(retMessage);
+        Thread.sleep(10000);
+    }
 }

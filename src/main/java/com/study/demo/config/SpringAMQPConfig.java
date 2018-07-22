@@ -1,7 +1,9 @@
 package com.study.demo.config;
 
-import com.google.common.collect.ImmutableMap;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -260,11 +262,12 @@ public class SpringAMQPConfig {
      */
     @Bean
     public List<Exchange> listExchange() {
-        Exchange orderFailure = new FanoutExchange("roberto.order.failure", true, false, null);
+//        Exchange orderFailure = new FanoutExchange("roberto.order.failure", true, false, null);
         // 设置AE
-        Exchange order = new DirectExchange("roberto.order", true, false, ImmutableMap.of("alternate-exchange", "roberto.order.failure"));
+//        Exchange order = new DirectExchange("roberto.order", true, false, ImmutableMap.of("alternate-exchange", "roberto.order.failure"));
+        Exchange order = new DirectExchange("roberto.order", true, false, null);
 
-        return Arrays.asList(orderFailure, order);
+        return Arrays.asList(order);
 
     }
 

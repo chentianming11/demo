@@ -1,12 +1,13 @@
 package com.study.demo.mq;
 
-import com.study.demo.util.ChannelUtils;
 import com.rabbitmq.client.*;
+import com.study.demo.util.ChannelUtils;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author 陈添明
@@ -223,6 +224,69 @@ public class RabbitJunitTest {
                 } catch (Exception e) {
                     channel.basicNack(envelope.getDeliveryTag(), false, true);
                 }
+            }
+        });
+        Thread.sleep(100000);
+    }
+
+
+    /**
+     * RPC服务端
+     */
+    @Test
+    public void testRPCServer() throws IOException, InterruptedException {
+        Channel channel = ChannelUtils.getChannelInstance("RGP订单系统Server端");
+
+        channel.queueDeclare("roberto.order.add", true, false, false, new HashMap<>());
+        channel.exchangeDeclare("roberto.order", BuiltinExchangeType.DIRECT, true, false, false, new HashMap<>());
+
+        channel.basicConsume("roberto.order.add", true, "RGP订单系统Server端", new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String replyTo = properties.getReplyTo();
+                String correlationId = properties.getCorrelationId();
+
+                System.out.println("----------收到RPC调用请求消息----------");
+                System.out.println(consumerTag);
+                System.out.println("消息属性为:" + properties);
+                System.out.println("消息内容为" + new String(body));
+                try {
+                    String orderId = RPCMethod.addOrder(new String(body));
+                    AMQP.BasicProperties replyProperties = new AMQP.BasicProperties().builder().deliveryMode(2).contentType("UTF-8").correlationId(correlationId).build();
+                    channel.basicPublish("", replyTo, replyProperties, orderId.getBytes());
+                    System.out.println("----------RPC调用成功 结果已返回----------");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Thread.sleep(100000);
+    }
+
+
+    /**
+     * RPC的客户端
+     */
+    @Test
+    public void testRPCClient() throws IOException, InterruptedException {
+        Channel channel = ChannelUtils.getChannelInstance("RGP订单系统Client端");
+
+        channel.queueDeclare("roberto.order.add", true, false, false, new HashMap<>());
+        channel.exchangeDeclare("roberto.order", BuiltinExchangeType.DIRECT, true, false, new HashMap<>());
+        channel.queueBind("roberto.order.add", "roberto.order", "add", new HashMap<>());
+
+        String replyTo = "roberto.order.add.replay";
+        channel.queueDeclare(replyTo, true, false, false, new HashMap<>());
+        String correlationId = UUID.randomUUID().toString();
+        AMQP.BasicProperties basicProperties = new AMQP.BasicProperties().builder().deliveryMode(2).contentType("UTF-8").correlationId(correlationId).replyTo(replyTo).build();
+        channel.basicPublish("roberto.order", "add", true, basicProperties, "订单消息信息".getBytes());
+        channel.basicConsume("roberto.order.add.replay", true, "RGP订单系统Client端", new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                System.out.println("----------RPC调用结果----------");
+                System.out.println(consumerTag);
+                System.out.println("消息属性为:" + properties);
+                System.out.println("消息内容为" + new String(body));
             }
         });
         Thread.sleep(100000);
