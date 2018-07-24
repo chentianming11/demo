@@ -1,3 +1,4 @@
+/*
 
 var ArrayList = Java.type('java.util.ArrayList');
 var list = new ArrayList();
@@ -34,4 +35,4 @@ list2
     .forEach(function(el) {
         print(el);
     });
-// aaa1, aaa2
+ // aaa1, aaa2*/
