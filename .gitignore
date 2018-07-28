@@ -26,3 +26,4 @@ nbdist/
 .nb-gradle/
 node_modules
 .mvn
+package-lock.json
