@@ -39,3 +39,13 @@
 
 
 
+## 构建一个dva项目
+### 1. 全局安装dva
+
+`sudo npm install -g dva-cli`
+### 2. 创建一个dva项目
+
+`sudo dva new dva-quickstart`
+
+
+
