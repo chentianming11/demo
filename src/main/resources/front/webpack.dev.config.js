@@ -7,7 +7,7 @@ module.exports = {//注意这里是exports不是export
     devtool: 'eval-source-map', // dev的时候开启，正式环境不需要
 
     // 打包配置
-    entry: __dirname + "/app/main.js",//唯一入口文件，就像Java中的main方法
+    entry: __dirname + "/app/index.js",//唯一入口文件，就像Java中的main方法
     output: {//输出目录
         path: __dirname + "/build",//打包后的js文件存放的地方
         filename: "bundle-[hash].js"//打包后的js文件名
@@ -43,12 +43,10 @@ module.exports = {//注意这里是exports不是export
                         loader: "style-loader"
                     }, {
                         loader: "css-loader",
-                        options: {
-                            modules: true, // 指定启用css modules
-                            localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
-                        }
-                    }, {
-                        loader: "postcss-loader"
+                        // options: {
+                        //     modules: true, // 指定启用css modules
+                        //     localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
+                        // }
                     }
                 ]
             }

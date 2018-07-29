@@ -2,7 +2,7 @@ package com.study.demo.fastjson;
 
 import com.alibaba.fastjson.JSON;
 import com.study.demo.entity.Address;
-import com.study.demo.entity.User;
+import com.study.demo.entity.UserTest;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ public class TestFastJson {
 
     @Test
     public void testJson() {
-        User user = new User();
+        UserTest user = new UserTest();
         user.setId(1);
         user.setName("ricky");
         user.setAge(27);
@@ -44,7 +44,7 @@ public class TestFastJson {
         String jsonString = JSON.toJSONString(user);
         System.out.println(jsonString);
         // JsonString转Bean
-        User parseUser = JSON.parseObject(jsonString, User.class);
+        UserTest parseUser = JSON.parseObject(jsonString, UserTest.class);
         System.out.println(parseUser);
 
 
