@@ -44,7 +44,7 @@ module.exports = {//注意这里是exports不是export
                 exclude: /node_modules/
             },
 
-            /***************  style-loader && css-loader配置 ***************************/
+            /***************  css-loader配置 ***************************/
             {
                 test: /\.css$/,
                 use: [
@@ -52,12 +52,29 @@ module.exports = {//注意这里是exports不是export
                         loader: "style-loader"
                     }, {
                         loader: "css-loader",
-                        // options: {
-                        //     modules: true, // 指定启用css modules
-                        //     localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
-                        // }
+                    }
+                ],
+            },
+
+            /***************  less-loader配置 ***************************/
+            {
+                test: /\.less$/,
+                use: [
+                    {
+                        loader: "style-loader"
+                    }, {
+                        loader: "css-loader",
+                        options: {
+                            modules: true, // 指定启用css modules
+                            localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
+                        }
                     }, {
                         loader: "postcss-loader"
+                    }, {
+                        loader: 'less-loader',
+                        options: {
+                            importLoaders: 1
+                        }
                     }
                 ],
             },
