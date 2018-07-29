@@ -46,7 +46,7 @@ module.exports = {//注意这里是exports不是export
 
             /***************  style-loader && css-loader配置 ***************************/
             {
-                test: /\.css|\.scss$/,
+                test: /\.css$/,
                 use: [
                     {
                         loader: "style-loader"
@@ -60,15 +60,7 @@ module.exports = {//注意这里是exports不是export
                         loader: "postcss-loader"
                     }
                 ],
-            }, {
-                test: /\.module\.less$/,
-                loader: ExtractTextPlugin.extract(
-                    'css?sourceMap&modules&localIdentName=[local]___[hash:base64:5]!!' +
-                    'postcss!' +
-                    `less-loader?{"sourceMap":true,"modifyVars":${JSON.stringify(theme)}}`
-                ),
             },
-
         ]
     },
 
