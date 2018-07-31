@@ -7,14 +7,14 @@ import {BrowserRouter, Route, Link, NavLink} from 'react-router-dom';
 import {render} from 'react-dom';
 import 'antd/dist/antd.css';
 import styles from  './style.less';
-import {Layout, Menu, Breadcrumb, Icon} from 'antd';
+import {Layout, Menu, Breadcrumb, Icon, Form} from 'antd';
 
 
 import Login from  './component/login/Login';
+import RegistrationForm from  './component/register/RegistrationForm';
 
 const {Header, Content, Footer} = Layout;
 const {SubMenu, MenuItemGroup, Item} = Menu;
-
 
 class App extends Component {
 
@@ -37,8 +37,18 @@ class App extends Component {
                         className={styles.menu}
                     >
 
-                        <Item key="logo">logo</Item>
-                        <Item key="首页">首页</Item>
+                        <Item key="logo">
+                            <NavLink
+                                to="/"
+                                className={styles.nav}
+                            >logo</NavLink>
+                        </Item>
+                        <Item key="首页">
+                            <NavLink
+                                to="/"
+                                className={styles.nav}
+                            >首页</NavLink>
+                        </Item>
                         <Item key="登录">﻿
                             <NavLink
                                 to="/login"
@@ -46,14 +56,24 @@ class App extends Component {
                             >登录</NavLink>
 
                         </Item>
-                        <Item key="注册">注册</Item>
-                        <Item key="写文章">写文章</Item>
-
+                        <Item key="注册">
+                            <NavLink
+                                to="/register"
+                                className={styles.nav}
+                            >注册</NavLink>
+                        </Item>
+                        <Item key="写文章">
+                            <NavLink
+                                to="/write"
+                                className={styles.nav}
+                            >写文章</NavLink>
+                        </Item>
                     </Menu>
                 </Header>
-                <Content style={{padding: '0 200px', marginTop: 64}}>
+                <Content style={{padding: '50px 200px', marginTop: 64}}>
 
                     <Route exact={true} path='/login' component={Login}/>
+                    <Route exact={true} path='/register' component={RegistrationForm}/>
 
                 </Content>
                 <Footer style={{textAlign: 'center'}}>

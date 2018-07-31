@@ -8,6 +8,8 @@ module.exports = {//注意这里是exports不是export
     /******** 模式mode配置 *****/
     mode: 'development',
 
+    devtool: 'eval-source-map',
+
     /********* 入口配置 ********/
     entry: __dirname + "/app/index.js",
 
@@ -35,7 +37,7 @@ module.exports = {//注意这里是exports不是export
     module: {
         rules: [
 
-            /*************** babel-loader，其他babel-loader配置在.babelrc文件中 ****************/
+            /******* babel-loader，其他babel-loader配置在.babelrc文件中 *********/
             {
                 test: /(\.jsx|\.js)$/,
                 use: {
@@ -44,7 +46,7 @@ module.exports = {//注意这里是exports不是export
                 exclude: /node_modules/
             },
 
-            /***************  css-loader配置 ***************************/
+            /***************  css-loader配置 ***************/
             {
                 test: /\.css$/,
                 use: [
@@ -56,7 +58,7 @@ module.exports = {//注意这里是exports不是export
                 ],
             },
 
-            /***************  less-loader配置 ***************************/
+            /**********  less-loader配置 *************/
             {
                 test: /\.less$/,
                 use: [
@@ -81,11 +83,11 @@ module.exports = {//注意这里是exports不是export
         ]
     },
 
-    /************** 插件plugins配置 **********************/
+    /************** 插件plugins配置 ***************/
     plugins: [
         new webpack.BannerPlugin('版权所有，翻版必究'),
 
-        /********************* 热加载插件 ********************/
+        /************** 热加载插件 **************/
         new webpack.HotModuleReplacementPlugin(),
 
         /***** OccurenceOrderPlugin :为组件分配ID ***/
