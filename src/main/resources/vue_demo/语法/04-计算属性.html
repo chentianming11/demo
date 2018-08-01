@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算属性</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+
+<!--计算属性关键词: computed。-->
+<div id="app">
+    <p>原始字符串: {{ message }}</p>
+    <p>使用计算属性 -- 计算后反转字符串: {{ reversedMessage }}</p>
+    <p>使用方法 -- 计算后反转字符串: {{ reversedMessage2() }}</p>
+
+
+    <!--computed vs methods-->
+    <!--我们可以使用 methods 来替代 computed，效果上两个都是一样的，但是 computed 是基于它的依赖缓存，只有相关依赖发生改变时才会重新取值。
+    而使用 methods ，在重新渲染的时候，函数总会重新调用执行。-->
+
+    <p>{{ site }}</p>
+
+
+</div>
+
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: 'Runoob!',
+            name: 'Google',
+            url: 'http://www.google.com'
+        },
+        methods: {
+            reversedMessage2() {
+                return this.message.split('').reverse().join('')
+            }
+        },
+        computed: {
+            // 计算属性的 getter
+            reversedMessage() {
+                // `this` 指向 vm 实例
+                return this.message.split('').reverse().join('')
+            },
+            site: {
+                // getter
+                get() {
+                    return this.name + ' ' + this.url
+                },
+                // setter
+                set(newValue) {
+                    var names = newValue.split(' ')
+                    this.name = names[0]
+                    this.url = names[names.length - 1]
+                }
+            }
+
+        }
+    })
+</script>
+
+</body>
+</html>

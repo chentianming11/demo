@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>监听属性</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+<!--本章节，我们将为大家介绍 Vue.js 监听属性 watch，我们可以通过 watch 来响应数据的变化:-->
+<div id="computed_props">
+    千米 : <input type="text" v-model="kilometers">
+    米 : <input type="text" v-model="meters">
+</div>
+<p id="info"></p>
+
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#computed_props',
+        data: {
+            kilometers: 0,
+            meters: 0
+        },
+        methods: {},
+        computed: {},
+        watch: {
+            kilometers(newValue, oldValue) {
+                console.log(`监听到kilometers变化，新值:${newValue}, 旧值:${oldValue}`);
+                this.kilometers = newValue;
+                this.meters = newValue * 1000;
+            },
+            meter(newValue) {
+                this.kilometers = newValue / 1000;
+                this.meters = newValue;
+            }
+        }
+    });
+    // $watch 是一个实例方法
+    vm.$watch('kilometers', (newValue, oldValue) => {
+        // 这个回调将在 vm.kilometers 改变后调用
+        document.getElementById("info").innerHTML = "修改前值为: " + oldValue + "，修改后值为: " + newValue;
+    })
+</script>
+</body>
+</html>

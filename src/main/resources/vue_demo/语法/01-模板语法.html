@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模板语法</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<style>
+    .class2 {
+        background: #444;
+        color: #eee;
+    }
+</style>
+<body>
+<div id="app">
+    <!--数据绑定最常见的形式就是使用 {{...}}（双大括号）的文本插值-->
+    <p>{{ message }}</p>
+    <!--使用 v-html 指令用于输出 html 代码：-->
+    <div v-html="htmlMessage"></div>
+
+    <!--HTML 属性中的值应使用 v-bind 指令。 class1属性为true，则加上class2样式-->
+    <div v-bind:class="{'class2':class1}">
+        directiva v-bind:class
+    </div>
+
+    <!--Vue.js 都提供了完全的 JavaScript 表达式支持。-->
+    {{5+5}}<br>
+    {{ ok ? 'YES' : 'NO' }}<br>
+    {{ message.split('').reverse().join('') }}
+    <div v-bind:id="'list-' + id">菜鸟教程</div>
+
+    <!--指令是带有 v- 前缀的特殊属性。-->
+    <!--指令用于在表达式的值改变时，将某些行为应用到 DOM 上。-->
+    是否可见：<input type="checkbox" v-model="seen"/>
+    <p v-if="seen">现在你看到我了</p>
+
+    <!--参数在指令后以冒号指明。例如， v-bind 指令被用来响应地更新 HTML 属性：-->
+    <pre><a v-bind:href="url">菜鸟教程</a></pre>
+
+    <!--修饰符是以半角句号 . 指明的特殊后缀，用于指出一个指定应该以特殊方式绑定。
+    例如，.prevent 修饰符告诉 v-on 指令对于触发的事件调用 event.preventDefault()：-->
+    <form v-on:submit.prevent="onSubmit"></form>
+
+    <!--在 input 输入框中我们可以使用 v-model 指令来实现双向数据绑定：-->
+    <p>{{ message }}</p>
+    <input v-model="message">
+
+    <!--按钮的事件我们可以使用 v-on 监听事件，并对用户的输入进行响应。-->
+    <button v-on:click="reverseMessage">反转字符串</button>
+
+
+    <!--Vue.js 允许你自定义过滤器，被用作一些常见的文本格式化。由"管道符"指示, 格式如下：-->
+    <!-- 在两个大括号中 -->
+    <div>过滤器</div>
+    {{ message | capitalize }}
+    <!--过滤器是 JavaScript 函数，因此可以接受参数：{{ message | filterA('arg1', arg2) }}-->
+
+    <!--v-bind / v-on 缩写-->
+    <div>v-bind / v-on 缩写</div>
+    <pre><a :href="url">菜鸟教程</a></pre>
+    <button @click="reverseMessage">反转字符串</button>
+
+
+    <hr/>
+
+    当我们给一个比如 props 中，或者 data 中被观测的对象添加一个新的属性的时候，不能直接添加，必须使用 Vue.set 方法。
+    Vue.set 方法用来新增对象的属性。如果要增加属性的对象是响应式的，那该方法可以确保属性被创建后也是响应式的，同时触发视图更新
+    这里本来 food 对象是没有 count 属性的，我们要给其添加 count 属性就必须使用 Vue.set 方法，而不能写成 this.food.count = 1
+
+
+    <div>{{food.count}}</div>
+    <button @click="addCart">添加次数</button>
+
+</div>
+
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            message: 'hello vue.js',
+            htmlMessage: '<h1>菜鸟教程</h1>',
+            class1: true,
+            ok: false,
+            id: 2,
+            seen: false,
+            url: 'http://www.runoob.com',
+
+            food: {
+//                count:1
+            }
+
+        },
+        methods: {
+            reverseMessage() {
+                this.message = this.message.split('').reverse().join('')
+            },
+            addCart(){
+                if (!this.food.count) {
+                    Vue.set(this.food, 'count', 1);
+                } else {
+                    this.food.count++
+                }
+            }
+        },
+        filters: {
+            capitalize(value) {
+                if (!value) return ''
+                value = value.toString()
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            }
+        }
+    })
+</script>
+</body>
+</html>

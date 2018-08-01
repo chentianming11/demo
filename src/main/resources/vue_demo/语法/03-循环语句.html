@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue-循环语句</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <ol>
+        <!--v-for 指令需要以 site in sites 形式的特殊语法， sites 是源数据数组并且 site 是数组元素迭代的别名。-->
+        <li v-for="site in sites">
+            {{ site.name }}
+        </li>
+    </ol>
+
+    <!--模板中使用 v-for：-->
+    <ul>
+        <template v-for="site in sites">
+            <li>{{ site.name }}</li>
+            <li>--------------</li>
+        </template>
+    </ul>
+
+    <!--v-for 可以通过一个对象的属性来迭代数据：-->
+    <!--不仅如此，在迭代属性输出的之前，v-for会对属性key进行升序排序输出：-->
+    <ul>
+        <li v-for="value in object">
+            {{ value }}
+        </li>
+    </ul>
+
+    <!--你也可以提供第二个的参数为键名：  第三个参数为索引：-->
+    <ul>
+        <li v-for="(value, key, index) in object">
+            {{ key }} : {{ value }} : {{ index }}
+        </li>
+    </ul>
+
+    <!--v-for 也可以循环整数-->
+    <ul>
+        <li v-for="n in 10">
+            {{ n }}
+        </li>
+    </ul>
+
+
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            sites: [
+                {name: 'Runoob'},
+                {name: 'Google'},
+                {name: 'Taobao'}
+            ],
+            object: {
+                name: '菜鸟教程',
+                slogan: '学的不仅是技术，更是梦想！',
+                url: 'http://www.runoob.com'
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

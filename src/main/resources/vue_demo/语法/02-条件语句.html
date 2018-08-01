@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue-条件语句</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <!--条件判断使用 v-if 指令：  v-if 指令将根据表达式 seen 的值(true 或 false )来决定是否插入 p 元素-->
+    seen:<input type="checkbox" v-model="seen"/>
+    <p v-if="seen">现在你看到我了</p>
+    <template v-if="ok">
+        <h1>菜鸟教程</h1>
+        <p>学的不仅是技术，更是梦想！</p>
+        <p>哈哈哈，打字辛苦啊！！！</p>
+    </template>
+
+    <!--可以用 v-else 指令给 v-if 添加一个 "else" 块：-->
+    <div v-else>
+        Not sorry
+    </div>
+
+    <!--v-else-if 在 2.1.0 新增，顾名思义，用作 v-if 的 else-if 块。可以链式的多次使用：-->
+    type:<input type="text" v-model="type"/>
+    <div v-if="type === 'A'">
+        A
+    </div>
+    <div v-else-if="type === 'B'">
+        B
+    </div>
+    <div v-else-if="type === 'C'">
+        C
+    </div>
+    <div v-else>
+        Not A/B/C
+    </div>
+
+    <!--我们也可以使用 v-show 指令来根据条件展示元素：-->
+    <h1 v-show="seen">Hello!</h1>
+
+
+    v-if 和 v-show 区别：
+    v-if 是动态添加，当值为 false 时，是完全移除该元素，即 dom 树中不存在该元素。
+    v-show 仅是隐藏 / 显示，值为 false 时，该元素依旧存在于 dom 树中。若其原有样式设置了 display: none 则会导致其无法正常显示。
+    一般来说，v-if 有更高的切换消耗而 v-show 有更高的初始渲染消耗。因此，如果需要频繁切换 v-show 较好，如果在运行时条件不大可能改变 v-if 较好。
+
+
+</div>
+
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            seen: false,
+            ok: false,
+            type: 'A'
+        }
+    })
+</script>
+</body>
+</html>
