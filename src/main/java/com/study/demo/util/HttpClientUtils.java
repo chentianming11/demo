@@ -1,7 +1,9 @@
 package com.study.demo.util;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -12,6 +14,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 
@@ -27,6 +31,8 @@ import java.util.Map;
  * Created by chenTianMing on 2018/5/27.
  */
 public class HttpClientUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
 
     private static CloseableHttpClient client;
 
@@ -247,13 +253,18 @@ public class HttpClientUtils {
 
     private static String getStringResultFromResponse(CloseableHttpResponse response) throws IOException {
         //4.获取响应的实体内容，就是我们所要抓取得网页内容
+        int statusCode = response.getStatusLine().getStatusCode();
         HttpEntity entity = response.getEntity();
         String result = "";
         if (entity != null) {
             result = EntityUtils.toString(entity, "utf-8");
         }
-        EntityUtils.consume(entity);
-        response.close();
+        if (statusCode < HttpStatus.SC_OK || statusCode > HttpStatus.SC_MULTI_STATUS) {
+            // 响应失败
+            String errorMessage = String.format("请求失败，状态码：%d； 返回结果：%s", statusCode, StringUtils.substring(result, 0, 200));
+            LOGGER.error(errorMessage);
+            throw new RuntimeException(errorMessage);
+        }
         return result;
     }
 

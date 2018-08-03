@@ -1,5 +1,6 @@
 package com.study.demo.entity.blog;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import java.util.Date;
  * @date 2018/7/28
  */
 @Data
+@Builder
 @Table(name = "T_BLOG_USER")
 public class BlogUser implements Serializable {
 

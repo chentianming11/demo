@@ -18,16 +18,26 @@ public class TestMultiMaps {
         ArrayList<Employee> employees = new ArrayList<>();
         employees.add(new Employee("张三", 20, 9000));
         employees.add(new Employee("张三", 20, 9000));
-        employees.add(new Employee("张三", 20, 9000));
+        employees.add(new Employee("ceshi", 20, 9000));
         employees.add(new Employee("李四", 24, 10000));
         employees.add(new Employee("王五", 21, 8000));
         employees.add(new Employee("王五", 21, 8000));
-        employees.add(new Employee("赵六", 28, 13000));
+        employees.add(new Employee("张三", 28, 13000));
         employees.add(new Employee("田七", 32, 17000));
-        employees.add(new Employee("田七", 32, 17000));
+        employees.add(new Employee("张三", 32, 17000));
         // 有一组对象，它们有共同的特定属性，我们希望按照这个属性的值查询对象，但属性值不一定是独一无二的。
         ImmutableListMultimap<String, Employee> index = Multimaps.index(employees, employee -> employee.getName());
         index.forEach((k, v) -> System.out.println(k + "=" + v));
+        ImmutableList<Employee> 张三 = index.get("张三");
+
+
+        System.out.println("-------------------------");
+        ImmutableSet<String> keySet = index.keySet();
+        keySet.forEach(key -> {
+            ImmutableList<Employee> list = index.get(key);
+            System.out.println("key=" + key + " value=" + list);
+        });
+        System.out.println("-------------------------");
 
         // 反转map
         HashMultimap<String, Integer> multimap = HashMultimap.create();

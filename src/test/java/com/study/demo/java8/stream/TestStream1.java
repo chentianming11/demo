@@ -1,11 +1,14 @@
 package com.study.demo.java8.stream;
 
+import com.google.common.collect.ImmutableList;
 import com.study.demo.entity.Employee;
+import com.study.demo.entity.blog.BlogUser;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -38,4 +41,35 @@ public class TestStream1 {
         Stream<Double> stream4 = Stream.generate(() -> Math.random());
 
     }
+
+
+    /**
+     * 将list<User> 以手机号映射成 List<String>
+     * 然后在以,为连接符转成String
+     */
+    @Test
+    public void test2() {
+
+        ImmutableList<BlogUser> list = ImmutableList.of(
+                BlogUser.builder()
+                        .phone("1358999555")
+                        .build(),
+
+                BlogUser.builder()
+                        .phone("13589945555")
+                        .build(),
+
+                BlogUser.builder()
+                        .phone("135822555")
+                        .build());
+
+        String collect = list.stream()
+                .map(BlogUser::getPhone)
+                .collect(Collectors.joining(","));
+
+        System.out.println(collect);
+
+
+    }
+
 }

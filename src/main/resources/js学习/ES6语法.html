@@ -7,17 +7,16 @@
 <body>
 
 <script>
-   let a = ['a', 'b', 'c'].fill(7)
-    // [7, 7, 7]
+    var arr = [];
+    arr.push(1);
+    arr.push(2);
+    arr.push(3);
+    arr.push(4);
 
-    let b = new Array(3).fill(7)
-    // [7, 7, 7]
-    console.log(a, b)
-       let c = ['a', 'b', 'c'].fill(7, 1, 2)
-   // ['a', 7, 'c']
-    console.log(c)
+    console.log(arr);
 
-   // 如何记住git密码
+    var b = arr.includes(5);
+    console.log(b)
 </script>
 </body>
 </html>

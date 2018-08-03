@@ -22,6 +22,7 @@ public class TestLists {
         System.out.println(Lists.reverse(list));
         // 转换list中的元素
         List<String> transform = Lists.transform(list, (integer -> String.valueOf(integer)));
+
         // 按数量拆分list
         List<List<Integer>> partition = Lists.partition(list, 2);
         System.out.println(partition);

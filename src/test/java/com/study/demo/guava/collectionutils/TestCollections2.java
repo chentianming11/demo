@@ -31,5 +31,10 @@ public class TestCollections2 {
         Collection<List<Employee>> lists = Collections2.permutations(employees);
         System.out.println(lists);
 
+        // 转换
+        Collection<String> transform = Collections2.transform(employees, Employee::getName);
+        System.out.println(transform);
+
+
     }
 }

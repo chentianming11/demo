@@ -26,7 +26,7 @@ import java.util.function.Function;
  */
 public class POIExcelUtils {
 
-    public static final String dateFormatPattern = "yyyy-MM-dd HH:ss:mm";
+    public static final String dateFormatPattern = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * 读取一个excel到List<T> 中
