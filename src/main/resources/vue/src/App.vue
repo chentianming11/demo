@@ -1,8 +1,11 @@
 <template>
-    <div id="app">
-        <img src="./assets/logo.png">
-        <router-view/>
-    </div>
+    <el-container>
+        <el-header v-bind:class="">Header</el-header>
+        <el-main>
+            <router-view></router-view>
+        </el-main>
+        <el-footer>Footer</el-footer>
+    </el-container>
 </template>
 
 <script>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+
+</div>
+
+
+<script>
+    new Vue({
+        data: {
+            a: 1
+        },
+
+        // created 钩子可以用来在一个实例被创建之后执行代码：
+        created() {
+            // `this` 指向 vm 实例
+            console.log('a is: ' + this.a)
+        }
+
+        // 也有一些其它的钩子，在实例生命周期的不同阶段被调用，
+        // 如 mounted、updated 和 destroyed。
+        // 生命周期钩子的 this 上下文指向调用它的 Vue 实例。
+    })
+</script>
+</body>
+</html>

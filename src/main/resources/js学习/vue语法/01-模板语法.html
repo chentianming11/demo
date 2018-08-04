@@ -71,6 +71,8 @@
     <div>{{food.count}}</div>
     <button @click="addCart">添加次数</button>
 
+    <button v-bind:disabled="isButtonDisabled">Button</button>
+
 </div>
 
 
@@ -88,7 +90,8 @@
 
             food: {
 //                count:1
-            }
+            },
+            isButtonDisabled: true
 
         },
         methods: {

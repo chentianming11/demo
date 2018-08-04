@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Http工具类
- * Created by chenTianMing on 2018/5/27.
+ * @author 陈添明
+ * @date 2018/8/4
  */
 public class HttpClientUtils {
 
