@@ -6,6 +6,8 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,14 +22,14 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
- * Excel工具类
- *
- * @author chenTianMing
+ * @author 陈添明
+ * @date 2018/8/4
  */
 public class POIExcelUtils {
 
-    public static final String dateFormatPattern = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(POIExcelUtils.class);
     /**
      * 读取一个excel到List<T> 中
      *
@@ -136,12 +138,12 @@ public class POIExcelUtils {
                         if (cellValue instanceof Date) {
                             // Date 转其他类型
                             if (Objects.equals(type, String.class)) {
-                                cellValue = DateFormatUtils.format(((Date) cellValue), dateFormatPattern);
+                                cellValue = DateFormatUtils.format(((Date) cellValue), DATE_FORMAT_PATTERN);
                             }
                         } else if (cellValue instanceof String) {
                             // String 转其他类型
                             if (Objects.equals(type, Date.class)) {
-                                cellValue = DateUtils.parseDate((String) cellValue, dateFormatPattern);
+                                cellValue = DateUtils.parseDate((String) cellValue, DATE_FORMAT_PATTERN);
                             } else if (Objects.equals(type, Integer.class)) {
                                 cellValue = Integer.valueOf(((String) cellValue));
                             } else if (Objects.equals(type, Long.class)) {
@@ -159,7 +161,7 @@ public class POIExcelUtils {
                     }
                     PropertyUtils.setProperty(t, filedName, cellValue);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.error("读取excel失败", e);
                 }
             });
             result.add(t);
@@ -273,7 +275,7 @@ public class POIExcelUtils {
                         o = "";
                     }
                     if (o instanceof Date) {
-                        o = DateFormatUtils.format((Date) o, dateFormatPattern);
+                        o = DateFormatUtils.format((Date) o, DATE_FORMAT_PATTERN);
                     }
                     list.add(String.valueOf(o));
                 }
