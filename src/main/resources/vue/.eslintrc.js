@@ -22,7 +22,7 @@ module.exports = {
         ecmaFeatures: {
             // @TODO Deprecated https://eslint.org/docs/user-guide/configuring#deprecated
             experimentalObjectRestSpread: true,
-            jsx: false,
+            jsx: true,
             modules: true
         }
     },

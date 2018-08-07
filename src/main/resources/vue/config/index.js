@@ -10,7 +10,17 @@ module.exports = {
         // Paths
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
-        proxyTable: {},
+        proxyTable: {
+            '/v1': {
+                target: 'http://localhost:8888',
+                ajax: true,
+                // bypass: function (req, res) {
+                //   req.path = "/desktop" + req.path
+                // },
+                changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+                secure: false
+            }
+        },
 
         // Various Dev Server settings
         host: 'localhost', // can be overwritten by process.env.HOST
@@ -23,7 +33,7 @@ module.exports = {
         // Use Eslint Loader?
         // If true, your code will be linted during bundling and
         // linting errors and warnings will be shown in the console.
-        useEslint: true,
+        useEslint: false,
         // If true, eslint errors and warnings will also be shown in the error overlay
         // in the browser.
         showEslintErrorsInOverlay: false,

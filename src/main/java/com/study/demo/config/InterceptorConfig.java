@@ -1,5 +1,6 @@
 package com.study.demo.config;
 
+import com.study.demo.interceptor.BlogLoginInterceptor;
 import com.study.demo.interceptor.LoginInterceptor;
 import com.study.demo.interceptor.MyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,25 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
     @Autowired
     LoginInterceptor loginInterceptor;
 
+    @Autowired
+    BlogLoginInterceptor blogLoginInterceptor;
+
+
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(myInterceptor)
                 .addPathPatterns("/**");
 
+        // account 登录拦截器
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/account/**")
                 .excludePathPatterns("/account/login/**");
+
+        // account 登录拦截器
+        registry.addInterceptor(blogLoginInterceptor)
+                .addPathPatterns("/v1/blog/**")
+                .excludePathPatterns("/v1/blog/login/**", "/v1/blog/register/**");
     }
 }

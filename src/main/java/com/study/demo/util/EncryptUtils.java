@@ -29,7 +29,8 @@ public class EncryptUtils {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
             //初始化密钥生成器，指定密钥的长度(单位:bit),
             //SecureRandom是生成安全随机数序列
-            SecureRandom secureRandom = new SecureRandom(keyStr.getBytes());
+            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+            secureRandom.setSeed(keyStr.getBytes());
             keyGenerator.init(128, secureRandom);
             //生成原始对称密钥
             SecretKey secretKey = keyGenerator.generateKey();

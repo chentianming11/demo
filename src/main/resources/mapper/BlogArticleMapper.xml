@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.demo.mapper.blog.BlogArticleMapper">
+
+
+    <select id="getAllArticle" resultType="java.util.Map">
+        SELECT article.id articleId, article.collectionId, article.content, article.title, article.createTime articleCreateTime,
+        coll.name collectionName, ur.id userId,ur.username, ur.headUrl
+        FROM T_BLOG_ARTICLE article
+        LEFT JOIN T_BLOG_COLLECTION coll ON  article.collectionId = coll.id
+        LEFT JOIN T_BLOG_USER ur ON coll.userId = ur.id
+    </select>
+</mapper>

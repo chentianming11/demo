@@ -1,3 +1,4 @@
+/*
 package com.study.demo.mq;
 
 import com.rabbitmq.client.*;
@@ -9,17 +10,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+*/
 /**
  * @author 陈添明
  * @date 2018/7/21
- */
+ *//*
+
 public class RabbitJunitTest {
 
-    /**
-     * 消息的生产者 -- 发送消息到Exchange
-     *
-     * @throws IOException
-     */
+    */
+/**
+ * 消息的生产者 -- 发送消息到Exchange
+ *
+ * @throws IOException
+ *//*
+
     @Test
     public void testMessageProducer() throws IOException, InterruptedException {
         Channel channel = ChannelUtils.getChannelInstance("RGP订单系统消息生产者");
@@ -33,11 +38,13 @@ public class RabbitJunitTest {
         Thread.sleep(100000);
     }
 
-    /**
-     * 消息的消费者 -- 定义与Exchange绑定的队列，消费队列消息
-     *
-     * @throws IOException
-     */
+    */
+/**
+ * 消息的消费者 -- 定义与Exchange绑定的队列，消费队列消息
+ *
+ * @throws IOException
+ *//*
+
     @Test
     public void testMessageConsumer() throws IOException, InterruptedException {
         Channel channel = ChannelUtils.getChannelInstance("RGP订单系统消息消费者");
@@ -68,11 +75,13 @@ public class RabbitJunitTest {
     }
 
 
-    /**
-     * 消息的生产者 -- 发送消息到Exchange
-     *
-     * @throws IOException
-     */
+    */
+/**
+ * 消息的生产者 -- 发送消息到Exchange
+ *
+ * @throws IOException
+ *//*
+
     @Test
     public void testMessageProducerConfirm() throws IOException, InterruptedException {
         Channel channel = ChannelUtils.getChannelInstance("RGP订单系统消息生产者");
@@ -116,11 +125,13 @@ public class RabbitJunitTest {
         Thread.sleep(200000);
     }
 
-    /**
-     * 消息的消费者 -- 定义与Exchange绑定的队列，消费队列消息
-     *
-     * @throws IOException
-     */
+    */
+/**
+ * 消息的消费者 -- 定义与Exchange绑定的队列，消费队列消息
+ *
+ * @throws IOException
+ *//*
+
     @Test
     public void testMessageConsumerAck() throws IOException, InterruptedException {
         Channel channel = ChannelUtils.getChannelInstance("RGP订单系统消息消费者");
@@ -159,11 +170,13 @@ public class RabbitJunitTest {
         Thread.sleep(300000);
     }
 
-    /**
-     * 消息的生产者 -- 发送消息到Exchange
-     *
-     * @throws IOException
-     */
+    */
+/**
+ * 消息的生产者 -- 发送消息到Exchange
+ *
+ * @throws IOException
+ *//*
+
     @Test
     public void testMessageProducerAE() throws IOException, InterruptedException {
         Channel channel = ChannelUtils.getChannelInstance("RGP订单系统消息生产者");
@@ -230,9 +243,11 @@ public class RabbitJunitTest {
     }
 
 
-    /**
-     * RPC服务端
-     */
+    */
+/**
+ * RPC服务端
+ *//*
+
     @Test
     public void testRPCServer() throws IOException, InterruptedException {
         Channel channel = ChannelUtils.getChannelInstance("RGP订单系统Server端");
@@ -264,9 +279,11 @@ public class RabbitJunitTest {
     }
 
 
-    /**
-     * RPC的客户端
-     */
+    */
+/**
+ * RPC的客户端
+ *//*
+
     @Test
     public void testRPCClient() throws IOException, InterruptedException {
         Channel channel = ChannelUtils.getChannelInstance("RGP订单系统Client端");
@@ -293,3 +310,4 @@ public class RabbitJunitTest {
     }
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.study.demo.mq;
 
 import org.springframework.amqp.core.AmqpTemplate;
@@ -29,4 +30,4 @@ public class TestSender {
         System.out.println("Sender : " + context);
         this.rabbitTemplate.convertAndSend("exchange", "topic.message.a", context);
     }
-}
+}*/

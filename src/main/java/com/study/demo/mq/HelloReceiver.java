@@ -1,3 +1,4 @@
+/*
 package com.study.demo.mq;
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -14,4 +15,4 @@ public class HelloReceiver {
     public void process(String hello) {
         System.out.println("Receiver 111: " + hello);
     }
-}
+}*/

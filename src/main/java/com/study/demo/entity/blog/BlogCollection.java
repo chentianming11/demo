@@ -1,6 +1,9 @@
 package com.study.demo.entity.blog;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +18,9 @@ import java.util.Date;
  */
 @Data
 @Table(name = "T_BLOG_COLLECTION")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BlogCollection implements Serializable {
 
     private static final long serialVersionUID = -7588854752397846189L;

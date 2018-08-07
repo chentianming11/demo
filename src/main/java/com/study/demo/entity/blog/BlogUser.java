@@ -1,7 +1,9 @@
 package com.study.demo.entity.blog;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +18,8 @@ import java.util.Date;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "T_BLOG_USER")
 public class BlogUser implements Serializable {
 
@@ -29,7 +33,8 @@ public class BlogUser implements Serializable {
     private String email;
     private String headUrl;
     private String description;
-    private Date date;
+    private Date birthday;
+    private Date createTime;
 
 
 }

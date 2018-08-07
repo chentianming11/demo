@@ -1,3 +1,4 @@
+/*
 package com.study.demo.mq;
 
 import com.study.demo.entity.mq.Order;
@@ -6,11 +7,13 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * 消息处理实体
  *
  * @author mac
- */
+ *//*
+
 public class MessageHandle {
 
     public void add(byte[] body) {
@@ -50,4 +53,4 @@ public class MessageHandle {
             System.out.println(entry.getValue().getOrderId() + "---" + entry.getValue().getOrderAmount());
         }
     }
-}
+}*/

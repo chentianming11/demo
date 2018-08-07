@@ -1,3 +1,4 @@
+/*
 package com.study.demo.mq;
 
 public class RPCMethod {
@@ -10,4 +11,4 @@ public class RPCMethod {
             return "";
         }
     }
-}
+}*/

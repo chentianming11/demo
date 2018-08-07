@@ -1,3 +1,4 @@
+/*
 package com.study.demo.mq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,10 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * @author 陈添明
  * @date 2018/7/21
- */
+ *//*
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class RabbitTest {
@@ -39,9 +42,11 @@ public class RabbitTest {
     MessageListenerContainer messageListenerContainer;
 
 
-    /**
-     * 发送消息到Exchange
-     */
+    */
+/**
+ * 发送消息到Exchange
+ *//*
+
     @Test
     public void testSpringSender() throws InterruptedException {
         // 声明交换机
@@ -75,9 +80,11 @@ public class RabbitTest {
         Thread.sleep(10000);
     }
 
-    /**
-     * 发送消息到Exchange
-     */
+    */
+/**
+ * 发送消息到Exchange
+ *//*
+
     @Test
     public void testSpringSenderAuto() throws InterruptedException {
         // 发布消息 (交换机名, Routing key, 消息);
@@ -95,9 +102,11 @@ public class RabbitTest {
         Thread.sleep(10000);
     }
 
-    /**
-     * 发送多种类型的消息到Exchange
-     */
+    */
+/**
+ * 发送多种类型的消息到Exchange
+ *//*
+
     @Test
     public void testSpringSenderManyType() throws InterruptedException, IOException {
         this.sendString();
@@ -109,9 +118,11 @@ public class RabbitTest {
         Thread.sleep(10000);
     }
 
-    /**
-     * 发送字符串消息
-     */
+    */
+/**
+ * 发送字符串消息
+ *//*
+
     public void sendString() {
         MessageProperties messageProperties = new MessageProperties();
         messageProperties.setDeliveryMode(MessageDeliveryMode.PERSISTENT);
@@ -120,9 +131,11 @@ public class RabbitTest {
         rabbitTemplate.send("roberto.order", "add", message);
     }
 
-    /**
-     * 发送对象的json串
-     */
+    */
+/**
+ * 发送对象的json串
+ *//*
+
     public void sendObj() throws JsonProcessingException {
         Order order = new Order("OD0000001", new BigDecimal(888888.888888));
         // 声明消息 (消息体, 消息属性)
@@ -135,9 +148,11 @@ public class RabbitTest {
         rabbitTemplate.send("roberto.order", "add", message);
     }
 
-    /**
-     * 发送List的json串
-     */
+    */
+/**
+ * 发送List的json串
+ *//*
+
     public void sendList() throws JsonProcessingException {
         Order order = new Order("OD0000001", new BigDecimal(888888.888888));
         Order order2 = new Order("OD0000002", new BigDecimal(888888.888888));
@@ -154,9 +169,11 @@ public class RabbitTest {
         rabbitTemplate.send("roberto.order", "add", message);
     }
 
-    /**
-     * 发送Map的json串
-     */
+    */
+/**
+ * 发送Map的json串
+ *//*
+
     public void sendMap() throws JsonProcessingException {
         Order order = new Order("OD0000001", new BigDecimal(888888.888888));
         Order order2 = new Order("OD0000002", new BigDecimal(888888.888888));
@@ -177,9 +194,11 @@ public class RabbitTest {
         rabbitTemplate.send("roberto.order", "add", message);
     }
 
-    /**
-     * 发送文件
-     */
+    */
+/**
+ * 发送文件
+ *//*
+
     public void sendFile() throws IOException {
         File file = new File("/Users/mac/Downloads/test.jpg");
         FileInputStream fileInputStream = new FileInputStream(file);
@@ -204,3 +223,4 @@ public class RabbitTest {
     }
 
 }
+*/

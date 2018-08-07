@@ -1,10 +1,7 @@
 package com.study.demo.controller;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by chen on 2018/4/5.
@@ -17,6 +14,6 @@ public class IndexController {
             "/index/**",
             "/hello/**"})
     public String index() {
-        return "index";
+        return "classpath:vue/dist/index";
     }
 }

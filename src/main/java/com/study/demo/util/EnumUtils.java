@@ -12,7 +12,7 @@ import java.util.Map;
 public class EnumUtils {
 
     /**
-     * 获取枚举名称和某个枚举值的映射BiMap
+     * 获取枚举名称和某个枚举值的映射Map
      * 转化枚举为一个BiMap，key为枚举的name， value为指定属性的值；要求指定属性值必须唯一
      * 例如：未评价(0) 已评价(1) -> {未评价=0, 已评价=1}
      *

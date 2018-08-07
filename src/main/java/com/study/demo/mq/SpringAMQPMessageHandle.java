@@ -1,3 +1,4 @@
+/*
 package com.study.demo.mq;
 
 import org.springframework.amqp.rabbit.annotation.*;
@@ -39,3 +40,4 @@ public class SpringAMQPMessageHandle {
         System.out.println(msg);
     }
 }
+*/
