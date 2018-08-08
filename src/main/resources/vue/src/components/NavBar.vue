@@ -39,8 +39,8 @@
         </el-submenu>
 
         <el-menu-item index="write" v-if="loginUser">
-            <router-link to="/write">写文章</router-link>
-        </el-menu-item>
+            <router-link :to="`/write/${loginUser.id}`">写文章</router-link>
+        </el-menu-item> 
     </el-menu>
 </template>
 

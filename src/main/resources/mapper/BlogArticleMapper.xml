@@ -9,5 +9,10 @@
         FROM T_BLOG_ARTICLE article
         LEFT JOIN T_BLOG_COLLECTION coll ON  article.collectionId = coll.id
         LEFT JOIN T_BLOG_USER ur ON coll.userId = ur.id
+        <where>
+            <if test="userId != null">
+                ur.id = #{userId}
+            </if>
+        </where>
     </select>
 </mapper>

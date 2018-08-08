@@ -1,12 +1,15 @@
 package com.study.demo.controller.blog;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.study.demo.entity.blog.BlogArticle;
 import com.study.demo.entity.blog.BlogCollection;
 import com.study.demo.entity.blog.BlogUser;
 import com.study.demo.service.blog.BlogService;
 import com.study.demo.util.AppAssert;
+import com.study.demo.util.CookieUtils;
 import com.study.demo.util.EncryptUtils;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +38,20 @@ public class BlogController {
 
     EncryptUtils.AES aes = EncryptUtils.getAES("BLOG_USER_ENCRYPT_KEY_24456");
 
+
+    @SneakyThrows
+    private Integer getLoginId(HttpServletRequest request){
+        Cookie loginCookie = CookieUtils.getCookieByName(request, "login_cookie");
+        if (loginCookie != null) {
+            // 已登录
+            String decrypt = aes.decrypt(loginCookie.getValue());
+            Integer id = Integer.valueOf(Splitter.on("-").splitToList(decrypt).get(0));
+            log.info("解析出已登录的id为" + id);
+            return id;
+        }
+        return null;
+    }
+
     @PostMapping("/login")
     public BlogUser login(@RequestBody BlogUser blogUser, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
         BlogUser loginBlogUser = blogService.login(blogUser);
@@ -54,6 +71,17 @@ public class BlogController {
         return ImmutableMap.of("status", "ok");
     }
 
+    @GetMapping("/user/list")
+    public List<BlogUser> getUserList(){
+        List<BlogUser> list = blogService.getUserList();
+        return list;
+    }
+
+    @GetMapping("/user")
+    public BlogUser getUserInfo(Integer userId){
+         return blogService.getUserInfo(userId);
+    }
+
     /**
      * 自动登陆
      *
@@ -62,9 +90,9 @@ public class BlogController {
      */
     @GetMapping("/autoLogin")
     public BlogUser autoLogin(HttpServletRequest request) {
-        Object loginId = request.getAttribute("loginId");
-        AppAssert.notNull(loginId, "自动登录失败");
-        return blogService.autoLogin((Integer) loginId);
+        Integer loginId = this.getLoginId(request);
+        AppAssert.notNull(loginId, "未登录");
+        return blogService.autoLogin(loginId);
 
     }
 
@@ -78,33 +106,31 @@ public class BlogController {
     }
 
     @GetMapping("/collection")
-    public List<BlogCollection> getCollectionByUserId(HttpServletRequest request) {
-        Object loginId = request.getAttribute("loginId");
-        AppAssert.notNull(loginId, "自动登录失败");
-        return blogService.getCollectionByUserId((Integer) loginId);
+    public List<BlogCollection> getCollectionByUserId(Integer userId) {
+        return blogService.getCollectionByUserId(userId);
 
     }
 
     @PostMapping("/collection")
     public void addCollection(HttpServletRequest request, @RequestBody BlogCollection blogCollection) {
-        Object loginId = request.getAttribute("loginId");
-        AppAssert.notNull(loginId, "自动登录失败");
-        blogCollection.setUserId((Integer) loginId);
+        Integer loginId = this.getLoginId(request);
+        AppAssert.notNull(loginId, "未登录");
+        blogCollection.setUserId(loginId);
         blogCollection.setCreateTime(new Date());
         blogService.addCollection(blogCollection);
     }
 
 
     @PostMapping("/article")
-    public void addArticle(@RequestBody BlogArticle blogArticle) {
+    public void addArticle(HttpServletRequest request,@RequestBody BlogArticle blogArticle) {
+        Integer loginId = this.getLoginId(request);
+        AppAssert.notNull(loginId, "未登录");
         blogService.addArticle(blogArticle);
     }
 
-    @GetMapping("/article/all")
-    public List<Map> getAllArticle(Integer pageNo) {
-        List<Map> list = blogService.getAllArticle(pageNo);
-
-
+    @GetMapping("/article/list")
+    public List<Map> getAllArticle(Integer pageNo, Integer userId) {
+        List<Map> list = blogService.getArticleList(pageNo, userId);
         return list;
     }
 

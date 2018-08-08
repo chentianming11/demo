@@ -6,14 +6,13 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
-import VueAxios from 'vue-axios'
+import VueAxios from 'vue-axios';
+import './main.css';
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 
-
-var loginUser = null;
 
 /*router.beforeEach((to, from, next) => {
 
@@ -35,10 +34,29 @@ var loginUser = null;
 
  })*/
 
+
+// 定义全局过滤器
+Vue.filter('formatDate', (timestamp) => {
+    let date = new Date(timestamp);
+    let year = date.getFullYear(),
+        month = date.getMonth() + 1,//月份是从0开始的
+        day = date.getDate(),
+        hour = date.getHours(),
+        min = date.getMinutes(),
+        sec = date.getSeconds();
+    let newTime = year + '-' +
+        month + '-' +
+        day + ' ' +
+        hour + ':' +
+        min + ':' +
+        sec;
+    return newTime;
+})
+
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
     router,
-    components: {App},
+    components: { App },
     template: '<App />',
 })

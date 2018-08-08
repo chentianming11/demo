@@ -1,6 +1,8 @@
+/*
 package com.study.demo.interceptor;
 
 import com.google.common.base.Splitter;
+import com.study.demo.exception.AppException;
 import com.study.demo.util.CookieUtils;
 import com.study.demo.util.EncryptUtils;
 import lombok.SneakyThrows;
@@ -13,9 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
+*/
 /**
  * Created by chenTianMing on 2018/6/3.
- */
+ *//*
+
 @Component
 @Slf4j
 public class BlogLoginInterceptor extends HandlerInterceptorAdapter {
@@ -55,7 +59,10 @@ public class BlogLoginInterceptor extends HandlerInterceptorAdapter {
     private void returnData(HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=utf-8");
-        response.sendRedirect("/");
+//        response.sendRedirect("/");
+
+        throw new AppException("未登录");
     }
 
 }
+*/

@@ -84,13 +84,67 @@
 </template>
 
 <script>
+    import NavBar from  './components/Navbar';
     export default {
-        name: 'HelloWorld',
-        data () {
+        name: 'App',
+        components: {
+            NavBar
+        },
+        data() {
             return {
-                msg: 'Welcome to Your Vue.js App'
+                loginUser: null,
+                loading: true,
             }
-        }
+        },
+
+        methods: {
+            logout() {
+                this.axios.post('/v1/blog/logout')
+                    .then((res) => {
+                        this.loginUser = null;
+                        this.$router.push('/login')
+                    }).
+                catch((res) => {
+                    alert('退出失败'
+                    )
+                    ;
+                })
+
+            },
+
+
+            login(login) {
+                this.axios.post('/v1/blog/login', login)
+                    .then((response) => {
+                        this.loginUser = response.data;
+                        // 重定向到首页
+                        this.$router.push({path: '/', props: response.data})
+                    })
+                    .
+                    catch((error) => {
+                        alert(error.response.data.message
+                        )
+                        ;
+                    })
+                ;
+            }
+        },
+
+        mounted() {
+            console.log('组件装载完成，调用自动登陆接口');
+            this.axios.get('/v1/blog/autoLogin')
+                .then((res) => {
+                    this.loginUser = res.data;
+                    this.loading = false;
+                })
+                .
+                catch((error) => {
+                    console.log('尚未登陆');
+                    this.loading = false;
+                })
+        },
+
+
     }
 </script>
 
