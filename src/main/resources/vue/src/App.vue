@@ -86,7 +86,7 @@ export default {
 
 .main {
   margin: 30px;
-  padding-left: 200px;
-  padding-right: 200px;
+  padding-left: 100px;
+  padding-right: 100px;
 }
 </style>

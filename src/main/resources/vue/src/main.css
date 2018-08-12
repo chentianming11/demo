@@ -4,6 +4,13 @@
 .font-36 {
     font-size: 36px;
 }
+.padding-10 {
+    padding: 10px;
+}
+
+.margin-10 {
+    margin: 10px;
+}
 .padding-20 {
     padding: 20px;
 }
@@ -14,4 +21,8 @@
 
 .margin-30 {
     margin: 30px;
+}
+
+.center {
+    text-align: center;
 }

@@ -4,7 +4,7 @@ import Login from '../components/Login.vue';
 import Register from '../components/Register.vue';
 import Write from '../components/Write.vue';
 import Home from '../components/Home.vue';
-import SelfPage from '../components/SelfPage.vue';
+import UserPage from '../components/UserPage.vue';
 
 Vue.use(Router)
 
@@ -28,9 +28,9 @@ export default new Router({
             name: 'Write',
             component: Write
         }, {
-            path: '/selfPage/:userId',
-            name: 'SelfPage',
-            component: SelfPage
+            path: '/userPage/:userId',
+            name: 'UserPage',
+            component: UserPage
         }
     ],
 

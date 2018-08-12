@@ -1,5 +1,8 @@
 package com.study.demo.service.blog;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.study.demo.entity.blog.BlogArticle;
 import com.study.demo.entity.blog.BlogCollection;
 import com.study.demo.entity.blog.BlogUser;
@@ -101,14 +104,15 @@ public class BlogService {
         blogArticleMapper.insert(blogArticle);
     }
 
-    public List<Map> getArticleList(Integer pageNo, Integer userId) {
+    public PageInfo<Map> getArticleList(Integer pageNum, Integer userId, Integer collectionId) {
 
         Map<String, Object> params = new HashedMap();
         params.put("userId", userId);
-
-        List<Map> list = blogArticleMapper.getAllArticle(params);
-
-        return list;
+        params.put("collectionId", collectionId);
+        Page<Map> page = PageHelper.startPage(pageNum == null ? 1 : pageNum, 10);
+        blogArticleMapper.getAllArticle(params);
+        PageInfo<Map> pageInfo = page.toPageInfo();
+        return pageInfo;
     }
 
     public List<BlogUser> getUserList() {

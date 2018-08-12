@@ -11,7 +11,10 @@
         LEFT JOIN T_BLOG_USER ur ON coll.userId = ur.id
         <where>
             <if test="userId != null">
-                ur.id = #{userId}
+               AND  ur.id = #{userId}
+            </if>
+            <if test="collectionId != null">
+              and  article.collectionId = #{collectionId}
             </if>
         </where>
     </select>

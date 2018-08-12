@@ -1,7 +1,8 @@
 <template>
 <div>
         <div>个人文集：</div>
-        <div v-for="coll in collections" :key="coll.id" class="coll">
+        <div v-for="coll in collections" :key="coll.id" @click="handleCollectionClick(coll.id)"
+        class="coll">
             <i class="el-icon-document"></i>
             {{coll.name}}
         </div> 
@@ -11,23 +12,28 @@
 
 <script>
 export default {
-  props: ["userId"],
+  props: ["query"],
 
   data() {
     return {
-      collections: []
+      collections:[],
     };
   },
 
-  beforeMount(){
-      this.getCollections(this.userId);
+  mounted(){
+      this.getCollections();
   },
 
   methods: {
+    
+    handleCollectionClick(collectionId){
+        this.$emit('change-collection', collectionId);
+    },
+
     // 获取文集列表
-    getCollections(userId) {
+    getCollections() {
       this.axios
-        .get(`/v1/blog/collection?userId=${userId}`)
+        .get(`/v1/blog/collection`, { params: this.query })
         .then(res => {
           this.collections = res.data;
         })
@@ -37,13 +43,13 @@ export default {
             message: `获取文集列表失败`
           });
         });
-    }
+    },
   }
 };
 </script>
 
 <style>
 .coll {
-    margin: 10px;
+    margin: 5px;
 }
 </style>

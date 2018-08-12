@@ -3,7 +3,8 @@
     <div class="userInfo">
         
         <div class="user-content">
-            <img :src="userInfo.headUrl" alt="用户头像" style="border-radius: 50%; width: 100px;">
+            <img :src="userInfo.headUrl" alt="用户头像" 
+            style="border-radius: 50%; width: 100px;">
             <div class="font-36 padding-20">{{userInfo.username}}</div>
         </div>
 
@@ -15,22 +16,21 @@
 
 <script>
 export default {
-    props:['userId'],
+  props: ["query"],
+  data() {
+    return {
+      userInfo:{},
+    };
+  },
 
-    data(){
-        return {
-            userInfo:{},
-        }
-    },
+  mounted(){
+      this.getUserInfo();
+  },
 
-    beforeMount(){
-        this.getUserInfo(this.userId);
-    },
-
-    methods:{
-        getUserInfo(userId) {
+  methods: {
+    getUserInfo() {
       this.axios
-        .get(`/v1/blog/user?userId=${userId}`)
+        .get(`/v1/blog/user`, { params: this.query })
         .then(response => {
           console.log(response.data);
           this.userInfo = response.data;
@@ -39,20 +39,19 @@ export default {
           alert("获取个人信息异常：" + error);
         });
     },
-    }
-}
+  }
+};
 </script>
 
 <style>
 .userInfo {
-   display: flex;
-   align-items:center;
-   justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .user-content {
-    display: flex;
-    align-items:center;
-    margin: 20px;
+  display: flex;
+  align-items: center;
+  margin: 20px;
 }
-
 </style>

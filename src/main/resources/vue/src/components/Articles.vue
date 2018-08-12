@@ -1,19 +1,19 @@
 <template>
     <div class="articles">
-        <div>文章列表：</div>
+        <div class="center">文章列表</div>
         <el-table
-            :data="articleList"
-            style="width: 100%">
+            :data="articlePage.list"
+            style="width: 100%;margin:10px">
         <el-table-column
                 label="头像"
-                width="80">
+                width="60">
             <template slot-scope="scope">
                 <img :src="scope.row.headUrl" @click="toSelf(scope.row.userId)" style="width:30px"/>
             </template>
         </el-table-column>
         <el-table-column
                 label="用户名"
-                width="180">
+                width="80">
                 <template slot-scope="scope" >
                     <div @click="toSelf(scope.row.userId)">{{scope.row.username}}</div>
                 </template>
@@ -21,46 +21,80 @@
         <el-table-column
                 prop="collectionName"
                 label="文集名称"
-                width="180">
-                <template slot-scope="scope" >
-                    <div @click="toSelf(scope.row.userId)">{{scope.row.collectionName}}</div>
-                </template>
+                width="80">
+                <!-- <template slot-scope="scope" >
+                    <div @click="toSelf(scope.row.userId,scope.row.collectionId)">{{scope.row.collectionName}}</div>
+                </template> -->
         </el-table-column>
         <el-table-column
                 prop="title"
-                width="180"
+                width="120"
                 label="标题">
 
         </el-table-column>
         <el-table-column
                 prop="content"
-                width="300"
+                width="200"
                 label="内容">
         </el-table-column>
         <el-table-column
-                width="180"
+                width="120"
                 label="创建时间">
             <template slot-scope="scope">
                 {{scope.row.articleCreateTime | formatDate}}
             </template>
         </el-table-column>
     </el-table>
+
+    <el-pagination class="center"
+    layout="prev, pager, next"
+    @current-change="currentChange"
+    :current-page="articlePage.pageNum"
+    :total="articlePage.total">
+    </el-pagination>
     </div>
 </template>
 
 <script>
 export default {
-  props: ['articleList'],
-  
+  props: ["query"],
   data() {
     return {
-        
+      articlePage: {}
     };
+  },
+
+  watch: {
+    query(){
+        this.getArticles();
+    }
+  },
+
+  mounted(){
+      this.getArticles();
   },
 
   methods: {
     toSelf(userId) {
-      this.$router.push(`/selfPage/${userId}`);
+      this.$router.push({ path: `/userPage/${userId}` });
+    },
+
+    currentChange(currentPage) {
+      this.$emit("change-page", currentPage);
+    },
+
+    getArticles() {
+      this.axios
+        .get(`/v1/blog/article/list`, { params: this.query })
+        .then(res => {
+          this.articlePage = res.data;
+        })
+        .catch(res => {
+          this.$message({
+            type: "error",
+            message: "获取文章列表失败"
+          });
+        });
     }
   }
 };
@@ -69,6 +103,6 @@ export default {
 
 <style>
 .articles {
-    margin: 20px;
+  margin: 20px;
 }
 </style>

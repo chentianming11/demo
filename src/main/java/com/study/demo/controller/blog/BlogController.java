@@ -1,5 +1,6 @@
 package com.study.demo.controller.blog;
 
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.study.demo.entity.blog.BlogArticle;
@@ -129,9 +130,9 @@ public class BlogController {
     }
 
     @GetMapping("/article/list")
-    public List<Map> getAllArticle(Integer pageNo, Integer userId) {
-        List<Map> list = blogService.getArticleList(pageNo, userId);
-        return list;
+    public PageInfo<Map> getAllArticle(Integer pageNum, Integer userId, Integer collectionId) {
+        PageInfo<Map> pageInfo = blogService.getArticleList(pageNum, userId, collectionId);
+        return pageInfo;
     }
 
 }
