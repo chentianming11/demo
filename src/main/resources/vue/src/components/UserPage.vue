@@ -1,7 +1,7 @@
 <template>
 
     <div class="self-page">
-        <UserInfo query="userQuery" />
+        <UserInfo :query="userQuery" />
         <div class="self-buttom">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="文章管理" name="first">
