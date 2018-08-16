@@ -8,7 +8,6 @@
         </el-main>
         <el-footer>footer: {{loginUser}}</el-footer>
     </el-container>
-
 </template>
 
 <script>
@@ -88,5 +87,7 @@ export default {
   margin: 30px;
   padding-left: 100px;
   padding-right: 100px;
+  display: flex;
+  justify-content: center;
 }
 </style>

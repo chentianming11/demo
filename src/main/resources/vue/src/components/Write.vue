@@ -12,17 +12,24 @@
 
         </el-form-item>
         <el-form-item label="内容" prop="content">
-            <el-input type="textarea" v-model="article.content"></el-input>
+            
+            <Editor v-model="article.content"/>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="text-align: center;">
             <el-button type="primary" @click="submitForm('article')">立即发布</el-button>
-            <el-button @click="resetForm('article')">重置</el-button>
+            
         </el-form-item>
+
+         <el-form-item>
+            {{article.content}}
+        </el-form-item>
+
     </el-form>
 
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -51,8 +58,8 @@ export default {
           { required: true, message: "请填输入内容", trigger: "blur" },
           {
             min: 10,
-            max: 100,
-            message: "长度在 10 到 100 个字符",
+        
+            message: "至少10个字符",
             trigger: "blur"
           }
         ]
@@ -60,14 +67,18 @@ export default {
     };
   },
 
+  components: {
+    
+  },
+
   beforeMount() {
     this.getCollections();
   },
 
   methods: {
-      // 获取文集列表
+    // 获取文集列表
     getCollections() {
-      let {userId} = this.$route.params;
+      let { userId } = this.$route.params;
       console.log(userId);
       this.axios
         .get(`/v1/blog/collection?userId=${userId}`)
@@ -105,7 +116,6 @@ export default {
       });
     },
 
-    
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -146,4 +156,7 @@ export default {
 </script>
 
 <style>
+.demo-article {
+  width: 900px;
+}
 </style>

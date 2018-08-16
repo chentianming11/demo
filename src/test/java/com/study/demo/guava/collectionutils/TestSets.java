@@ -18,9 +18,10 @@ public class TestSets {
         // 从5个元素中  取4个做随机组合
         Set<Set<String>> combinations = Sets.combinations(set, 4);
         combinations.forEach(e -> System.out.println(e));
-        HashSet<String> set2 = Sets.newHashSet("a", "b", "f", "g", "h");
+        HashSet<String> set2 = Sets.newHashSet("r", "t", "f", "g", "h");
+        Sets.SetView<String> intersection = Sets.intersection(set, set2);
         // 取2个set集合的交集
-        System.out.println("交集" + Sets.intersection(set, set2));
+        System.out.println("交集" + intersection);
         // 取并集
         System.out.println("并集" + Sets.union(set, set2));
         // set1中去除交集的部分

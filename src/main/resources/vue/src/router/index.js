@@ -5,6 +5,7 @@ import Register from '../components/Register.vue';
 import Write from '../components/Write.vue';
 import Home from '../components/Home.vue';
 import UserPage from '../components/UserPage.vue';
+import ArticleDetail from '../components/ArticleDetail.vue';
 
 Vue.use(Router)
 
@@ -31,6 +32,10 @@ export default new Router({
             path: '/userPage/:userId',
             name: 'UserPage',
             component: UserPage
+        }, {
+            path: '/article/detail/:articleId',
+            name: 'ArticleDetail',
+            component: ArticleDetail
         }
     ],
 

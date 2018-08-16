@@ -123,4 +123,8 @@ public class BlogService {
     public BlogUser getUserInfo(Integer userId) {
         return blogUserMapper.selectByPrimaryKey(userId);
     }
+
+    public Map<String,Object> getArticleDetail(Integer articleId) {
+        return blogArticleMapper.getArticleDetail(articleId);
+    }
 }

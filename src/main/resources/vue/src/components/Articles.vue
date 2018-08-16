@@ -21,24 +21,22 @@
         <el-table-column
                 prop="collectionName"
                 label="文集名称"
-                width="80">
+                width="150">
                 <!-- <template slot-scope="scope" >
                     <div @click="toSelf(scope.row.userId,scope.row.collectionId)">{{scope.row.collectionName}}</div>
                 </template> -->
         </el-table-column>
         <el-table-column
                 prop="title"
-                width="120"
-                label="标题">
-
-        </el-table-column>
-        <el-table-column
-                prop="content"
                 width="200"
-                label="内容">
+                label="标题">
+                <template slot-scope="scope" >
+                    <div @click="articleDetail(scope.row.articleId)">{{scope.row.title}}</div>
+                </template>
         </el-table-column>
+      
         <el-table-column
-                width="120"
+                width="200"
                 label="创建时间">
             <template slot-scope="scope">
                 {{scope.row.articleCreateTime | formatDate}}
@@ -77,6 +75,10 @@ export default {
   methods: {
     toSelf(userId) {
       this.$router.push({ path: `/userPage/${userId}` });
+    },
+
+    articleDetail(articleId){
+        this.$router.push({ path: `/article/detail/${articleId}` });
     },
 
     currentChange(currentPage) {

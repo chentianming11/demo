@@ -12,16 +12,22 @@ import com.study.demo.util.CookieUtils;
 import com.study.demo.util.EncryptUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -133,6 +139,36 @@ public class BlogController {
     public PageInfo<Map> getAllArticle(Integer pageNum, Integer userId, Integer collectionId) {
         PageInfo<Map> pageInfo = blogService.getArticleList(pageNum, userId, collectionId);
         return pageInfo;
+    }
+
+    @GetMapping("/article/{articleId}")
+    public Map<String, Object> getArticleDetail(@PathVariable("articleId") Integer articleId) {
+        return  blogService.getArticleDetail(articleId);
+    }
+
+
+    @PostMapping("/imgUpload")
+    public Map<String, Object> imgUpload(MultipartFile img) throws IOException {
+
+        log.info("图片上传成功");
+
+        String originalFilename = RandomStringUtils.randomAlphabetic(8) + img.getOriginalFilename();
+        File fileDir = new File("img/");
+        if (!fileDir.exists()){
+            fileDir.mkdirs();
+        }
+
+        File file = new File(fileDir,originalFilename);
+        FileCopyUtils.copy(img.getBytes(), file );
+        Map<String ,Object> map=new HashMap<>();
+        map.put("code",200);
+        map.put("msg","上传成功");
+        map.put("url","http://localhost:8888/img/" + originalFilename);
+        //这里只做返回值测试用，url 参数为图片上传后访问地址。具体根据功能进行修改}
+        return map;
+
+
+
     }
 
 }

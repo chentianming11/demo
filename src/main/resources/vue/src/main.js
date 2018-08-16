@@ -8,50 +8,25 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import './main.css';
+import VueQuillEditor from 'vue-quill-editor';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+// 全局注册组件
+import './common/component/global';
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
+Vue.use(VueQuillEditor);
 
+// 全局过滤器
+import * as custom from './common/filter/filter'
+Object.keys(custom).forEach(key => {
+  Vue.filter(key, custom[key])
+});
 
-/*router.beforeEach((to, from, next) => {
-
- if (to.name !== 'Login' && to.name !== 'Register'){
- axios.get('/v1/blog/autoLogin')
- .then((res) => {
- loginUser = res.data;
- console.log(loginUser);
- next();
- })
- .catch((error) => {
- console.log('未登录，跳转到登录页');
- loginUser = null;
- next('/login')
- })
- }else {
- next();
- }
-
- })*/
-
-
-// 定义全局过滤器
-Vue.filter('formatDate', (timestamp) => {
-    let date = new Date(timestamp);
-    let year = date.getFullYear(),
-        month = date.getMonth() + 1,//月份是从0开始的
-        day = date.getDate(),
-        hour = date.getHours(),
-        min = date.getMinutes(),
-        sec = date.getSeconds();
-    let newTime = year + '-' +
-        month + '-' +
-        day + ' ' +
-        hour + ':' +
-        min + ':' +
-        sec;
-    return newTime;
-})
 
 /* eslint-disable no-new */
 new Vue({
