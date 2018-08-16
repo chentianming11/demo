@@ -167,8 +167,6 @@ public class BlogController {
         //这里只做返回值测试用，url 参数为图片上传后访问地址。具体根据功能进行修改}
         return map;
 
-
-
     }
 
 }
