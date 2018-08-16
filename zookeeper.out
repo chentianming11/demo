@@ -88,3 +88,5 @@ EndOfStreamException: Unable to read additional data from client sessionid 0x165
 2018-08-16 19:00:10,387 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@192] - Accepted socket connection from /127.0.0.1:56102
 2018-08-16 19:00:10,419 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@942] - Client attempting to establish new session at /127.0.0.1:56102
 2018-08-16 19:00:10,424 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@687] - Established session 0x1653cc2130b0007 with negotiated timeout 10000 for client /127.0.0.1:56102
+2018-08-16 19:37:57,560 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@486] - Processed session termination for sessionid: 0x1653cc2130b0007
+2018-08-16 19:37:57,577 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1044] - Closed socket connection for client /127.0.0.1:56102 which had sessionid 0x1653cc2130b0007
