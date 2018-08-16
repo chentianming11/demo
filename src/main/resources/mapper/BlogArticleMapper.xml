@@ -4,26 +4,27 @@
 
 
     <select id="getAllArticle" resultType="java.util.Map">
-        SELECT article.id articleId, article.collectionId, article.content, article.title, article.createTime articleCreateTime,
-        coll.name collectionName, ur.id userId,ur.username, ur.headUrl
+        SELECT article.id article_id, article.collection_id, article.content, article.title, article.create_time article_create_time,
+        coll.name collection_name, ur.id user_id,ur.username, ur.head_url
         FROM T_BLOG_ARTICLE article
-        LEFT JOIN T_BLOG_COLLECTION coll ON  article.collectionId = coll.id
-        LEFT JOIN T_BLOG_USER ur ON coll.userId = ur.id
+        LEFT JOIN T_BLOG_COLLECTION coll ON  article.collection_id = coll.id
+        LEFT JOIN T_BLOG_USER ur ON coll.user_id = ur.id
         <where>
             <if test="userId != null">
                AND  ur.id = #{userId}
             </if>
             <if test="collectionId != null">
-              and  article.collectionId = #{collectionId}
+              and  article.collection_id = #{collectionId}
             </if>
         </where>
+        order by article.id desc
     </select>
     <select id="getArticleDetail" resultType="java.util.Map">
-        SELECT article.id articleId, article.collectionId, article.content, article.title, article.createTime articleCreateTime,
-        coll.name collectionName, ur.id userId,ur.username, ur.headUrl
+       SELECT article.id article_id, article.collection_id, article.content, article.title, article.create_time article_create_time,
+        coll.name collection_name, ur.id user_id,ur.username, ur.head_url
         FROM T_BLOG_ARTICLE article
-        LEFT JOIN T_BLOG_COLLECTION coll ON  article.collectionId = coll.id
-        LEFT JOIN T_BLOG_USER ur ON coll.userId = ur.id
+        LEFT JOIN T_BLOG_COLLECTION coll ON  article.collection_id = coll.id
+        LEFT JOIN T_BLOG_USER ur ON coll.user_id = ur.id
         WHERE article.id = #{articleId}
     </select>
 </mapper>
