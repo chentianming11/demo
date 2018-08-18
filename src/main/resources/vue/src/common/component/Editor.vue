@@ -23,23 +23,22 @@
 
             <!-- 自定义toolbaar -->
             <div id="toolbar" slot="toolbar">
-              <span class="ql-formats">
-              <button type="button" :class="'ql-bold'"></button>
-              </span>
+              
+               <button class="ql-bold"></button>
               <span class="ql-formats">
               <button type="button" class="ql-italic"></button>
               </span>
               <span class="ql-formats">
-              <button type="button" class="ql-underline"></button>
+                <button type="button" class="ql-underline"></button>
               </span>
               <span class="ql-formats">
-              <button type="button" class="ql-strike"></button>
+                <button type="button" class="ql-strike"></button>
               </span>
               <span class="ql-formats">
-              <button type="button" class="ql-blockquote"></button>
+               <button type="button" class="ql-blockquote"></button>
               </span>
               <span class="ql-formats">
-              <button type="button" class="ql-code-block"></button>
+                <button type="button" class="ql-code-block"></button>
               </span>
               <span class="ql-formats">
               <button type="button" class="ql-header" value="1"></button>
@@ -81,7 +80,7 @@
               <option value="4">标题 4</option>
               <option value="5">标题 5</option>
               <option value="6">标题 6</option>
-              <option selected="selected">普通文本</option>
+              <option selected="selected">文本</option>
               </select></span>
               <span class="ql-formats"><select class="ql-color">
               <option selected="selected"></option>
@@ -177,18 +176,18 @@
               <button type="button" class="ql-link"></button>
               </span>
               <span class="ql-formats">
-              <button type="button" @click="fileClick('image')">
-              <svg viewBox="0 0 18 18">
-              <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
-              <circle class="ql-fill" cx="6" cy="7" r="1"></circle>
-              <polyline class="ql-even ql-fill"
-              points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
-              </polyline>
-              </svg>
-              </button>
+                <button type="button" class="ql-image" >
+                <svg viewBox="0 0 18 18">
+                <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
+                <circle class="ql-fill" cx="6" cy="7" r="1"></circle>
+                <polyline class="ql-even ql-fill"
+                points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
+                </polyline>
+                </svg>
+                </button>
               </span>
-              <span class="ql-formats" @click="fileClick('video')">
-              <button type="button">
+              <span class="ql-formats">
+              <button type="button" class="ql-video">
               <svg viewBox="0 0 18 18">
               <rect class="ql-stroke" height="12" width="12" x="3" y="3"></rect>
               <rect class="ql-fill" height="12" width="1" x="5" y="3"></rect>
@@ -215,7 +214,6 @@
 <script>
 // 工具栏配置
 const toolbarOptions = [
-
   ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
   ["blockquote", "code-block"], // 引用  代码块
   [{ header: 1 }, { header: 2 }], // 1、2 级标题
@@ -261,25 +259,31 @@ export default {
       editorOption: {
         placeholder: "",
         theme: "snow", // or 'bubble'
+        placeholder: "您想说点什么？",
         modules: {
-          toolbar: "#toolbar"
-          },
-          placeholder: "您想说点什么？"
-        // modules: {
-        //   toolbar: {
-        //     container: toolbarOptions,
-        //     handlers: {
-        //       image: function(value) {
-        //         if (value) {
-        //           // 触发input框选择图片文件
-        //           document.querySelector(".avatar-uploader input").click();
-        //         } else {
-        //           this.quill.format("image", false);
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
+          toolbar: {
+            // container: toolbarOptions,
+            container: "#toolbar",
+            handlers: {
+              image: function(value) {
+                if (value) {
+                  // 触发input框选择图片文件
+                  document.querySelector(".avatar-uploader input").click();
+                } else {
+                  this.quill.format("image", false);
+                }
+              },
+              link: function(value) {
+                if (value) {
+                  var href = prompt('请输入url');
+                  this.quill.format("link", href);
+                } else {
+                  this.quill.format("link", false);
+                }
+              }
+            }
+          }
+        }
       },
       serverUrl: "/v1/blog/imgUpload", // 这里写你要上传的图片服务器地址
       header: {
@@ -297,7 +301,6 @@ export default {
     },
     onEditorChange() {
       //内容改变事件
-      console.log(this.content);
       this.$emit("input", this.content);
     },
 
@@ -310,7 +313,6 @@ export default {
     uploadSuccess(res, file) {
       // res为图片服务器返回的数据
       // 获取富文本组件实例
-      console.log(res);
       let quill = this.$refs.myQuillEditor.quill;
       // 如果上传成功
       if (res.code == 200) {
