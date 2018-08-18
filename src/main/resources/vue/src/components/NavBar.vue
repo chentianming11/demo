@@ -31,7 +31,7 @@
 
         <el-submenu index="6" v-if="loginUser">
             <template slot="title">
-                <img :src="loginUser.headUrl" style="border-radius:50%;width: 40px"/>
+                <img :src="loginUser.headUrl" style="border-radius:50%;width: 40px" @click="toSelf(loginUser.id)"/>
             </template>
             <el-menu-item index="6-1">
                 <div @click="handleLogout">退出</div>
@@ -45,30 +45,32 @@
 </template>
 
 <script>
-    export default {
-        name: 'NavBar',
+export default {
+  name: "NavBar",
 
-        props: ['loginUser'],
-        data() {
-            return {
-                activeIndex: '1',
-                activeIndex2: '1'
-            };
-        },
+  props: ["loginUser"],
+  data() {
+    return {
+      activeIndex: "1",
+      activeIndex2: "1"
+    };
+  },
 
-        methods: {
-            handleSelect(key, keyPath) {
-//                console.log(key, keyPath);
-            },
+  methods: {
+    handleSelect(key, keyPath) {
+      //                console.log(key, keyPath);
+    },
 
-            handleLogout(){
-                this.$emit('logout');
-            }
+    handleLogout() {
+      this.$emit("logout");
+    },
 
-        }
+    toSelf(userId) {
+      this.$router.push({ path: `/userPage/${userId}` });
     }
+  }
+};
 </script>
 
 <style>
-
 </style>

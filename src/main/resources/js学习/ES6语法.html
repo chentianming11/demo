@@ -3,20 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>ES6语法</title>
+    <!-- Main Quill library -->
+    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- Theme included stylesheets -->
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+
 </head>
 <body>
 
+<!-- Create toolbar container -->
+<div id="toolbar">
+    <!-- Add font size dropdown -->
+    <select class="ql-size">
+        <option value="small">小</option>
+        <!-- Note a missing, thus falsy value, is used to reset to default -->
+        <option selected>正常</option>
+        <option value="large">大</option>
+        <option value="huge">超大</option>
+    </select>
+    <!-- Add a bold button -->
+    <button class="ql-bold"></button>
+    <button class="ql-link"></button>
+    <!-- Add subscript and superscript buttons -->
+    <button class="ql-script" value="sub"></button>
+    <button class="ql-script" value="super"></button>
+
+    <!-- But you can also add your own -->
+    <button id="custom-button">自</button>
+</div>
+<div id="editor"></div>
+
+
+<!-- Initialize editor with toolbar -->
+<!-- Initialize Quill editor -->
 <script>
-    var arr = [];
-    arr.push(1);
-    arr.push(2);
-    arr.push(3);
-    arr.push(4);
 
-    console.log(arr);
 
-    var b = arr.includes(5);
-    console.log(b)
+    var linkHandler = function(value) {
+        if (value) {
+            var href = prompt('输入url地址');
+            this.quill.format('link', href);
+        } else {
+            this.quill.format('link', false);
+        }
+    }
+    var options = {
+        debug: 'info',
+        modules: {
+            toolbar: '#toolbar'
+        },
+        placeholder: '请输入文本内容',
+        readOnly: false,
+        theme: 'snow'
+    };
+    var quill = new Quill('#editor', options);
+
+    var customButton = document.querySelector('#custom-button');
+    customButton.addEventListener('click', function() {
+        console.log('Clicked!');
+    });
+
+    // Handlers can also be added post initialization
+    var toolbar = quill.getModule('toolbar');
+//    toolbar.addHandler('image', showImageUI);
+    toolbar.addHandler('link', linkHandler);
+
 </script>
 </body>
 </html>

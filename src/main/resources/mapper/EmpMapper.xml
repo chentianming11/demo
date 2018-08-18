@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.study.demo.mapper.EmpMapper">
-    <select id="findEmpJoinDeptAndJob" resultType="EmpView">
+    <select id="findEmpJoinDeptAndJob" resultType="com.study.demo.entity.view.EmpView">
         SELECT emp.*,dept.name dept_name,job.name job_name FROM
         emp LEFT JOIN dept ON emp.dept_id = dept.id
         LEFT JOIN job ON emp.job_id = job.id
@@ -26,7 +26,7 @@
         </where>
     </select>
 
-    <select id="findEmpViewById" resultType="EmpView">
+    <select id="findEmpViewById" resultType="com.study.demo.entity.view.EmpView">
 		SELECT emp.*,dept.name dept_name,job.name job_name FROM
 		emp LEFT JOIN dept ON emp.dept_id = dept.id
 		LEFT JOIN job ON emp.job_id = job.id

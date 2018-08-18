@@ -6,7 +6,7 @@
         <el-main class="main">
             <router-view @login="login" ></router-view>
         </el-main>
-        <el-footer>footer: {{loginUser}}</el-footer>
+        <el-footer></el-footer>
     </el-container>
 </template>
 

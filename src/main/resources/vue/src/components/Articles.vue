@@ -15,7 +15,7 @@
                 label="用户名"
                 width="80">
                 <template slot-scope="scope" >
-                    <div @click="toSelf(scope.row.userId)">{{scope.row.username}}</div>
+                    <a @click="toSelf(scope.row.userId)">{{scope.row.username}}</a>
                 </template>
         </el-table-column>
         <el-table-column
@@ -31,7 +31,7 @@
                 width="200"
                 label="标题">
                 <template slot-scope="scope" >
-                    <div @click="articleDetail(scope.row.articleId)">{{scope.row.title}}</div>
+                    <a @click="articleDetail(scope.row.articleId)">{{scope.row.title}}</a>
                 </template>
         </el-table-column>
       
