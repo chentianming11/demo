@@ -13,19 +13,14 @@
                     
         </div>
 
-        <div v-html="articleDetail.content"></div>
+        <EditorView :content="articleDetail.content" />
 
-        
     </div>
     
 </template>
 
 <script>
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
 export default {
-  
   data() {
     return {
       articleId: this.$route.params.articleId,
@@ -49,11 +44,11 @@ export default {
 
 <style>
 .article-detail {
-    width: 620px;
+  width: 620px;
 }
 
 .user {
-    display: flex;
+  display: flex;
 }
 </style>
 
