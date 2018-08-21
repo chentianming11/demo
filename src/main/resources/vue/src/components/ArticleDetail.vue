@@ -42,13 +42,13 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
 .article-detail {
   width: 620px;
-}
 
-.user {
-  display: flex;
+  .user {
+    display: flex;
+  }
 }
 </style>
 

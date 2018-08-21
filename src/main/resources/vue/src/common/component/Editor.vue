@@ -38,13 +38,14 @@ const toolbarOptions = [
   [{ font: [] }], // 字体种类
   [{ align: [] }], // 对齐方式
   ["clean"], // 清除文本格式
-  ["link", "image", "video"] // 链接、图片、视频
+  ["link", "image", "video"], // 链接、图片、视频
 ];
 
 import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
+
 
 export default {
   props: {
@@ -55,7 +56,7 @@ export default {
     /*图片大小*/
     maxSize: {
       type: Number,
-      default: 4000 //kb
+      default: 1000 //kb
     }
   },
 
@@ -84,14 +85,6 @@ export default {
                   this.quill.format("image", false);
                 }
               },
-              // link: function(value) {
-              //   if (value) {
-              //     var href = prompt('请输入url');
-              //     this.quill.format("link", href);
-              //   } else {
-              //     this.quill.format("link", false);
-              //   }
-              // },
             }
           }
         }
@@ -152,7 +145,8 @@ export default {
 <style>
 .editor {
   line-height: normal !important;
-  height: 800px;
+  margin-bottom: 50px;
+  height: 500px;
 }
 .ql-snow .ql-tooltip[data-mode=link]::before {
   content: "请输入链接地址:";

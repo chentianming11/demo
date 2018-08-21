@@ -12,7 +12,6 @@
 
         </el-form-item>
         <el-form-item label="内容" prop="content">
-            
             <Editor v-model="article.content"/>
         </el-form-item>
         <el-form-item style="text-align: center;">

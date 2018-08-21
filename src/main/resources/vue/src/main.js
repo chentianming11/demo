@@ -4,6 +4,16 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+// 引入全局js
+import  CookUtils from './common/util/CookUtils';
+import  DateUtils from './common/util/DateUtils';
+import  FormatUtils from './common/util/FormatUtils';
+
+Vue.prototype.CookUtils = CookUtils;
+Vue.prototype.DateUtils = DateUtils;
+Vue.prototype.FormatUtils = FormatUtils;
+
+
 // QuillEditor富文本编辑器
 import VueQuillEditor from 'vue-quill-editor';
 import 'quill/dist/quill.core.css';
@@ -20,11 +30,13 @@ import VueAxios from 'vue-axios';
 Vue.use(VueAxios, axios);
 
 // 全局css
-import './common/css/main.css';
+import './common/style/main.less';
 // 全局注册组件
 import './common/component/global';
 // 全局过滤器
 import './common/filter/filter';
+
+
 
 
 

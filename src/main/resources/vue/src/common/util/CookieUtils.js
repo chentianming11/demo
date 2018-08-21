@@ -1,4 +1,4 @@
-export default class CookieUtil {
+export default class CookieUtils {
 
   static setCookie(cname, cvalue, exdays) {
       var d = new Date();

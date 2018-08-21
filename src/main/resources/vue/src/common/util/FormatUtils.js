@@ -1,4 +1,4 @@
-export default class formatUtil {
+export default class FormatUtils {
 
   /**
    * 格式化货币

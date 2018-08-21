@@ -1,10 +1,9 @@
 package com.study.demo.multi.thread.base;
 
-class ThreadDemo extends Thread {
-    private Thread t;
+class ThreadDemo2 extends Thread {
     private String threadName;
 
-    ThreadDemo( String name) {
+    ThreadDemo2(String name) {
         threadName = name;
         System.out.println("Creating " +  threadName );
     }
@@ -25,20 +24,17 @@ class ThreadDemo extends Thread {
 
     public void start () {
         System.out.println("Starting " +  threadName );
-        if (t == null) {
-            t = new Thread (this, threadName);
-            t.start ();
-        }
+        super.start();
     }
 }
 
 public class TestThread2 {
 
     public static void main(String args[]) {
-        ThreadDemo T1 = new ThreadDemo( "Thread-1");
+        ThreadDemo2 T1 = new ThreadDemo2( "Thread-1");
         T1.start();
 
-        ThreadDemo T2 = new ThreadDemo( "Thread-2");
+        ThreadDemo2 T2 = new ThreadDemo2( "Thread-2");
         T2.start();
     }
 }
