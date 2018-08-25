@@ -5,7 +5,7 @@
 
     <select id="getAllArticle" resultType="java.util.Map">
         SELECT article.id article_id, article.collection_id, article.content, article.title, article.create_time article_create_time,
-        coll.name collection_name, ur.id user_id,ur.username, ur.head_url
+        coll.name collection_name, ur.id user_id,ur.username, ur.head_url headUrl, article.is_valid
         FROM T_BLOG_ARTICLE article
         LEFT JOIN T_BLOG_COLLECTION coll ON  article.collection_id = coll.id
         LEFT JOIN T_BLOG_USER ur ON coll.user_id = ur.id
@@ -21,7 +21,7 @@
     </select>
     <select id="getArticleDetail" resultType="java.util.Map">
        SELECT article.id article_id, article.collection_id, article.content, article.title, article.create_time article_create_time,
-        coll.name collection_name, ur.id user_id,ur.username, ur.head_url
+        coll.name collection_name, ur.id user_id,ur.username, ur.head_url, article.is_valid
         FROM T_BLOG_ARTICLE article
         LEFT JOIN T_BLOG_COLLECTION coll ON  article.collection_id = coll.id
         LEFT JOIN T_BLOG_USER ur ON coll.user_id = ur.id

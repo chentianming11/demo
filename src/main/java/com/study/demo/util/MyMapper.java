@@ -13,38 +13,21 @@ public interface MyMapper<T> extends Mapper<T> {
 
 
     /**
-     * 忽略id列批量插入
+     * 批量插入
      *
      * @param list
      */
-    default void insertBatchSkipId(List<T> list) {
-        Lists.partition(list, 100).forEach(partitionList -> insertAllSkipId(partitionList));
-    }
-
-    /**
-     * 不忽略id列批量插入
-     *
-     * @param list
-     */
-    default void insertBatchNotSkipId(List<T> list) {
-        Lists.partition(list, 100).forEach(partitionList -> insertAllNotSkipId(partitionList));
+    default void insertBatch(List<T> list) {
+        Lists.partition(list, 1000).forEach(partitionList -> insertAll(partitionList));
     }
 
 
     /**
-     * 忽略id列全量插入
+     * 全量插入
      *
      * @param list
      */
     @InsertProvider(type = MySelectProvider.class, method = "dynamicSQL")
-    void insertAllSkipId(List<T> list);
-
-    /**
-     * 不忽略id列全量插入
-     *
-     * @param list
-     */
-    @InsertProvider(type = MySelectProvider.class, method = "dynamicSQL")
-    void insertAllNotSkipId(List<T> list);
+    void insertAll(List<T> list);
 
 }

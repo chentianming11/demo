@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,6 +27,8 @@ public class BlogCollection implements Serializable {
     private Integer userId;
     private String name;
     private String description;
+
+    @Column(insertable = false, updatable = false)
     private Date createTime;
 
 }

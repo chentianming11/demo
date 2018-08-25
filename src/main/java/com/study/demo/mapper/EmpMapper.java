@@ -1,19 +1,19 @@
 package com.study.demo.mapper;
 
-import java.util.List;
-
 import com.study.demo.entity.Emp;
 import com.study.demo.entity.EmpQuery;
 import com.study.demo.entity.view.EmpView;
-import com.study.demo.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
 
 /**
  * 员工Mapper接口
  *
  * @author chen
  */
-public interface EmpMapper extends MyMapper<Emp> {
+public interface EmpMapper extends Mapper<Emp> {
 
     /**
      * 员工表连接部门表和岗位表，分页查询员工详细信息列表

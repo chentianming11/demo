@@ -21,5 +21,6 @@ public class TestStringUtils {
         // 检查CharSequence是否只包含Unicode字母或数字
         System.out.println(StringUtils.isAlphanumeric("ddd"));
 
+
     }
 }

@@ -2,9 +2,12 @@ package com.study.demo;
 
 import com.study.demo.entity.Emp;
 import com.study.demo.entity.EmpQuery;
+import com.study.demo.entity.blog.BlogArticle;
+import com.study.demo.entity.blog.BlogCollection;
 import com.study.demo.entity.view.EmpView;
-import com.study.demo.mapper.DeptMapper;
 import com.study.demo.mapper.EmpMapper;
+import com.study.demo.mapper.blog.BlogArticleMapper;
+import com.study.demo.mapper.blog.BlogCollectionMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,7 +30,12 @@ public class DemoApplicationTests {
     @Autowired
     Jedis jedis;
     @Autowired
-    private DeptMapper deptMapper;
+    BlogCollectionMapper blogCollectionMapper;
+
+    @Autowired
+    BlogArticleMapper blogArticleMapper;
+
+
 
     @Test
     public void testJedis() {
@@ -54,24 +64,47 @@ public class DemoApplicationTests {
 
 
     /**
-     * 1w条  批量插入  5880ms
-     * 1w条  全量插入  1538ms
+     * 10w条  批量插入   9156  ms
+     * 10w条  单个插入   161320  ms
      * 测试通用Mapper的批量插入
      */
     @Test
     public void test6() throws Exception {
-//		List<Emp> emps = new ArrayList<>();
-//		for (int i = 0; i < 10000; i++) {
-//			emps.add(Emp.builder().name("111").status(1).build());
-//		}
-//		long start = System.currentTimeMillis();
-//		empMapper.insertBatchSkipId(emps);
-//		long end = System.currentTimeMillis();
-//		System.out.println("耗时：" + (end - start) + "ms");
-//		Emp emp = Emp.builder().name("111").status(1).build();
-//		int i = empMapper.insertSelective(emp);
-//		System.out.println(i + "    " + emp.getId());
 
+        long start = System.currentTimeMillis();
+
+//        List<BlogCollection> list = new ArrayList<>();
+//
+//
+//        for (int i = 0; i < 100000; i++) {
+//
+//            list.add(BlogCollection.builder().name("test")
+//                    .description("desc").userId(1001).build());
+//        }
+//
+//        blogCollectionMapper.insertBatch(list);
+
+        for (int i = 0; i < 100000; i++) {
+
+            BlogCollection build = BlogCollection.builder().name("test")
+                    .description("desc").userId(1001).build();
+            blogCollectionMapper.insertSelective(build);
+        }
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("执行时间：" + (end-start) + "  ms");
+    }
+
+
+    @Test
+    public void test7(){
+        List<BlogArticle> list = new ArrayList<>();
+
+        list.add(new BlogArticle(null, 4, "title", "content", new Date(), 1));
+
+
+        blogArticleMapper.insertAll(list);
     }
 
 }

@@ -1,9 +1,9 @@
 package com.study.demo.mapper;
 
 import com.study.demo.entity.Dept;
-import com.study.demo.util.MyMapper;
+import tk.mybatis.mapper.common.Mapper;
 
 
-public interface DeptMapper extends MyMapper<Dept> {
+public interface DeptMapper extends Mapper<Dept> {
 
 }

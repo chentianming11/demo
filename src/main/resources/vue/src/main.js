@@ -5,11 +5,11 @@ import App from './App'
 import router from './router'
 
 // 引入全局js
-import  CookUtils from './common/util/CookUtils';
+import  CookieUtils from './common/util/CookieUtils';
 import  DateUtils from './common/util/DateUtils';
 import  FormatUtils from './common/util/FormatUtils';
 
-Vue.prototype.CookUtils = CookUtils;
+Vue.prototype.CookieUtils = CookieUtils;
 Vue.prototype.DateUtils = DateUtils;
 Vue.prototype.FormatUtils = FormatUtils;
 

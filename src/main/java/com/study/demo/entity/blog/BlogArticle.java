@@ -1,11 +1,10 @@
 package com.study.demo.entity.blog;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,6 +14,8 @@ import java.util.Date;
  */
 @Data
 @Table(name = "T_BLOG_ARTICLE")
+@NoArgsConstructor
+@AllArgsConstructor
 public class BlogArticle implements Serializable {
 
     private static final long serialVersionUID = -1041526867294109555L;
@@ -24,6 +25,9 @@ public class BlogArticle implements Serializable {
     private Integer collectionId;
     private String title;
     private String content;
+    @Column(insertable = false, updatable = false)
     private Date createTime;
+    private Integer isValid;
+
 
 }

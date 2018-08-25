@@ -11,36 +11,22 @@ public class MySelectProvider extends MapperTemplate {
         super(mapperClass, mapperHelper);
     }
 
+
     /**
-     * 忽略id列全部插入
-     *
+     * 全量插入
      * @param ms
      * @return
      */
-    public String insertAllSkipId(MappedStatement ms) {
-        return insertAll(ms, true);
-    }
-
-    /**
-     * 不忽略id列全部插入
-     *
-     * @param ms
-     * @return
-     */
-    public String insertAllNotSkipId(MappedStatement ms) {
-        return insertAll(ms, false);
-    }
-
-
-    private String insertAll(MappedStatement ms, boolean skipId) {
+    public String insertAll(MappedStatement ms) {
         final Class<?> entityClass = getEntityClass(ms);
+        boolean skipId = true;
         //修改返回值类型为实体类型
         StringBuilder sql = new StringBuilder();
         sql.append(SqlHelper.insertIntoTable(entityClass, tableName(entityClass)));
         sql.append(SqlHelper.insertColumns(entityClass, skipId, false, isNotEmpty()));
-        sql.append("VALUES ");
+        sql.append("VALUES  ");
         sql.append("<foreach collection=\"collection\" item=\"item\" separator=\",\" > ");
-        sql.append(SqlHelper.insertValuesColumns(entityClass, skipId, false, isNotEmpty()).replaceAll("VALUES", ""));
+        sql.append(MySqlHelper.insertValuesColumns(entityClass, skipId));
         sql.append(" </foreach>");
         String s = sql.toString().replaceAll("#\\{", "#{item.")
                 .replaceAll("test=\"", "test=\"item.");
