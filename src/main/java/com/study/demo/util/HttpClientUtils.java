@@ -33,6 +33,7 @@ import java.util.Map;
 public class HttpClientUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
+    public static final String UTF_8 = "utf-8";
 
     private static CloseableHttpClient client;
 
@@ -63,9 +64,9 @@ public class HttpClientUtils {
         HttpPut httpPut = new HttpPut(url);
         // 设置请求头
         setHttpHeader(header, httpPut);
-        StringEntity entity = new StringEntity(jsonString, "utf-8");
+        StringEntity entity = new StringEntity(jsonString, UTF_8);
         entity.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        entity.setContentEncoding("UTF-8");
+        entity.setContentEncoding(UTF_8);
         httpPut.setEntity(entity);
         CloseableHttpResponse response = client.execute(httpPut);
         String result = getStringResultFromResponse(response);
@@ -103,9 +104,9 @@ public class HttpClientUtils {
         HttpPost httpPost = new HttpPost(url);
         // 设置请求头
         setHttpHeader(header, httpPost);
-        StringEntity entity = new StringEntity(jsonString, "utf-8");
+        StringEntity entity = new StringEntity(jsonString, UTF_8);
         entity.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        entity.setContentEncoding("UTF-8");
+        entity.setContentEncoding(UTF_8);
         httpPost.setEntity(entity);
         CloseableHttpResponse response = client.execute(httpPost);
         String result = getStringResultFromResponse(response);
@@ -133,7 +134,7 @@ public class HttpClientUtils {
         HttpPut httpPut = new HttpPut(url);
         // 设置请求头
         setHttpHeader(header, httpPut);
-        httpPut.setEntity(new UrlEncodedFormEntity(nameValuePairList, "utf-8"));
+        httpPut.setEntity(new UrlEncodedFormEntity(nameValuePairList, UTF_8));
         CloseableHttpResponse response = client.execute(httpPut);
         String result = getStringResultFromResponse(response);
         return result;
@@ -160,7 +161,7 @@ public class HttpClientUtils {
         HttpPost httpPost = new HttpPost(url);
         // 设置请求头
         setHttpHeader(header, httpPost);
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, "utf-8"));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, UTF_8));
         CloseableHttpResponse response = client.execute(httpPost);
         String result = getStringResultFromResponse(response);
         return result;
@@ -257,8 +258,9 @@ public class HttpClientUtils {
         HttpEntity entity = response.getEntity();
         String result = "";
         if (entity != null) {
-            result = EntityUtils.toString(entity, "utf-8");
+            result = EntityUtils.toString(entity, UTF_8);
         }
+        response.close();
         if (statusCode < HttpStatus.SC_OK || statusCode > HttpStatus.SC_MULTI_STATUS) {
             // 响应失败
             String errorMessage = String.format("请求失败，状态码：%d； 返回结果：%s", statusCode, StringUtils.substring(result, 0, 200));
