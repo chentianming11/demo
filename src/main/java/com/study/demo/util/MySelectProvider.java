@@ -20,7 +20,6 @@ public class MySelectProvider extends MapperTemplate {
     public String insertAll(MappedStatement ms) {
         final Class<?> entityClass = getEntityClass(ms);
         boolean skipId = true;
-        //修改返回值类型为实体类型
         StringBuilder sql = new StringBuilder();
         sql.append(SqlHelper.insertIntoTable(entityClass, tableName(entityClass)));
         sql.append(SqlHelper.insertColumns(entityClass, skipId, false, isNotEmpty()));
