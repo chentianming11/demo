@@ -38,6 +38,13 @@
 `/usr/local/Cellar/rabbitmq/3.7.7/sbin/rabbitmqctl stop`
 
 
+### 前端vue项目启动
+- 进入vue项目目录
+- 安装依赖
+npm i
+- 启动
+npm start
+
 
 
 
