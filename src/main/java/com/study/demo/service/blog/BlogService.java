@@ -75,8 +75,8 @@ public class BlogService {
         String headUrl = HEAD_LIST.get(new Random().nextInt(HEAD_LIST.size()));
         blogUser.setHeadUrl(headUrl);
         blogUser.setCreateTime(new Date());
-        blogUserMapper.insert(blogUser);
-        blogCollectionMapper.insert(BlogCollection.builder()
+        blogUserMapper.insertSelective(blogUser);
+        blogCollectionMapper.insertSelective(BlogCollection.builder()
                 .createTime(new Date())
                 .userId(blogUser.getId())
                 .name("默认文集")
@@ -96,12 +96,12 @@ public class BlogService {
     }
 
     public void addCollection(BlogCollection blogCollection) {
-        blogCollectionMapper.insert(blogCollection);
+        blogCollectionMapper.insertSelective(blogCollection);
     }
 
     public void addArticle(BlogArticle blogArticle) {
         blogArticle.setCreateTime(new Date());
-        blogArticleMapper.insert(blogArticle);
+        blogArticleMapper.insertSelective(blogArticle);
     }
 
     public PageInfo<Map> getArticleList(Integer pageNum, Integer userId, Integer collectionId) {
@@ -126,5 +126,18 @@ public class BlogService {
 
     public Map<String,Object> getArticleDetail(Integer articleId) {
         return blogArticleMapper.getArticleDetail(articleId);
+    }
+
+    public void testUpdateAll() {
+
+        List<BlogArticle> blogArticles = new ArrayList<>();
+
+        blogArticles.add(new BlogArticle(1, 2, "吃一个", null, null, 1));
+        blogArticles.add(new BlogArticle(2, 1, "撒大声地快快快", null, new Date(), null));
+        blogArticles.add(new BlogArticle(3, 3, null, "测距哦哦破", null, 1));
+        blogArticles.add(new BlogArticle(4, null, "is打飞机哦is奇偶i", null, null, 1));
+
+        blogArticleMapper.updateAll(blogArticles);
+
     }
 }

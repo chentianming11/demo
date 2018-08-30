@@ -15,4 +15,6 @@ public interface BlogArticleMapper extends MyMapper<BlogArticle> {
     List<Map> getAllArticle(Map<String, Object> params);
 
     Map<String,Object> getArticleDetail(Integer articleId);
+
+    void updateAll(List<BlogArticle> list);
 }

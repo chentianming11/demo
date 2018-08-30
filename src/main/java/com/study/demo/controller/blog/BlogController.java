@@ -169,4 +169,14 @@ public class BlogController {
 
     }
 
+
+    @GetMapping("/test/updateAll")
+    public Map<String, Object> testUpdateAll() {
+        blogService.testUpdateAll();
+
+        return ImmutableMap.of("status", "ok");
+    }
+
+
+
 }

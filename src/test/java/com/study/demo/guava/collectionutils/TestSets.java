@@ -26,11 +26,15 @@ public class TestSets {
         System.out.println("并集" + Sets.union(set, set2));
         // set1中去除交集的部分
         System.out.println("set1中去除交集的部分" + Sets.difference(set, set2));
+        System.out.println("set2中去除交集的部分" + Sets.difference(set2, set));
         System.out.println("并集中去除交集的部分" + Sets.symmetricDifference(set, set2));
 
         System.out.println("------powerSet-------");
         // set集合中的所有子集
         Set<Set<String>> powerSet = Sets.powerSet(set);
+
+
+
 
 
     }
