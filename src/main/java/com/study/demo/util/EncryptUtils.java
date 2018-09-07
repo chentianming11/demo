@@ -6,22 +6,30 @@ import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
-import java.util.Base64;
 
 /**
  * Created by chenTianMing on 2018/6/3.
  */
 public class EncryptUtils {
 
+    private static final String DEFAULT_AES_KEY_STR = "AxhjMVebmGiprTkbtjteeFhoipDmBhIF";
 
-    public static AES getAES(String keyStr) {
-        return new AES(keyStr);
-    }
+    private static final AES aes = new AES(DEFAULT_AES_KEY_STR);
 
     public static class AES {
-        private SecretKeySpec secretKeySpec; // 密钥对象
-        private Cipher encryptCipher; // 加密的Cipher
-        private Cipher decryptCipher; // 解密的Cipher
+        public static final String UTF_8 = "utf-8";
+        /**
+         * 密钥对象
+         */
+        private SecretKeySpec secretKeySpec;
+        /**
+         * 加密的Cipher
+         */
+        private Cipher encryptCipher;
+        /**
+         * 解密的Cipher
+         */
+        private Cipher decryptCipher;
 
         @SneakyThrows
         private AES(String keyStr) {
@@ -58,11 +66,11 @@ public class EncryptUtils {
             //获取加密内容的字节数组
             byte[] contentBytes = content.getBytes("utf-8");
             byte[] aesBytes = encryptCipher.doFinal(contentBytes);
-            //为了避免解密时数据丢失，将加密后的内容进行Base64编码后再返回
-            String aesContent = Base64.getEncoder().encodeToString(aesBytes);
-            //将加密后的密文转为字符串返回
-            return aesContent;
+            //为了避免解密时数据丢失，转成16进制
+            return HexStringUtils.bytesToHexString(aesBytes);
+
         }
+
 
         /**
          * 密文解密
@@ -71,12 +79,58 @@ public class EncryptUtils {
          * @return
          */
         public String decrypt(String content) throws BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
-            //先将密文进行Base64解码
-            byte[] aesBytes = Base64.getDecoder().decode(content);
+            byte[] aesBytes = HexStringUtils.hexStringToByte(content);
             //将密文进行解密
             byte[] contentBytes = decryptCipher.doFinal(aesBytes);
             //将解密后的内容转成字符串并返回
-            return new String(contentBytes, "utf-8");
+            return new String(contentBytes, UTF_8);
         }
+    }
+
+
+    public static String aesEncrypt(String content) {
+        try {
+            return aes.encrypt(content);
+        } catch (Exception e) {
+            throw new RuntimeException("AES加密失败", e);
+        }
+    }
+
+    public static String aesDecrypt(String content) {
+        try {
+            return aes.decrypt(content);
+        } catch (Exception e) {
+            throw new RuntimeException("AES解密失败", e);
+        }
+    }
+
+    /**
+     * aes加密
+     *
+     * @param id
+     * @return
+     */
+    public static String aesEncrypt(Number id) {
+        try {
+            return aes.encrypt(String.valueOf(id));
+        } catch (Exception e) {
+            throw new RuntimeException("AES加密失败", e);
+        }
+    }
+
+
+    public static void main(String[] args) throws UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
+
+
+        long maxValue = Long.MAX_VALUE;
+        System.out.println(maxValue);
+        String encrypt = EncryptUtils.aesEncrypt(maxValue);
+        System.out.println(encrypt);
+
+
+        String decrypt = EncryptUtils.aesDecrypt(encrypt);
+        System.out.println(decrypt);
+
+
     }
 }

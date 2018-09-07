@@ -29,7 +29,6 @@ public class AccountController {
 
     @Autowired
     AccountService accountService;
-    EncryptUtils.AES aes = EncryptUtils.getAES("TEST_ACCOUNT_ENCRYPT_KEY_24456");
 
     /**
      * 登录接口
@@ -41,7 +40,7 @@ public class AccountController {
         AppAssert.notNull(account, "用户名或者密码错误");
         // 登录成功 将账号id加密后写入cookie
         log.info("[" + account.getNickname() + "] 登录成功, " + request.getHeader("host"));
-        String encrypt = aes.encrypt(account.getId() + "-" + System.currentTimeMillis());
+        String encrypt = EncryptUtils.aesEncrypt(account.getId() + "-" + System.currentTimeMillis());
         log.info("加密信息为：" + encrypt);
         Cookie loginCookie = new Cookie("login_cookie", encrypt);
         loginCookie.setMaxAge(60 * 60 * 24 * 7);

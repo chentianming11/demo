@@ -43,15 +43,13 @@ public class BlogController {
     @Autowired
     BlogService blogService;
 
-    EncryptUtils.AES aes = EncryptUtils.getAES("BLOG_USER_ENCRYPT_KEY_24456");
-
 
     @SneakyThrows
     private Integer getLoginId(HttpServletRequest request){
         Cookie loginCookie = CookieUtils.getCookieByName(request, "login_cookie");
         if (loginCookie != null) {
             // 已登录
-            String decrypt = aes.decrypt(loginCookie.getValue());
+            String decrypt = EncryptUtils.aesDecrypt(loginCookie.getValue());
             Integer id = Integer.valueOf(Splitter.on("-").splitToList(decrypt).get(0));
             log.info("解析出已登录的id为" + id);
             return id;
@@ -64,7 +62,7 @@ public class BlogController {
         BlogUser loginBlogUser = blogService.login(blogUser);
         // 登录成功 将账号id加密后写入cookie
         log.info("[" + loginBlogUser.getUsername() + "] 登录成功, " + request.getHeader("host"));
-        String encrypt = aes.encrypt(loginBlogUser.getId() + "-" + System.currentTimeMillis());
+        String encrypt = EncryptUtils.aesEncrypt(loginBlogUser.getId() + "-" + System.currentTimeMillis());
         log.info("加密信息为：" + encrypt);
         Cookie loginCookie = new Cookie("login_cookie", encrypt);
         loginCookie.setMaxAge(60 * 60 * 24 * 7);

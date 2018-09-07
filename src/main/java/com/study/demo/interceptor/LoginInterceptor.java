@@ -20,8 +20,6 @@ import java.util.Optional;
 @Slf4j
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
-    EncryptUtils.AES aes = EncryptUtils.getAES("TEST_ACCOUNT_ENCRYPT_KEY_24456");
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -30,7 +28,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 .map(cookie -> {
                     try {
                         // 已登录
-                        String decrypt = aes.decrypt(cookie.getValue());
+                        String decrypt = EncryptUtils.aesDecrypt(cookie.getValue());
                         Integer id = Integer.valueOf(Splitter.on("-").splitToList(decrypt).get(0));
                         log.info("解析出已登录的id为" + id);
                         request.setAttribute("loginId", id);

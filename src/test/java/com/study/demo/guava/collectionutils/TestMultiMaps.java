@@ -1,5 +1,6 @@
 package com.study.demo.guava.collectionutils;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.*;
 import com.study.demo.entity.Employee;
 import org.junit.Test;
@@ -27,6 +28,11 @@ public class TestMultiMaps {
         employees.add(new Employee("张三", 32, 17000));
         // 有一组对象，它们有共同的特定属性，我们希望按照这个属性的值查询对象，但属性值不一定是独一无二的。
         ImmutableListMultimap<String, Employee> index = Multimaps.index(employees, employee -> employee.getName());
+
+
+        String toJSONString = JSON.toJSONString(index);
+        System.out.println(toJSONString);
+
         index.forEach((k, v) -> System.out.println(k + "=" + v));
         ImmutableList<Employee> 张三 = index.get("张三");
 
