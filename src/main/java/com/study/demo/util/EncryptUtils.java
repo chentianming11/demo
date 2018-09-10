@@ -1,6 +1,7 @@
 package com.study.demo.util;
 
-import lombok.SneakyThrows;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,7 +15,7 @@ public class EncryptUtils {
 
     private static final String DEFAULT_AES_KEY_STR = "AxhjMVebmGiprTkbtjteeFhoipDmBhIF";
 
-    private static final AES aes = new AES(DEFAULT_AES_KEY_STR);
+    private static final AES aes = AES.getInstance(DEFAULT_AES_KEY_STR);
 
     public static class AES {
         public static final String UTF_8 = "utf-8";
@@ -31,30 +32,40 @@ public class EncryptUtils {
          */
         private Cipher decryptCipher;
 
-        @SneakyThrows
         private AES(String keyStr) {
-            //指定加密算法的名称为AES,
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            //初始化密钥生成器，指定密钥的长度(单位:bit),
-            //SecureRandom是生成安全随机数序列
-            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-            secureRandom.setSeed(keyStr.getBytes());
-            keyGenerator.init(128, secureRandom);
-            //生成原始对称密钥
-            SecretKey secretKey = keyGenerator.generateKey();
-            //返回编码格式的密钥
-            byte[] enCodeFormat = secretKey.getEncoded();
-            //根据字节数组生成AES专用密钥
-            secretKeySpec = new SecretKeySpec(enCodeFormat, "AES");
-            //根据指定算法生成密码器
-            encryptCipher = Cipher.getInstance("AES");
-            decryptCipher = Cipher.getInstance("AES");
-            //初始化密码器，
-            // 第一个参数为密码的操作模式：加密(ENCRYPT_MODE),解密(DECRYPT_MODE)
-            //第二个参数为AES密钥
-            encryptCipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-            decryptCipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+
+            try{
+                //指定加密算法的名称为AES,
+                KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+                //初始化密钥生成器，指定密钥的长度(单位:bit),
+                //SecureRandom是生成安全随机数序列
+                SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+                secureRandom.setSeed(keyStr.getBytes());
+                keyGenerator.init(128, secureRandom);
+                //生成原始对称密钥
+                SecretKey secretKey = keyGenerator.generateKey();
+                //返回编码格式的密钥
+                byte[] enCodeFormat = secretKey.getEncoded();
+                //根据字节数组生成AES专用密钥
+                secretKeySpec = new SecretKeySpec(enCodeFormat, "AES");
+                //根据指定算法生成密码器
+                encryptCipher = Cipher.getInstance("AES");
+                decryptCipher = Cipher.getInstance("AES");
+                //初始化密码器，
+                // 第一个参数为密码的操作模式：加密(ENCRYPT_MODE),解密(DECRYPT_MODE)
+                //第二个参数为AES密钥
+                encryptCipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+                decryptCipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+            }catch (Exception e){
+                throw new RuntimeException("初始化AES加密器异常", e);
+            }
+
         }
+
+        public static AES getInstance(String keyStr){
+            return new AES(keyStr);
+        }
+
 
         /**
          * 明文加密
@@ -104,12 +115,6 @@ public class EncryptUtils {
         }
     }
 
-    /**
-     * aes加密
-     *
-     * @param id
-     * @return
-     */
     public static String aesEncrypt(Number id) {
         try {
             return aes.encrypt(String.valueOf(id));
@@ -118,19 +123,34 @@ public class EncryptUtils {
         }
     }
 
+    public static String md5Hex(String content) {
+        return DigestUtils.md5Hex(content);
+    }
+
+
+    public static String sha1Hex(String content) {
+        return DigestUtils.sha1Hex(content);
+    }
+
+
+
+
 
     public static void main(String[] args) throws UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
 
 
-        long maxValue = Long.MAX_VALUE;
-        System.out.println(maxValue);
-        String encrypt = EncryptUtils.aesEncrypt(maxValue);
-        System.out.println(encrypt);
-
-
-        String decrypt = EncryptUtils.aesDecrypt(encrypt);
+//        long maxValue = 12342523L;
+//
+//        for (int i = 0; i < 100; i++) {
+//
+//            String encrypt = EncryptUtils.aesEncrypt(maxValue);
+//            System.out.println(encrypt);
+//
+//            String decrypt = EncryptUtils.aesDecrypt(encrypt);
+//            System.out.println(decrypt);
+//        }
+        String decrypt = EncryptUtils.aesDecrypt("9796CD95EC499F29284B49CBDCDCABCD");
         System.out.println(decrypt);
-
 
     }
 }

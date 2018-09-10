@@ -26,6 +26,18 @@ public abstract class AppAssert {
         }
     }
 
+    public static void notEmpty(Object o, String errorMessage) {
+        if (Is.empty(o)) {
+            throw new AppException(errorMessage);
+        }
+    }
+
+    public static void isEmpty(Object o, String errorMessage) {
+        if (!Is.empty(o)) {
+            throw new AppException(errorMessage);
+        }
+    }
+
     public static void equals(Object o1, Object o2, String errorMessage) {
         if (!Objects.equals(o1, o2)) {
             throw new AppException(errorMessage);
