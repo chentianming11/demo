@@ -59,18 +59,22 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doPutWithJSON(String url, Map<String, Object> params, Map<String, String> header) throws IOException {
-        String jsonString = JSON.toJSONString(params);
-        HttpPut httpPut = new HttpPut(url);
-        // 设置请求头
-        setHttpHeader(header, httpPut);
-        StringEntity entity = new StringEntity(jsonString, UTF_8);
-        entity.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        entity.setContentEncoding(UTF_8);
-        httpPut.setEntity(entity);
-        CloseableHttpResponse response = client.execute(httpPut);
-        String result = getStringResultFromResponse(response);
-        return result;
+    public static String doPutWithJSON(String url, Map<String, Object> params, Map<String, String> header) {
+        try {
+            String jsonString = JSON.toJSONString(params);
+            HttpPut httpPut = new HttpPut(url);
+            // 设置请求头
+            setHttpHeader(header, httpPut);
+            StringEntity entity = new StringEntity(jsonString, UTF_8);
+            entity.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            entity.setContentEncoding(UTF_8);
+            httpPut.setEntity(entity);
+            CloseableHttpResponse response = client.execute(httpPut);
+            String result = getStringResultFromResponse(response);
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException("请求失败", e);
+        }
     }
 
     /**
@@ -79,7 +83,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doPutWithJSON(String url, Map<String, Object> params) throws IOException {
+    public static String doPutWithJSON(String url, Map<String, Object> params)  {
         return doPutWithJSON(url, params, null);
     }
 
@@ -89,7 +93,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doPostWithJSON(String url, Map<String, Object> params) throws IOException {
+    public static String doPostWithJSON(String url, Map<String, Object> params) {
         return doPostWithJSON(url, params, null);
     }
 
@@ -99,18 +103,22 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doPostWithJSON(String url, Map<String, Object> params, Map<String, String> header) throws IOException {
-        String jsonString = JSON.toJSONString(params);
-        HttpPost httpPost = new HttpPost(url);
-        // 设置请求头
-        setHttpHeader(header, httpPost);
-        StringEntity entity = new StringEntity(jsonString, UTF_8);
-        entity.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        entity.setContentEncoding(UTF_8);
-        httpPost.setEntity(entity);
-        CloseableHttpResponse response = client.execute(httpPost);
-        String result = getStringResultFromResponse(response);
-        return result;
+    public static String doPostWithJSON(String url, Map<String, Object> params, Map<String, String> header) {
+        try {
+            String jsonString = JSON.toJSONString(params);
+            HttpPost httpPost = new HttpPost(url);
+            // 设置请求头
+            setHttpHeader(header, httpPost);
+            StringEntity entity = new StringEntity(jsonString, UTF_8);
+            entity.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            entity.setContentEncoding(UTF_8);
+            httpPost.setEntity(entity);
+            CloseableHttpResponse response = client.execute(httpPost);
+            String result = getStringResultFromResponse(response);
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException("请求失败", e);
+        }
     }
 
     /**
@@ -119,7 +127,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doPutWithFormData(String url, Map<String, Object> params) throws IOException {
+    public static String doPutWithFormData(String url, Map<String, Object> params) {
         return doPutWithFormData(url, params, null);
     }
 
@@ -129,15 +137,19 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doPutWithFormData(String url, Map<String, Object> params, Map<String, String> header) throws IOException {
-        List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
-        HttpPut httpPut = new HttpPut(url);
-        // 设置请求头
-        setHttpHeader(header, httpPut);
-        httpPut.setEntity(new UrlEncodedFormEntity(nameValuePairList, UTF_8));
-        CloseableHttpResponse response = client.execute(httpPut);
-        String result = getStringResultFromResponse(response);
-        return result;
+    public static String doPutWithFormData(String url, Map<String, Object> params, Map<String, String> header) {
+        try {
+            List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
+            HttpPut httpPut = new HttpPut(url);
+            // 设置请求头
+            setHttpHeader(header, httpPut);
+            httpPut.setEntity(new UrlEncodedFormEntity(nameValuePairList, UTF_8));
+            CloseableHttpResponse response = client.execute(httpPut);
+            String result = getStringResultFromResponse(response);
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException("请求失败", e);
+        }
     }
 
     /**
@@ -146,7 +158,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doPostWithFormData(String url, Map<String, Object> params) throws IOException {
+    public static String doPostWithFormData(String url, Map<String, Object> params) {
         return doPostWithFormData(url, params, null);
     }
 
@@ -156,38 +168,20 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doPostWithFormData(String url, Map<String, Object> params, Map<String, String> header) throws IOException {
-        List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
-        HttpPost httpPost = new HttpPost(url);
-        // 设置请求头
-        setHttpHeader(header, httpPost);
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, UTF_8));
-        CloseableHttpResponse response = client.execute(httpPost);
-        String result = getStringResultFromResponse(response);
-        return result;
-    }
-
-    /**
-     * 发送get请求
-     *
-     * @param url
-     * @return
-     */
-    public static String doGet(String url, Map<String, Object> params, Map<String, String> header) throws URISyntaxException, IOException {
-        URIBuilder uriBuilder = new URIBuilder(url);
-        // 设置参数
-        if (!CollectionUtils.isEmpty(params)) {
+    public static String doPostWithFormData(String url, Map<String, Object> params, Map<String, String> header)  {
+        try {
             List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
-            uriBuilder.setParameters(nameValuePairList);
+            HttpPost httpPost = new HttpPost(url);
+            // 设置请求头
+            setHttpHeader(header, httpPost);
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, UTF_8));
+            CloseableHttpResponse response = client.execute(httpPost);
+            String result = getStringResultFromResponse(response);
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException("请求失败", e);
+
         }
-        // 获取httpGet对象
-        HttpGet httpGet = new HttpGet(uriBuilder.build());
-        // 设置请求头
-        setHttpHeader(header, httpGet);
-        // 执行请求，获取响应
-        CloseableHttpResponse response = client.execute(httpGet);
-        String result = getStringResultFromResponse(response);
-        return result;
     }
 
     /**
@@ -196,7 +190,36 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doGet(String url) throws IOException, URISyntaxException {
+    public static String doGet(String url, Map<String, Object> params, Map<String, String> header) {
+        try {
+            URIBuilder uriBuilder = new URIBuilder(url);
+            // 设置参数
+            if (!CollectionUtils.isEmpty(params)) {
+                List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
+                uriBuilder.setParameters(nameValuePairList);
+            }
+            // 获取httpGet对象
+            HttpGet httpGet = new HttpGet(uriBuilder.build());
+            // 设置请求头
+            setHttpHeader(header, httpGet);
+            // 执行请求，获取响应
+            CloseableHttpResponse response = client.execute(httpGet);
+            String result = getStringResultFromResponse(response);
+            return result;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI语法错误",e);
+        } catch (IOException e) {
+            throw new RuntimeException("请求失败",e);
+        }
+    }
+
+    /**
+     * 发送get请求
+     *
+     * @param url
+     * @return
+     */
+    public static String doGet(String url) {
         return doGet(url, null, null);
     }
 
@@ -206,7 +229,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doGet(String url, Map<String, Object> params) throws IOException, URISyntaxException {
+    public static String doGet(String url, Map<String, Object> params) {
         return doGet(url, params, null);
     }
 
@@ -216,19 +239,25 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static String doDelete(String url, Map<String, Object> params, Map<String, String> header) throws URISyntaxException, IOException {
-        URIBuilder uriBuilder = new URIBuilder(url);
-        if (!CollectionUtils.isEmpty(params)) {
-            List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
-            uriBuilder.setParameters(nameValuePairList);
+    public static String doDelete(String url, Map<String, Object> params, Map<String, String> header) {
+        try {
+            URIBuilder uriBuilder = new URIBuilder(url);
+            if (!CollectionUtils.isEmpty(params)) {
+                List<NameValuePair> nameValuePairList = getNameValuePairsFromMap(params);
+                uriBuilder.setParameters(nameValuePairList);
+            }
+            HttpDelete httpDelete = new HttpDelete(uriBuilder.build());
+            // 设置请求头
+            setHttpHeader(header, httpDelete);
+            //3.执行请求，获取响应
+            CloseableHttpResponse response = client.execute(httpDelete);
+            String result = getStringResultFromResponse(response);
+            return result;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI语法错误",e);
+        } catch (IOException e) {
+            throw new RuntimeException("请求失败",e);
         }
-        HttpDelete httpDelete = new HttpDelete(uriBuilder.build());
-        // 设置请求头
-        setHttpHeader(header, httpDelete);
-        //3.执行请求，获取响应
-        CloseableHttpResponse response = client.execute(httpDelete);
-        String result = getStringResultFromResponse(response);
-        return result;
     }
 
 
@@ -252,15 +281,19 @@ public class HttpClientUtils {
         return doDelete(url, params, null);
     }
 
-    private static String getStringResultFromResponse(CloseableHttpResponse response) throws IOException {
+    private static String getStringResultFromResponse(CloseableHttpResponse response) {
         //4.获取响应的实体内容，就是我们所要抓取得网页内容
         int statusCode = response.getStatusLine().getStatusCode();
         HttpEntity entity = response.getEntity();
         String result = "";
-        if (entity != null) {
-            result = EntityUtils.toString(entity, UTF_8);
+        try {
+            if (entity != null) {
+                result = EntityUtils.toString(entity, UTF_8);
+            }
+        }catch (IOException e){
+            throw new RuntimeException("获取请求结果失败", e);
         }
-        response.close();
+
         if (statusCode < HttpStatus.SC_OK || statusCode > HttpStatus.SC_MULTI_STATUS) {
             // 响应失败
             String errorMessage = String.format("请求失败，状态码：%d； 返回结果：%s", statusCode, StringUtils.substring(result, 0, 200));

@@ -4,7 +4,7 @@
     <update id="updateAll">
         update T_BLOG_ARTICLE
         <trim prefix="set" suffixOverrides=",">
-            <trim prefix="collection_id = case" suffix="end,">
+            <trim prefix="collection_id = case " suffix="end,">
                 <foreach collection="list" item="item" index="index">
                     <if test="item.collectionId !=null">
                         when id=#{item.id} then #{item.collectionId}
@@ -12,7 +12,7 @@
                 </foreach>
             </trim>
 
-            <trim prefix="content = case" suffix="end,">
+            <trim prefix="content = case " suffix="end,">
                 <foreach collection="list" item="item" index="index">
                     <if test="item.content !=null">
                         when id=#{item.id} then #{item.content}
@@ -20,7 +20,7 @@
                 </foreach>
             </trim>
 
-            <trim prefix="title = case" suffix="end,">
+            <trim prefix="title = case " suffix="end,">
                 <foreach collection="list" item="item" index="index">
                     <if test="item.title !=null">
                         when id=#{item.id} then #{item.title}
@@ -28,7 +28,7 @@
                 </foreach>
             </trim>
 
-            <trim prefix="is_valid = case" suffix="end,">
+            <trim prefix="is_valid = case " suffix="end,">
                 <foreach collection="list" item="item" index="index">
                     <if test="item.isValid !=null">
                         when id=#{item.id} then #{item.isValid}
@@ -38,7 +38,7 @@
         </trim>
         where id in
         <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
-            #{item.id,jdbcType=INTEGER}
+            #{item.id}
         </foreach>
     </update>
 
