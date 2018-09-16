@@ -89,7 +89,7 @@ export default {
       this.axios
         .get(`/v1/blog/article/list`, { params: this.query })
         .then(res => {
-          this.articlePage = res.data;
+          this.articlePage = res.data.data;
         })
         .catch(res => {
           this.$message({

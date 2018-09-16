@@ -38,6 +38,7 @@ public class HttpClientUtils {
     private static CloseableHttpClient client;
 
     static {
+        // 默认超时30s
         RequestConfig defaultRequestConfig = RequestConfig.custom()
                 .setSocketTimeout(30000)
                 .setConnectTimeout(30000)
@@ -51,7 +52,6 @@ public class HttpClientUtils {
 
 
     }
-
 
     /**
      * put请求 -- json提交
