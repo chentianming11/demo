@@ -8,10 +8,12 @@ import router from './router'
 import  CookieUtils from './common/util/CookieUtils';
 import  DateUtils from './common/util/DateUtils';
 import  FormatUtils from './common/util/FormatUtils';
+import  Http from './common/util/Http';
 
-Vue.prototype.CookieUtils = CookieUtils;
-Vue.prototype.DateUtils = DateUtils;
-Vue.prototype.FormatUtils = FormatUtils;
+Vue.prototype.cookieUtils = CookieUtils;
+Vue.prototype.dateUtils = DateUtils;
+Vue.prototype.formatUtils = FormatUtils;
+Vue.prototype.$http = Http;
 
 
 // QuillEditor富文本编辑器
@@ -24,10 +26,6 @@ Vue.use(VueQuillEditor);
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
-// axios http请求客户端
-import axios from 'axios';
-import VueAxios from 'vue-axios';
-Vue.use(VueAxios, axios);
 
 // 全局css
 import './common/style/main.less';

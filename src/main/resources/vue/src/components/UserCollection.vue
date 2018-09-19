@@ -32,8 +32,8 @@ export default {
 
     // 获取文集列表
     getCollections() {
-      this.axios
-        .get(`/v1/blog/collection`, { params: this.query })
+      this.$http
+        .get(`/v1/blog/collection`, this.query)
         .then(res => {
           this.collections = res.data;
         })

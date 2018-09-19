@@ -79,7 +79,7 @@ export default {
     getCollections() {
       let { userId } = this.$route.params;
       console.log(userId);
-      this.axios
+      this.$http
         .get(`/v1/blog/collection?userId=${userId}`)
         .then(res => {
           this.collections = res.data;
@@ -94,7 +94,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.axios
+          this.$http
             .post("/v1/blog/article", this.article)
             .then(res => {
               this.$message({
@@ -127,7 +127,7 @@ export default {
         inputErrorMessage: "请输入至少一个字符"
       })
         .then(({ value }) => {
-          this.axios
+          this.$http
             .post("/v1/blog/collection", { name: value })
             .then(res => {
               this.getCollections();

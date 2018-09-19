@@ -29,8 +29,8 @@ export default {
 
   methods: {
     getUserInfo() {
-      this.axios
-        .get(`/v1/blog/user`, { params: this.query })
+      this.$http
+        .get(`/v1/blog/user`,  this.query)
         .then(response => {
           console.log(response.data);
           this.userInfo = response.data;

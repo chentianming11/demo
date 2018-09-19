@@ -86,8 +86,8 @@ export default {
     },
 
     getArticles() {
-      this.axios
-        .get(`/v1/blog/article/list`, { params: this.query })
+      this.$http
+        .get(`/v1/blog/article/list`, this.query)
         .then(res => {
           this.articlePage = res.data.data;
         })

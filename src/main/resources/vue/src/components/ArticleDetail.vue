@@ -29,7 +29,7 @@ export default {
   },
 
   mounted() {
-    this.axios
+    this.$http
       .get(`/v1/blog/article/${this.articleId}`)
       .then(response => {
         this.articleDetail = response.data;

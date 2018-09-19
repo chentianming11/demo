@@ -26,7 +26,7 @@ export default {
 
   methods: {
     logout() {
-      this.axios
+      this.$http
         .post("/v1/blog/logout")
         .then(res => {
           this.loginUser = null;
@@ -38,7 +38,7 @@ export default {
     },
 
     login(user) {
-      this.axios
+      this.$http
         .post("/v1/blog/login", user)
         .then(response => {
           this.loginUser = response.data;
@@ -55,7 +55,7 @@ export default {
   mounted() {
     console.log("组件装载完成，调用自动登陆接口");
 //    console.log(this.prototypeName);
-    this.axios
+    this.$http
       .get("/v1/blog/autoLogin")
       .then(res => {
         this.loginUser = res.data;

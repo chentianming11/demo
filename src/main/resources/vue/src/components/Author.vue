@@ -41,7 +41,7 @@ export default {
     }, 
 
     getAuthor() {
-      this.axios
+      this.$http
         .get("/v1/blog/user/list")
         .then(res => {
           this.author = res.data;

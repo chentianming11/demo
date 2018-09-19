@@ -69,7 +69,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
 
-                        this.axios.post('/v1/blog/register', this.register)
+                        this.$http.post('/v1/blog/register', this.register)
                             .then((response) => {
                                 // 注册成功，重定向到登录页
                                 console.log(response);

@@ -46,7 +46,7 @@ export default {
 
   methods: {
     getArticles(userId) {
-      this.axios
+      this.$http
         .get(`/v1/blog/article/list?userId=${userId}`)
         .then(res => {
           this.articleList = res.data;
