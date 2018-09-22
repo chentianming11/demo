@@ -89,14 +89,11 @@ export default {
       this.$http
         .get(`/v1/blog/article/list`, this.query)
         .then(res => {
-          this.articlePage = res.data.data;
-        })
-        .catch(res => {
-          this.$message({
-            type: "error",
-            message: "获取文章列表失败"
-          });
-        });
+          this.articlePage = res;
+        }).catch(err => {
+          console.log(err)
+      });
+       
     }
   }
 };

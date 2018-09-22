@@ -33,11 +33,10 @@ export default {
       .get(`/v1/blog/article/${this.articleId}`)
       .then(response => {
         this.articleDetail = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-        alert("获取文章详情失败");
+      }).catch(err => {
+          console.log(err)
       });
+      
   }
 };
 </script>

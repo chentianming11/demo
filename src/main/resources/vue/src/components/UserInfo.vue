@@ -34,10 +34,10 @@ export default {
         .then(response => {
           console.log(response.data);
           this.userInfo = response.data;
-        })
-        .catch(error => {
-          alert("获取个人信息异常：" + error);
-        });
+        }).catch(err => {
+          console.log(err)
+      });
+        
     },
   }
 };

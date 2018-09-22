@@ -45,13 +45,10 @@ export default {
         .get("/v1/blog/user/list")
         .then(res => {
           this.author = res.data;
-        })
-        .catch(res => {
-          this.$message({
-            type: "error",
-            message: "获取作者列表失败"
-          });
-        });
+        }).catch(err => {
+          console.log(err)
+      });
+        
     },
     
   },

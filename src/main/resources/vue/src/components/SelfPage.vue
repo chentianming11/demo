@@ -50,13 +50,10 @@ export default {
         .get(`/v1/blog/article/list?userId=${userId}`)
         .then(res => {
           this.articleList = res.data;
-        })
-        .catch(res => {
-          this.$message({
-            type: "error",
-            message: "获取文章列表失败"
-          });
-        });
+        }).catch(err => {
+          console.log(err)
+      });
+       
     },
 
 

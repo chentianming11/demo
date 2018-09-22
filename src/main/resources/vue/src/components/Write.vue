@@ -28,7 +28,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -57,7 +56,7 @@ export default {
           { required: true, message: "请填输入内容", trigger: "blur" },
           {
             min: 10,
-        
+
             message: "至少10个字符",
             trigger: "blur"
           }
@@ -66,9 +65,7 @@ export default {
     };
   },
 
-  components: {
-    
-  },
+  components: {},
 
   beforeMount() {
     this.getCollections();
@@ -84,11 +81,8 @@ export default {
         .then(res => {
           this.collections = res.data;
         })
-        .catch(res => {
-          this.$message({
-            type: "error",
-            message: `获取文集列表失败`
-          });
+        .catch(err => {
+          console.log(err);
         });
     },
     submitForm(formName) {
@@ -102,11 +96,8 @@ export default {
                 message: "发布成功"
               });
             })
-            .catch(res => {
-              this.$message({
-                type: "error",
-                message: "发布失败"
-              });
+            .catch(err => {
+              console.log(err);
             });
         } else {
           console.log("error submit!!");
@@ -127,28 +118,17 @@ export default {
         inputErrorMessage: "请输入至少一个字符"
       })
         .then(({ value }) => {
-          this.$http
-            .post("/v1/blog/collection", { name: value })
-            .then(res => {
-              this.getCollections();
-              this.$message({
-                type: "success",
-                message: `文集${value}, 添加成功`
-              });
-            })
-            .catch(res => {
-              this.$message({
-                type: "error",
-                message: `文集${value}, 添加失败`
-              });
+          this.$http.post("/v1/blog/collection", { name: value }).then(res => {
+            this.getCollections();
+            this.$message({
+              type: "success",
+              message: `文集${value}, 添加成功`
             });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "取消输入"
           });
-        });
+        })
+        .catch(err => {
+          console.log(err)
+      });
     }
   }
 };

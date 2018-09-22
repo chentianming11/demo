@@ -36,13 +36,10 @@ export default {
         .get(`/v1/blog/collection`, this.query)
         .then(res => {
           this.collections = res.data;
-        })
-        .catch(res => {
-          this.$message({
-            type: "error",
-            message: `获取文集列表失败`
-          });
-        });
+        }).catch(err => {
+          console.log(err)
+      });
+        
     },
   }
 };

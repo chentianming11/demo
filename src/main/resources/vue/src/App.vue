@@ -31,10 +31,9 @@ export default {
         .then(res => {
           this.loginUser = null;
           this.$router.push("/login");
-        })
-        .catch(res => {
-          alert("退出失败");
-        });
+        }).catch(err => {
+          console.log(err)
+      });
     },
 
     login(user) {
@@ -44,10 +43,10 @@ export default {
           this.loginUser = response.data;
           // 重定向到首页
           this.$router.push({ path: "/", props: response.data });
-        })
-        .catch(error => {
-          alert(error.response.data.message);
-        });
+        }).catch(err => {
+          console.log(err)
+      });
+       
     },
     
   },
@@ -60,10 +59,8 @@ export default {
       .then(res => {
         this.loginUser = res.data;
         this.loading = false;
-      })
-      .catch(error => {
-        console.log("尚未登陆");
-        this.loading = false;
+      }).catch(err => {
+          console.log(err)
       });
   }
 };

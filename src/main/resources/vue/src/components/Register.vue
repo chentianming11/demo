@@ -30,70 +30,59 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                labelPosition: 'right',
-                register: {
-                    username: '',
-                    password: '',
-                    phone: '',
-                    email: '',
-                    birthday: null,
-                },
-                rules: {
-                    username: [
-                        {required: true, message: '请输入用户名', trigger: 'blur'},
-                        {min: 3, max: 5, message: '长度在 3 到 12 个字符', trigger: 'blur'}
-                    ],
-                    password: [
-                        {required: true, message: '请选择密码', trigger: 'change'}
-                    ],
-                    phone: [
-                        {required: true, message: '请选择手机号', trigger: 'blur'}
-                    ],
-                    email: [
-                        {required: true, message: '请选择邮箱', trigger: 'blur'}
-                    ],
-                    birthday: [
-                        {required: true, message: '请选择生日', trigger: 'blur'}
-                    ]
-                }
-            };
-        },
-        methods: {
-
-            submitForm(formName) {
-                // 获取指定ref的虚拟dom对象
-                console.log(this.$refs[formName]);
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-
-                        this.$http.post('/v1/blog/register', this.register)
-                            .then((response) => {
-                                // 注册成功，重定向到登录页
-                                console.log(response);
-                                this.$router.push({path: '/login'})
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                                alert(error.response.data.message);
-                            });
-
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            }
+export default {
+  data() {
+    return {
+      labelPosition: "right",
+      register: {
+        username: "",
+        password: "",
+        phone: "",
+        email: "",
+        birthday: null
+      },
+      rules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { min: 3, max: 5, message: "长度在 3 到 12 个字符", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "请选择密码", trigger: "change" }
+        ],
+        phone: [{ required: true, message: "请选择手机号", trigger: "blur" }],
+        email: [{ required: true, message: "请选择邮箱", trigger: "blur" }],
+        birthday: [{ required: true, message: "请选择生日", trigger: "blur" }]
+      }
+    };
+  },
+  methods: {
+    submitForm(formName) {
+      // 获取指定ref的虚拟dom对象
+      console.log(this.$refs[formName]);
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$http
+            .post("/v1/blog/register", this.register)
+            .then(response => {
+              // 注册成功，重定向到登录页
+              console.log(response);
+              this.$router.push({ path: "/login" });
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
         }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
+  }
+};
 </script>
 
 <style>
-
-
 </style>
