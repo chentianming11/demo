@@ -1,6 +1,9 @@
 package com.study.demo.concurrent2.volatiletest;
 
 /**
+ * volatile使用：
+ * 1. 标志位
+ * 2. 状态判断
  * @author 陈添明
  * @date 2018/9/9
  */
