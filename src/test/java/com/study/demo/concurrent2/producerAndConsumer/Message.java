@@ -1,4 +1,4 @@
-package com.study.demo.concurrent2.producerandconsumer;
+package com.study.demo.concurrent2.producerAndConsumer;
 
 /**
  * @author 陈添明

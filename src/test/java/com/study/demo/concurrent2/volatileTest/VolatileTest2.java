@@ -1,4 +1,4 @@
-package com.study.demo.concurrent2.volatiletest;
+package com.study.demo.concurrent2.volatileTest;
 
 /**
  * volatile使用：

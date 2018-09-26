@@ -1,4 +1,4 @@
-package com.study.demo.concurrent2.producerandconsumer;
+package com.study.demo.concurrent2.producerAndConsumer;
 
 import java.util.LinkedList;
 
