@@ -1,6 +1,6 @@
 package com.study.demo.service;
 
-import com.study.demo.util.HttpClientUtils;
+import com.study.demo.util.HttpUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class WxService {
                 "&secret=" + APP_SEERET +
                 "&code=" + code +
                 "&grant_type=authorization_code";
-        String jsonString = HttpClientUtils.doGet(url);
+        String jsonString = HttpUtils.doGet(url);
         return jsonString;
     }
 
@@ -75,7 +75,7 @@ public class WxService {
                 "?access_token=" + access_token +
                 "&openid=" + openid +
                 "&lang=zh_CN";
-        return HttpClientUtils.doGet(url);
+        return HttpUtils.doGet(url);
     }
 
     /**
@@ -92,7 +92,7 @@ public class WxService {
                 "?appid=" + APP_ID +
                 "&grant_type=refresh_token" +
                 "&refresh_token=" + refresh_token;
-        return HttpClientUtils.doGet(url);
+        return HttpUtils.doGet(url);
     }
 
     /**
@@ -106,6 +106,6 @@ public class WxService {
         String url = "https://api.weixin.qq.com/sns/auth" +
                 "?access_token=" + access_token +
                 "&openid=" + openid;
-        return HttpClientUtils.doGet(url);
+        return HttpUtils.doGet(url);
     }
 }

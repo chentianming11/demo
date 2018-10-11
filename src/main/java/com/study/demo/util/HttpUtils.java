@@ -30,9 +30,9 @@ import java.util.Map;
  * @author 陈添明
  * @date 2018/8/4
  */
-public class HttpClientUtils {
+public class HttpUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class);
     public static final String UTF_8 = "utf-8";
 
     private static CloseableHttpClient client;
