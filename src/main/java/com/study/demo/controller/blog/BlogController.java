@@ -78,7 +78,7 @@ public class BlogController extends BaseController {
     @GetMapping("/user/list")
     public ResponseEntity getUserList(){
         List<BlogUser> list = blogService.getUserList();
-        int i = 1/0;
+//        int i = 1/0;
         return ok().body(list).build();
     }
 

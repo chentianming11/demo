@@ -10,8 +10,10 @@ import com.study.demo.mapper.blog.BlogArticleMapper;
 import com.study.demo.mapper.blog.BlogCollectionMapper;
 import com.study.demo.mapper.blog.BlogUserMapper;
 import com.study.demo.util.AppAssert;
+import com.study.demo.util.ExcelUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,7 +126,7 @@ public class BlogService {
         return blogUserMapper.selectByPrimaryKey(userId);
     }
 
-    public Map<String,Object> getArticleDetail(Integer articleId) {
+    public Map<String, Object> getArticleDetail(Integer articleId) {
         return blogArticleMapper.getArticleDetail(articleId);
     }
 
@@ -139,5 +141,22 @@ public class BlogService {
 
         blogArticleMapper.updateAll(blogArticles);
 
+    }
+
+    public SXSSFWorkbook getWorkbook() {
+        ExcelUtils.Mapping mapping = new ExcelUtils.Mapping();
+        mapping.put("用户名", "username")
+                .put("标题", "title")
+                .put("文集名称", "collectionName");
+        Integer pageSize = 3;
+        SXSSFWorkbook workbook;
+        workbook = ExcelUtils.createSXSSFWorkbook(pageSize, mapping, (pageNum) -> {
+            PageInfo<Map> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> blogArticleMapper.getAllArticle(null));
+            if (pageNum != pageInfo.getPageNum()) {
+                pageInfo.getList().clear();
+            }
+            return pageInfo.getList();
+        });
+        return workbook;
     }
 }

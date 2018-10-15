@@ -1,23 +1,22 @@
 package com.study.demo.util;
 
-import com.study.demo.exception.AppException;
-import jk.excel.parse.Excel;
-import jk.excel.parse.ExcelParseFactory;
-import jk.excel.parse.Mapping;
-import jk.excel.parse.ParseInfo;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.*;
 import java.util.function.Function;
 
@@ -26,138 +25,332 @@ import java.util.function.Function;
  * @date 2018/10/11
  */
 public class ExcelUtils {
+
     public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelUtils.class);
+    public static class Mapping {
+        private List<String> keys = new ArrayList<>();
+        private List<String> values = new ArrayList<>();
+
+        public Mapping put(String key, String value) {
+            if (Is.empty(key) || Is.empty(value)) {
+                return this;
+            }
+            keys.add(key);
+            values.add(value);
+            return this;
+        }
+
+        public List<String> getKeys() {
+            return keys;
+        }
+
+        public List<String> getValues() {
+            return values;
+        }
+
+    }
+
+    public static <T> List<T> toList(File file, Mapping mapping, Class<T> clz) {
+        // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
+        Workbook workbook = null;
+        try {
+            workbook = WorkbookFactory.create(file);
+        } catch (Exception e) {
+            throw new RuntimeException("创建workbook异常", e);
+        }
+        return toList(workbook,mapping,clz);
+
+    }
 
     /**
-     * 导入excel到List<Map>
-     *
-     * @param file
-     * @param mappingList
-     * @param startLine
-     * @return
+     *  读取一个excel到List<T> 中
      */
-    public static List<Map> importExcelForMap(File file, List<Mapping> mappingList, int startLine) {
+    public static <T> List<T> toList(MultipartFile file, Mapping mapping, Class<T> clz) {
         try {
-            ParseInfo info = new ParseInfo(file, mappingList, startLine);
-            Excel excel = ExcelParseFactory.getExcelParse(info);
-            List<Map> data = excel.parseToMapList();
-            return data;
+            return toList(file.getInputStream(), mapping, clz);
+        } catch (IOException e) {
+            throw new RuntimeException("获取文件流异常", e);
+        }
+
+    }
+
+    /**
+     *   读取一个excel到List<T> 中
+     */
+    public static <T> List<T> toList(InputStream inputStream, Mapping mapping, Class<T> clz)  {
+        // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
+        Workbook workbook = null;
+        try {
+            workbook = WorkbookFactory.create(inputStream);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new AppException("excel导入失败");
+            throw new RuntimeException("创建workbook异常", e);
+        }
+        return toList(workbook, mapping,clz);
+
+    }
+
+    /**
+     *   读取一个excel到List<Map<String,Object>> 中
+     */
+    public static List<Map<String, Object>> toList(File file, Mapping mapping) {
+
+        // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
+        Workbook workbook = null;
+        try {
+            workbook = WorkbookFactory.create(file);
+        } catch (Exception e) {
+            throw new RuntimeException("创建workbook异常", e);
+        }
+        return toList(workbook, mapping);
+
+    }
+
+    /**
+     *   读取一个excel到List<Map<String,Object>> 中
+     */
+    public static List<Map<String, Object>> toList(MultipartFile file, Mapping mapping) {
+
+        // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
+        try {
+            return toList(file.getInputStream(),mapping);
+        } catch (Exception e) {
+            throw new RuntimeException("获取文件流异常", e);
         }
     }
 
-    public static List<Map> importExcelForMap(MultipartFile multipartFile, List<Mapping> mappingList, int startLine) {
-        String fileNmae = multipartFile.getOriginalFilename();
-        File file = new File(fileNmae);
+    /**
+     *   读取一个excel到List<Map<String,Object>> 中
+     */
+    public static List<Map<String, Object>> toList(InputStream inputStream, Mapping mapping) {
+
+        // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
+        Workbook workbook = null;
         try {
-            InputStream is = multipartFile.getInputStream();
-            OutputStream os = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[8192];
-            while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            os.close();
-            is.close();
-            ParseInfo info = new ParseInfo(file, mappingList, startLine);
-            Excel excel = ExcelParseFactory.getExcelParse(info);
-            List<Map> data = excel.parseToMapList();
-            return data;
+            workbook = WorkbookFactory.create(inputStream);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new AppException("excel导入失败");
-        }finally {
-            if(file.exists()){
-                file.delete();
-            }
+            throw new RuntimeException("创建workbook异常", e);
         }
+        return toList(workbook, mapping);
+
     }
 
+    private static <T> List<T> toList( Workbook workbook, Mapping mapping, Class<T> clz) {
+        // 获取第一个sheet
+        Sheet sheet = workbook.getSheetAt(0);
+        Map<Integer, String> indexFieldMapping = getIndexFieldMapping(mapping, sheet);
+        List<T> result = new ArrayList<>();
+        try {
+            // 根据有效列，读取有效列中的内容
+            for (Row row : sheet) {
+                // 跳过第一行标题
+                if (row.getRowNum() == 0) {
+                    continue;
+                }
+                T  t = clz.newInstance();
+                // 读取内容
+                indexFieldMapping.keySet().forEach((columnIndex) -> {
+                    String fieldStr= indexFieldMapping.get(columnIndex);
+                    Cell cell = row.getCell(columnIndex);
+                    Object cellValue = getCellValue(cell);
+                    try {
+                        Field field = ReflectionUtils.findField(clz, fieldStr);
+                        Class<?> type = field.getType();
+                        if (!Objects.equals(type, cellValue.getClass())) {
+                            // 类型不一致，进行类型转换
+                            cellValue = transferType(cellValue, type);
+                        }
+                        PropertyUtils.setProperty(t, fieldStr, cellValue);
+                    } catch (Exception e) {
+                        throw new RuntimeException("读取excel失败", e);
+                    }
+                });
+                result.add(t);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("读取excel失败", e);
+        }
+        return result;
+    }
+
+    /**
+     * 类型转换
+     * @param cellValue
+     * @param type
+     * @return
+     * @throws ParseException
+     */
+    private static Object transferType(Object cellValue, Class<?> type) throws ParseException {
+        if (cellValue instanceof Date) {
+            // Date 转其他类型
+            if (Objects.equals(type, String.class)) {
+                cellValue = DateFormatUtils.format(((Date) cellValue), DATE_FORMAT_PATTERN);
+            }
+        } else if (cellValue instanceof String) {
+            // String 转其他类型
+            if (Objects.equals(type, Date.class)) {
+                cellValue = DateUtils.parseDate((String) cellValue, DATE_FORMAT_PATTERN);
+            } else if (Objects.equals(type, Integer.class)) {
+                cellValue = Integer.valueOf(((String) cellValue));
+            } else if (Objects.equals(type, Long.class)) {
+                cellValue = Long.valueOf(((String) cellValue));
+            } else if (Objects.equals(type, Float.class)) {
+                cellValue = Float.valueOf(((String) cellValue));
+            } else if (Objects.equals(type, Short.class)) {
+                cellValue = Short.valueOf(((String) cellValue));
+            } else if (Objects.equals(type, Byte.class)) {
+                cellValue = Byte.valueOf(((String) cellValue));
+            } else if (Objects.equals(type, Double.class)) {
+                cellValue = Double.valueOf(((String) cellValue));
+            }
+        }
+        return cellValue;
+    }
 
 
     /**
-     * 导入excel到List<T>
-     *
-     * @param file
-     * @param mappingList
-     * @param startLine
-     * @param t
-     * @param <T>
+     * @param workbook 工作簿
+     * @param mapping  表头和字段的映射关系
      * @return
      */
-    public static <T> List<T> importExcelForList(File file, List<Mapping> mappingList, int startLine, Class<T> t) {
-        try {
-            ParseInfo info = new ParseInfo(file, mappingList, startLine);
-            Excel excel = ExcelParseFactory.getExcelParse(info);
-            List<T> data = excel.parseToList(t);
-            return data;
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new AppException("excel导入失败");
+    private static List<Map<String, Object>> toList(Workbook workbook, Mapping mapping) {
+        // 获取第一个sheet
+        Sheet sheet = workbook.getSheetAt(0);
+        Map<Integer, String> indexFiledMapping = getIndexFieldMapping(mapping, sheet);
+
+        List<Map<String, Object>> result = new ArrayList<>();
+        // 根据有效列，读取有效列中的内容
+        for (Row row : sheet) {
+            // 跳过第一行标题
+            if (row.getRowNum() == 0 || row == null) {
+                continue;
+            }
+            Map<String, Object> rowData = new HashMap<>();
+            // 读取内容
+            indexFiledMapping.keySet().forEach(columnIndex -> {
+                String filed = indexFiledMapping.get(columnIndex);
+                Cell cell = row.getCell(columnIndex);
+                Object cellValue = getCellValue(cell);
+                rowData.putIfAbsent(filed, cellValue);
+            });
+            result.add(rowData);
         }
+        return result;
     }
 
-    public static <T> List<T> importExcelForList(MultipartFile multipartFile, List<Mapping> mappingList, int startLine, Class<T> t) {
-        String fileNmae = multipartFile.getOriginalFilename();
-        File file = new File(fileNmae);
-        try {
-            InputStream is = multipartFile.getInputStream();
-            OutputStream os = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[8192];
-            while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            os.close();
-            is.close();
-            return importExcelForList(file,mappingList,startLine,t);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new AppException("excel导入失败");
-        } finally {
-            if(file.exists()){
-                file.delete();
+    /**
+     * 获取索引-字段映射
+     * @param mapping 映射关系
+     * @param sheet 表头sheet
+     * @return
+     */
+    private static Map<Integer, String> getIndexFieldMapping(Mapping mapping, Sheet sheet) {
+        // 索引-字段映射
+        Map<Integer, String> indexFiledMapping = new HashedMap();
+        List<String> headList = mapping.getKeys();
+        List<String> fieldList = mapping.getValues();
+        // 读取表头 确定有效列
+        Row headRow = sheet.getRow(0);
+
+        for (int i = 0; i < headList.size(); i++) {
+            Integer index = findIndexOnRow(headRow, headList.get(i));
+            if (index != null) {
+                indexFiledMapping.put(index, fieldList.get(i));
             }
         }
+        return indexFiledMapping;
+    }
 
+
+    private static Integer findIndexOnRow(Row headRow, String key) {
+        for (Cell cell : headRow) {
+            if (Is.equals(key, cell.getStringCellValue())){
+                return cell.getColumnIndex();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 从cell中读取cellValue
+     *
+     * @param cell
+     * @return
+     */
+    private static Object getCellValue(Cell cell) {
+        // 根据cell内容格式 -- 分别读取其内容
+        Object value ;
+        if (Objects.isNull(cell)) {
+            return "";
+        }
+        switch (cell.getCellType()) {
+            case Cell.CELL_TYPE_NUMERIC: {
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    // 日期
+                    value = cell.getDateCellValue();
+                } else {
+                    DecimalFormat decimalFormat = new DecimalFormat();
+                    value = decimalFormat.format(cell.getNumericCellValue());
+                }
+                break;
+            }
+            case Cell.CELL_TYPE_STRING: {
+                value = cell.getStringCellValue();
+                break;
+            }
+            case Cell.CELL_TYPE_BLANK: {
+                // 空白
+                value = "";
+                break;
+            }
+            case Cell.CELL_TYPE_FORMULA: {
+                // 公式
+                value = cell.getRichStringCellValue().getString();
+                break;
+            }
+            default: {
+                value = cell.getStringCellValue();
+            }
+        }
+        return value;
     }
 
     /**
      * 分页查询,生成SXSSFWorkbook
      *
      * @param pageSize
-     * @param head
-     * @param columnNameList
+     * @param mapping  表头和字段名映射关系
      * @param function
      * @return
      */
-    public static SXSSFWorkbook createSXSSFWorkbookByPageQuery(Integer pageSize, String[] head, String[] columnNameList, Function<Integer, List<Map<String, Object>>> function) {
+    public static SXSSFWorkbook createSXSSFWorkbook(Integer pageSize, Mapping mapping, Function<Integer, List<Map>> function) {
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         Sheet detailSheet = workbook.createSheet("sheet1");
-        ExcelUtils.sheetAppendRows(detailSheet, head);
+        // 表头
+        List<String> headList = mapping.getKeys();
+        // 字段
+        List<String> filedList = mapping.getValues();
+
+        ExcelUtils.sheetAppendRows(detailSheet, headList);
         Integer pageNum = 1;
-        List<Map<String, Object>> result;
+        List<Map> result;
         do {
             result = function.apply(pageNum);
             pageNum++;
             result.forEach(item -> {
-                List<String> list = new ArrayList<>();
-                for (int i = 0; i < columnNameList.length; i++) {
+                List<String> sheetData = new ArrayList<>();
+                for (int i = 0; i < filedList.size(); i++) {
                     detailSheet.setColumnWidth(i, 10 * 512);
-                    Object o = item.get(columnNameList[i]);
+                    Object o = item.get(filedList.get(i));
                     if (Objects.isNull(o)) {
                         o = "";
                     }
                     if (o instanceof Date) {
                         o = DateFormatUtils.format((Date) o, DATE_FORMAT_PATTERN);
                     }
-                    list.add(String.valueOf(o));
+                    sheetData.add(String.valueOf(o));
                 }
-                ExcelUtils.sheetAppendRows(detailSheet, list.toArray(new String[list.size()]));
+                ExcelUtils.sheetAppendRows(detailSheet, sheetData);
             });
 
         } while (!CollectionUtils.isEmpty(result) && result.size() == pageSize);
@@ -170,10 +363,10 @@ public class ExcelUtils {
      * @param sheet
      * @param data
      */
-    public static void sheetAppendRows(Sheet sheet, String[] data) {
+    public static void sheetAppendRows(Sheet sheet, List<String> data) {
         org.apache.poi.ss.usermodel.Row row = sheet.createRow(sheet.getPhysicalNumberOfRows());
-        for (int i = 0; i < data.length; i++) {
-            row.createCell(i).setCellValue(data[i] == null ? "" : data[i]);
+        for (int i = 0; i < data.size(); i++) {
+            row.createCell(i).setCellValue(data.get(i) == null ? "" : data.get(i));
         }
     }
 
@@ -184,8 +377,7 @@ public class ExcelUtils {
         try {
             DownloadUtils.downloadExcel(response, workbook, fileName + DateFormatUtils.format(new Date(), "yyyyMMdd") + ".xlsx");
         } catch (Exception e) {
-            throw new AppException("导出失败");
-
+            throw new RuntimeException("导出失败");
         }
     }
 }
