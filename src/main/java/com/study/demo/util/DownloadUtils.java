@@ -10,7 +10,7 @@ import java.net.URLEncoder;
 /**
  * 下载工具类
  */
-public class DownloadUtils {
+public abstract class DownloadUtils {
 
 
     /**

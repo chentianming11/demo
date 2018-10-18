@@ -1,14 +1,17 @@
 package com.study.demo.util;
-
 /**
- * Created by chenTianMing on 2018/6/3.
+ * @author 陈添明
+ * @date 2018/9/5
  */
-public class HexStringUtils {
+public abstract class HexStringUtils {
+
+    public static final String HEX_STRING_BASE = "0123456789abcdef";
+
     /**
      * 字符串转换成十六进制字符串
      */
     public static String str2HexStr(String str) {
-        char[] chars = "0123456789ABCDEF".toCharArray();
+        char[] chars = HEX_STRING_BASE.toCharArray();
         StringBuilder sb = new StringBuilder("");
         byte[] bs = str.getBytes();
         int bit;
@@ -28,13 +31,12 @@ public class HexStringUtils {
      */
     public static String hexStr2Str(String hexStr) {
 
-        String str = "0123456789ABCDEF";
         char[] hexs = hexStr.toCharArray();
         byte[] bytes = new byte[hexStr.length() / 2];
         int n;
         for (int i = 0; i < bytes.length; i++) {
-            n = str.indexOf(hexs[2 * i]) * 16;
-            n += str.indexOf(hexs[2 * i + 1]);
+            n = HEX_STRING_BASE.indexOf(hexs[2 * i]) * 16;
+            n += HEX_STRING_BASE.indexOf(hexs[2 * i + 1]);
             bytes[i] = (byte) (n & 0xff);
         }
         return new String(bytes);
@@ -57,7 +59,7 @@ public class HexStringUtils {
     }
 
     private static int toByte(char c) {
-        byte b = (byte) "0123456789ABCDEF".indexOf(c);
+        byte b = (byte) HEX_STRING_BASE.indexOf(c);
         return b;
     }
 
@@ -73,7 +75,7 @@ public class HexStringUtils {
             sTemp = Integer.toHexString(0xFF & bArray[i]);
             if (sTemp.length() < 2)
                 sb.append(0);
-            sb.append(sTemp.toUpperCase());
+            sb.append(sTemp.toLowerCase());
         }
         return sb.toString();
     }

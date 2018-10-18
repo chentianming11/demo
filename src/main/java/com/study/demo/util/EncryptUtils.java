@@ -11,7 +11,7 @@ import java.security.SecureRandom;
 /**
  * Created by chenTianMing on 2018/6/3.
  */
-public class EncryptUtils {
+public abstract class EncryptUtils {
 
     private static final String DEFAULT_AES_KEY_STR = "AxhjMVebmGiprTkbtjteeFhoipDmBhIF";
 

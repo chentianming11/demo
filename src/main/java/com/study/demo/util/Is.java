@@ -24,7 +24,7 @@ import static org.apache.commons.lang3.StringUtils.stripToEmpty;
  * @author 闷骚乔巴
  * @since 15/12/3
  */
-public class Is {
+public abstract class Is {
 
     private Is() {}
 

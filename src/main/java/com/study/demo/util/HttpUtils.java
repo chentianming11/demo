@@ -5,13 +5,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -19,10 +22,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 
+import javax.servlet.http.Cookie;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,14 +35,17 @@ import java.util.Map;
  * @author 陈添明
  * @date 2018/8/4
  */
-public class HttpUtils {
+public abstract class HttpUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class);
     public static final String UTF_8 = "utf-8";
 
     private static CloseableHttpClient client;
 
+    private static  CookieStore cookieStore = new BasicCookieStore();
+
     static {
+        CookieStore cookieStore = new BasicCookieStore();
         // 默认超时30s
         RequestConfig defaultRequestConfig = RequestConfig.custom()
                 .setSocketTimeout(30000)
@@ -45,13 +53,29 @@ public class HttpUtils {
                 .setConnectionRequestTimeout(30000)
                 .build();
 
-        client = HttpClients.custom().setDefaultRequestConfig(defaultRequestConfig).build();
+        client = HttpClients.custom()
+                .setDefaultRequestConfig(defaultRequestConfig)
+                .setDefaultCookieStore(cookieStore)
+                .build();
     }
 
-    public static void main(String[] args) throws Exception {
-
-
+    /**
+     * 设置cookies
+     * @param cookies
+     */
+    public static void setCookies(List<Cookie> cookies){
+        cookies.forEach(cookie -> {
+            BasicClientCookie clientCookie = new BasicClientCookie(cookie.getName(), cookie.getValue());
+            clientCookie.setPath(cookie.getPath());
+            clientCookie.setDomain(cookie.getDomain());
+            int maxAge = cookie.getMaxAge();
+            long now = System.currentTimeMillis();
+            long millis = now + maxAge;
+            clientCookie.setExpiryDate(new Date(millis));
+            cookieStore.addCookie(clientCookie);
+        });
     }
+
 
     /**
      * put请求 -- json提交

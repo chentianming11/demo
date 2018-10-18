@@ -24,7 +24,7 @@ import java.util.function.Function;
  * @author 陈添明
  * @date 2018/10/11
  */
-public class ExcelUtils {
+public abstract class ExcelUtils {
 
     public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 

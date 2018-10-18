@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author 陈添明
  */
-public class EnumUtils {
+public abstract class EnumUtils {
 
     /**
      * 获取枚举名称和某个枚举值的映射Map
