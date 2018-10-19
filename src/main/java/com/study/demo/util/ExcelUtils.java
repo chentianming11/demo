@@ -30,7 +30,7 @@ import java.util.function.Function;
 
 public abstract class ExcelUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelUtils.class);
 
     public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
@@ -390,7 +390,7 @@ public abstract class ExcelUtils {
      * @param data
      */
     public static void sheetAppendRows(Sheet sheet, List<String> data) {
-        org.apache.poi.ss.usermodel.Row row = sheet.createRow(sheet.getPhysicalNumberOfRows());
+        Row row = sheet.createRow(sheet.getPhysicalNumberOfRows());
         for (int i = 0; i < data.size(); i++) {
             row.createCell(i).setCellValue(data.get(i) == null ? "" : data.get(i));
         }
