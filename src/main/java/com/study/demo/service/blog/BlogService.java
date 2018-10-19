@@ -144,7 +144,7 @@ public class BlogService {
     }
 
     public SXSSFWorkbook getWorkbook() {
-        ExcelUtils.Mapping mapping = new ExcelUtils.Mapping();
+        ExcelUtils.Mapping mapping = ExcelUtils.Mapping.newInstance();
         mapping.put("用户名", "username")
                 .put("标题", "title")
                 .put("文集名称", "collectionName");

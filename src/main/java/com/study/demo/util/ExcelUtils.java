@@ -7,6 +7,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
@@ -24,13 +27,22 @@ import java.util.function.Function;
  * @author 陈添明
  * @date 2018/10/11
  */
+
 public abstract class ExcelUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class);
 
     public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     public static class Mapping {
         private List<String> keys = new ArrayList<>();
         private List<String> values = new ArrayList<>();
+
+        private Mapping(){}
+
+        public static Mapping newInstance(){
+            return new Mapping();
+        }
 
         public Mapping put(String key, String value) {
             if (Is.empty(key) || Is.empty(value)) {
@@ -48,7 +60,6 @@ public abstract class ExcelUtils {
         public List<String> getValues() {
             return values;
         }
-
     }
 
     public static <T> List<T> toList(File file, Mapping mapping, Class<T> clz) {
@@ -153,17 +164,22 @@ public abstract class ExcelUtils {
                     String fieldStr= indexFieldMapping.get(columnIndex);
                     Cell cell = row.getCell(columnIndex);
                     Object cellValue = getCellValue(cell);
-                    try {
+
                         Field field = ReflectionUtils.findField(clz, fieldStr);
-                        Class<?> type = field.getType();
-                        if (!Objects.equals(type, cellValue.getClass())) {
-                            // 类型不一致，进行类型转换
-                            cellValue = transferType(cellValue, type);
+                        if (field != null) {
+
+                            Class<?> type = field.getType();
+                            if (!Objects.equals(type, cellValue.getClass())) {
+                                // 类型不一致，进行类型转换
+                                cellValue = transferType(cellValue, type);
+                            }
+                            try {
+                                PropertyUtils.setProperty(t, fieldStr, cellValue);
+                            } catch (Exception e) {
+                                throw new RuntimeException("设置属性异常，属性名：" + fieldStr + "; 属性值：" + cellValue, e);
+                            }
                         }
-                        PropertyUtils.setProperty(t, fieldStr, cellValue);
-                    } catch (Exception e) {
-                        throw new RuntimeException("读取excel失败", e);
-                    }
+
                 });
                 result.add(t);
             }
@@ -180,16 +196,23 @@ public abstract class ExcelUtils {
      * @return
      * @throws ParseException
      */
-    private static Object transferType(Object cellValue, Class<?> type) throws ParseException {
+    private static Object transferType(Object cellValue, Class<?> type) {
         if (cellValue instanceof Date) {
             // Date 转其他类型
             if (Objects.equals(type, String.class)) {
                 cellValue = DateFormatUtils.format(((Date) cellValue), DATE_FORMAT_PATTERN);
             }
         } else if (cellValue instanceof String) {
+            if (Is.empty(cellValue)){
+                return null;
+            }
             // String 转其他类型
             if (Objects.equals(type, Date.class)) {
-                cellValue = DateUtils.parseDate((String) cellValue, DATE_FORMAT_PATTERN);
+                try {
+                    cellValue = DateUtils.parseDate((String) cellValue, DATE_FORMAT_PATTERN);
+                } catch (ParseException e) {
+                    throw new RuntimeException("日期转异常", e);
+                }
             } else if (Objects.equals(type, Integer.class)) {
                 cellValue = Integer.valueOf(((String) cellValue));
             } else if (Objects.equals(type, Long.class)) {
@@ -202,6 +225,8 @@ public abstract class ExcelUtils {
                 cellValue = Byte.valueOf(((String) cellValue));
             } else if (Objects.equals(type, Double.class)) {
                 cellValue = Double.valueOf(((String) cellValue));
+            } else if (Objects.equals(type, BigDecimal.class)){
+                cellValue = new BigDecimal((String) cellValue);
             }
         }
         return cellValue;
@@ -256,6 +281,7 @@ public abstract class ExcelUtils {
             Integer index = findIndexOnRow(headRow, headList.get(i));
             if (index != null) {
                 indexFiledMapping.put(index, fieldList.get(i));
+                LOGGER.debug("索引index：{}; 对应字段名称：{}", index, fieldList.get(i));
             }
         }
         return indexFiledMapping;
