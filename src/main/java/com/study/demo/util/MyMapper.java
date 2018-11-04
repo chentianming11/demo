@@ -7,7 +7,7 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 /**
- * Created by chen on 2018/1/29.
+ * Created by 陈添明 on 2018/1/29.
  */
 public interface MyMapper<T> extends Mapper<T> {
 

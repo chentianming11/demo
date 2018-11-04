@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -182,7 +181,10 @@ public class RedisTemplateTest {
 
         // 根据key获取整个哈希存储的键值
         System.out.println(redisTemplate.opsForHash().entries("redisHash"));
-
     }
+
+
+
+
 
 }
