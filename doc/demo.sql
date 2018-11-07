@@ -37,4 +37,18 @@ PRIMARY KEY (`id`)
 CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+CREATE TABLE `t_common_uv` (
+`id` bigint(11) NOT NULL,
+`page_view_uicode` varchar(255) NOT NULL DEFAULT  '',
+`count` int NOT NULL DEFAULT 0,
+`ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`date` datetime NOT NULL,
+PRIMARY KEY (`id`)
+)
+CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+
+
 
