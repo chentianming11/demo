@@ -1,4 +1,4 @@
-package com.study.demo.concurrent3.juc.util;
+package com.study.demo.concurrent3.juc.util.cyclicbarrier;
 
 import org.junit.Test;
 
