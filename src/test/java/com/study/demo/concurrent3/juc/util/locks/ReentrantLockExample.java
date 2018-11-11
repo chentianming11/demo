@@ -3,6 +3,7 @@ package com.study.demo.concurrent3.juc.util.locks;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 显式锁
  * @author 陈添明
  * @date 2018/11/10
  */
