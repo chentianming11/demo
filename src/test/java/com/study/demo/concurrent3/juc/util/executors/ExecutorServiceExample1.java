@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 /**
+ * 处理线程执行过程中的异常
  * @author 陈添明
  * @date 2018/11/13
  */
