@@ -59,7 +59,9 @@ public class ThreadPoolExecutorBuild {
      * 3. coreSize=1, maxSize=2,BlockingQueue.size=5， 提交8个任务会怎么样？
      */
     private static ThreadPoolExecutor buildThreadPoolExecutor(){
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(5), r -> new Thread(r), new ThreadPoolExecutor.AbortPolicy());
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 3,
+                30, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(5),
+                r -> new Thread(r), new ThreadPoolExecutor.AbortPolicy());
         System.out.println("线程池创建完毕");
         // 执行任务
         threadPoolExecutor.execute(() -> sleepSeconds(10));
