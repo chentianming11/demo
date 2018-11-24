@@ -1,4 +1,4 @@
-package com.study.demo.concurrent3.juc.util.executors;
+package com.study.demo.concurrent3.executors;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
