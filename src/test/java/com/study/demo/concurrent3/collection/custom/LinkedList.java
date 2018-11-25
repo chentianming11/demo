@@ -1,4 +1,4 @@
-package com.study.demo.concurrent3.collection;
+package com.study.demo.concurrent3.collection.custom;
 
 import java.util.Objects;
 
