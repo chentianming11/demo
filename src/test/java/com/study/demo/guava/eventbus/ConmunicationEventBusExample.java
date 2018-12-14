@@ -15,6 +15,10 @@ public class ConmunicationEventBusExample {
         QueryService queryService = new QueryService(eventBus);
         RequestQueryHandler requestQueryHandler = new RequestQueryHandler(eventBus);
         queryService.query("2312532453453");
+        queryService.query("111");
+        queryService.query("222");
+        queryService.query("333");
+        queryService.query("444");
 
     }
 }

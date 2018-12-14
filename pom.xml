@@ -98,6 +98,14 @@
             <version>1.9.22</version>
         </dependency>
 
+		<!--lombok-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.20</version>
+			<scope>provided</scope>
+		</dependency>
+
 
         <!--util start-->
 		<dependency>
@@ -105,12 +113,7 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.16.20</version>
-			<scope>provided</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -145,15 +148,16 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.11</version>
-
 		</dependency>
+        <!--util end-->
+
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>2.3.0</version>
 		</dependency>
 
-		<!--httpClient-->
+		<!--httpClient start-->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -169,6 +173,7 @@
 			<artifactId>httpmime</artifactId>
 			<version>4.3.2</version>
 		</dependency>
+		<!--httpClient end-->
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>core</artifactId>
@@ -231,6 +236,12 @@
 		</dependency>
 -->
 		<!--util end-->
+
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>example-spring-boot-starter</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

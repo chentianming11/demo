@@ -1,7 +1,11 @@
 package com.study.demo.guava.eventbus;
 
+import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.study.demo.guava.eventbus.listener.SimpleListener;
+import org.junit.Test;
+
+import java.util.concurrent.Executors;
 
 /**
  * @author 陈添明
@@ -10,12 +14,55 @@ import com.study.demo.guava.eventbus.listener.SimpleListener;
 public class SimpleEventBusExample {
 
 
-    public static void main(String[] args) {
+    @Test
+    public void test1() {
         // 创建一个eventBus
-        EventBus eventBus = new EventBus();
+        AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(10));
+
+
         // 注册一个监听器
         eventBus.register(new SimpleListener());
+
+
         // 发送一个事件
+       System.out.println(Thread.currentThread().getName() + "发送第一个");
        eventBus.post("我来了");
+
+        System.out.println(Thread.currentThread().getName() + "发送第二个");
+        eventBus.post("我来了");
+
+        System.out.println(Thread.currentThread().getName() + "发送第三个");
+        eventBus.post("我来了");
+
+        System.out.println(Thread.currentThread().getName() + "发送第四个");
+        eventBus.post("我来了");
+
+
+    }
+
+
+    @Test
+    public void test2() {
+        // 创建一个eventBus
+        EventBus eventBus = new EventBus();
+
+        // 注册一个监听器
+        eventBus.register(new SimpleListener());
+
+        // 发送一个事件
+        System.out.println(Thread.currentThread().getName() + "发送第一个");
+        eventBus.post("我来了");
+
+        System.out.println(Thread.currentThread().getName() + "发送第二个");
+        eventBus.post("我来了");
+
+        System.out.println(Thread.currentThread().getName() + "发送第三个");
+        eventBus.post("我来了");
+
+        System.out.println(Thread.currentThread().getName() + "发送第四个");
+        eventBus.post("我来了");
+
+
+
     }
 }

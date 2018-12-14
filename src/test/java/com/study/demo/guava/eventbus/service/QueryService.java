@@ -28,6 +28,11 @@ public class QueryService {
 
     @Subscribe
     public void handleResponse(Response response){
+        try {
+            Thread.sleep(10_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("收到结果啦。。。");
     }
 }

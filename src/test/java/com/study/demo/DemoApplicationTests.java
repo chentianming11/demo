@@ -1,5 +1,6 @@
 package com.study.demo;
 
+import com.example.service.ExampleService;
 import com.study.demo.entity.Emp;
 import com.study.demo.entity.EmpQuery;
 import com.study.demo.entity.blog.BlogArticle;
@@ -34,6 +35,16 @@ public class DemoApplicationTests {
 
     @Autowired
     BlogArticleMapper blogArticleMapper;
+
+    @Autowired
+    ExampleService exampleService;
+
+
+    @Autowired
+    public void testStarter(){
+        System.out.println(exampleService.wrap("wa"));
+    }
+
 
 
 
