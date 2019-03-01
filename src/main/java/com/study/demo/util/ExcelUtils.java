@@ -44,6 +44,12 @@ public abstract class ExcelUtils {
             return new Mapping();
         }
 
+        /**
+         * 新增一组 表头-字段名 映射
+         * @param key excel表头导入名称
+         * @param value 实体字段名称
+         * @return
+         */
         public Mapping put(String key, String value) {
             if (Is.empty(key) || Is.empty(value)) {
                 return this;
@@ -150,6 +156,8 @@ public abstract class ExcelUtils {
         // 获取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
         Map<Integer, String> indexFieldMapping = getIndexFieldMapping(mapping, sheet);
+        int lastRowNum = sheet.getLastRowNum();
+        LOGGER.info("总共加载" + lastRowNum + "行数据！");
         List<T> result = new ArrayList<>();
         try {
             // 根据有效列，读取有效列中的内容
@@ -206,27 +214,28 @@ public abstract class ExcelUtils {
             if (Is.empty(cellValue)){
                 return null;
             }
+            String cellValueStr = (String) cellValue;
             // String 转其他类型
             if (Objects.equals(type, Date.class)) {
                 try {
-                    cellValue = DateUtils.parseDate((String) cellValue, DATE_FORMAT_PATTERN);
+                    cellValue = DateUtils.parseDate(cellValueStr, DATE_FORMAT_PATTERN);
                 } catch (ParseException e) {
                     throw new RuntimeException("日期转异常", e);
                 }
             } else if (Objects.equals(type, Integer.class)) {
-                cellValue = Integer.valueOf(((String) cellValue));
+                cellValue = Integer.valueOf((cellValueStr));
             } else if (Objects.equals(type, Long.class)) {
-                cellValue = Long.valueOf(((String) cellValue));
+                cellValue = Long.valueOf((cellValueStr));
             } else if (Objects.equals(type, Float.class)) {
-                cellValue = Float.valueOf(((String) cellValue));
+                cellValue = Float.valueOf((cellValueStr));
             } else if (Objects.equals(type, Short.class)) {
-                cellValue = Short.valueOf(((String) cellValue));
+                cellValue = Short.valueOf((cellValueStr));
             } else if (Objects.equals(type, Byte.class)) {
-                cellValue = Byte.valueOf(((String) cellValue));
+                cellValue = Byte.valueOf((cellValueStr));
             } else if (Objects.equals(type, Double.class)) {
-                cellValue = Double.valueOf(((String) cellValue));
+                cellValue = Double.valueOf((cellValueStr));
             } else if (Objects.equals(type, BigDecimal.class)){
-                cellValue = new BigDecimal((String) cellValue);
+                cellValue = new BigDecimal(cellValueStr);
             }
         }
         return cellValue;
@@ -242,7 +251,8 @@ public abstract class ExcelUtils {
         // 获取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
         Map<Integer, String> indexFiledMapping = getIndexFieldMapping(mapping, sheet);
-
+        int lastRowNum = sheet.getLastRowNum();
+        LOGGER.info("总共加载" + lastRowNum + "行数据！");
         List<Map<String, Object>> result = new ArrayList<>();
         // 根据有效列，读取有效列中的内容
         for (Row row : sheet) {
@@ -315,7 +325,7 @@ public abstract class ExcelUtils {
                     // 日期
                     value = cell.getDateCellValue();
                 } else {
-                    DecimalFormat decimalFormat = new DecimalFormat();
+                    DecimalFormat decimalFormat = new DecimalFormat("###################.##");
                     value = decimalFormat.format(cell.getNumericCellValue());
                 }
                 break;

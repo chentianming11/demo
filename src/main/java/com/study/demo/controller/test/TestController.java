@@ -2,8 +2,6 @@ package com.study.demo.controller.test;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +18,7 @@ import java.util.Map;
 @Slf4j
 public class TestController {
 
-    @Autowired
+    /*@Autowired
     RabbitTemplate rabbitTemplate;
 
 
@@ -34,5 +32,32 @@ public class TestController {
     public Map fanoutExchange(String msg) {
         rabbitTemplate.convertAndSend("fanoutExchange", "", msg);
         return ImmutableMap.of("status", "ok");
+    }*/
+
+
+    @GetMapping("/http/delay/3")
+    public Map delay3() throws InterruptedException {
+
+        Thread.sleep(3_000);
+        return ImmutableMap.of("status", "3");
     }
+
+    @GetMapping("/http/delay/30")
+    public Map delay30() throws InterruptedException {
+
+        Thread.sleep(30_000);
+        return ImmutableMap.of("status", "30");
+    }
+
+    @GetMapping("/http/delay/60")
+    public Map delay60() throws InterruptedException {
+
+        Thread.sleep(60_000);
+        return ImmutableMap.of("status", "60");
+    }
+
+
+
+
+
 }
