@@ -150,7 +150,7 @@ public class BlogService {
                 .put("文集名称", "collectionName");
         Integer pageSize = 3;
         SXSSFWorkbook workbook;
-        workbook = ExcelUtils.createSXSSFWorkbook(pageSize, mapping, (pageNum) -> {
+        workbook = ExcelUtils.createSXSSFWorkbookPagination(pageSize, mapping, (pageNum) -> {
             PageInfo<Map> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> blogArticleMapper.getAllArticle(null));
             if (pageNum != pageInfo.getPageNum()) {
                 pageInfo.getList().clear();

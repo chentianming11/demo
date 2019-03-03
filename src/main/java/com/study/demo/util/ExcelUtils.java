@@ -36,15 +36,17 @@ public abstract class ExcelUtils {
         private List<String> keys = new ArrayList<>();
         private List<String> values = new ArrayList<>();
 
-        private Mapping(){}
+        private Mapping() {
+        }
 
-        public static Mapping newInstance(){
+        public static Mapping newInstance() {
             return new Mapping();
         }
 
         /**
          * 新增一组 表头-字段名 映射
-         * @param key excel表头导入名称
+         *
+         * @param key   excel表头导入名称
          * @param value 实体字段名称
          * @return
          */
@@ -74,15 +76,15 @@ public abstract class ExcelUtils {
         } catch (Exception e) {
             throw new RuntimeException("创建workbook异常", e);
         }
-        return toList(workbook,mapping,clz);
+        return toList(workbook, mapping, clz);
 
     }
 
 
     /**
-     *   读取一个excel到List<T> 中
+     * 读取一个excel到List<T> 中
      */
-    public static <T> List<T> toList(InputStream inputStream, Mapping mapping, Class<T> clz)  {
+    public static <T> List<T> toList(InputStream inputStream, Mapping mapping, Class<T> clz) {
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         Workbook workbook = null;
         try {
@@ -90,12 +92,12 @@ public abstract class ExcelUtils {
         } catch (Exception e) {
             throw new RuntimeException("创建workbook异常", e);
         }
-        return toList(workbook, mapping,clz);
+        return toList(workbook, mapping, clz);
 
     }
 
     /**
-     *   读取一个excel到List<Map<String,Object>> 中
+     * 读取一个excel到List<Map<String,Object>> 中
      */
     public static List<Map<String, Object>> toList(File file, Mapping mapping) {
 
@@ -112,7 +114,7 @@ public abstract class ExcelUtils {
 
 
     /**
-     *   读取一个excel到List<Map<String,Object>> 中
+     * 读取一个excel到List<Map<String,Object>> 中
      */
     public static List<Map<String, Object>> toList(InputStream inputStream, Mapping mapping) {
 
@@ -127,7 +129,7 @@ public abstract class ExcelUtils {
 
     }
 
-    private static <T> List<T> toList( Workbook workbook, Mapping mapping, Class<T> clz) {
+    private static <T> List<T> toList(Workbook workbook, Mapping mapping, Class<T> clz) {
         // 获取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
         Map<Integer, String> indexFieldMapping = getIndexFieldMapping(mapping, sheet);
@@ -141,28 +143,25 @@ public abstract class ExcelUtils {
                 if (row.getRowNum() == 0) {
                     continue;
                 }
-                T  t = clz.newInstance();
+                T t = clz.newInstance();
                 // 读取内容
                 indexFieldMapping.keySet().forEach((columnIndex) -> {
-                    String fieldStr= indexFieldMapping.get(columnIndex);
+                    String fieldStr = indexFieldMapping.get(columnIndex);
                     Cell cell = row.getCell(columnIndex);
                     Object cellValue = getCellValue(cell);
-
-                        Field field = ReflectionUtils.findField(clz, fieldStr);
-                        if (field != null) {
-
-                            Class<?> type = field.getType();
-                            if (!Objects.equals(type, cellValue.getClass())) {
-                                // 类型不一致，进行类型转换
-                                cellValue = transferType(cellValue, type);
-                            }
-                            try {
-                                PropertyUtils.setProperty(t, fieldStr, cellValue);
-                            } catch (Exception e) {
-                                throw new RuntimeException("设置属性异常，属性名：" + fieldStr + "; 属性值：" + cellValue, e);
-                            }
+                    Field field = ReflectionUtils.findField(clz, fieldStr);
+                    if (field != null) {
+                        Class<?> type = field.getType();
+                        if (!Objects.equals(type, cellValue.getClass())) {
+                            // 类型不一致，进行类型转换
+                            cellValue = transferType(cellValue, type);
                         }
-
+                        try {
+                            PropertyUtils.setProperty(t, fieldStr, cellValue);
+                        } catch (Exception e) {
+                            throw new RuntimeException("设置属性异常，属性名：" + fieldStr + "; 属性值：" + cellValue, e);
+                        }
+                    }
                 });
                 result.add(t);
             }
@@ -174,46 +173,87 @@ public abstract class ExcelUtils {
 
     /**
      * 类型转换
+     *
      * @param cellValue
      * @param type
      * @return
      * @throws ParseException
      */
     private static Object transferType(Object cellValue, Class<?> type) {
+        if (cellValue == null) {
+            return null;
+        }
+
+        // Date转其它类型
         if (cellValue instanceof Date) {
-            // Date 转其他类型
+            // Date -> string
             if (Objects.equals(type, String.class)) {
                 cellValue = DateFormatUtils.format(((Date) cellValue), DATE_FORMAT_PATTERN);
+            } else {
+                throw new UnsupportedOperationException("不支持的类型转换，尝试将" + cellValue.getClass()
+                        + "转换成" + type.getClass());
             }
-        } else if (cellValue instanceof String) {
-            if (Is.empty(cellValue)){
+        }
+
+        // String 转其他类型
+        if (cellValue instanceof String) {
+            // string -> null
+            if (Is.empty(cellValue)) {
                 return null;
             }
             String cellValueStr = (String) cellValue;
-            // String 转其他类型
             if (Objects.equals(type, Date.class)) {
+                // string -> date
                 try {
-                    cellValue = DateUtils.parseDate(cellValueStr, DATE_FORMAT_PATTERN);
+                    return DateUtils.parseDate(cellValueStr, DATE_FORMAT_PATTERN);
                 } catch (ParseException e) {
                     throw new RuntimeException("日期转异常", e);
                 }
-            } else if (Objects.equals(type, Integer.class)) {
-                cellValue = Integer.valueOf((cellValueStr));
-            } else if (Objects.equals(type, Long.class)) {
-                cellValue = Long.valueOf((cellValueStr));
-            } else if (Objects.equals(type, Float.class)) {
-                cellValue = Float.valueOf((cellValueStr));
-            } else if (Objects.equals(type, Short.class)) {
-                cellValue = Short.valueOf((cellValueStr));
-            } else if (Objects.equals(type, Byte.class)) {
-                cellValue = Byte.valueOf((cellValueStr));
-            } else if (Objects.equals(type, Double.class)) {
-                cellValue = Double.valueOf((cellValueStr));
-            } else if (Objects.equals(type, BigDecimal.class)){
-                cellValue = new BigDecimal(cellValueStr);
+            }
+            if (Objects.equals(type, Integer.class)) {
+                // string -> integer
+                return Integer.valueOf((cellValueStr));
+            }
+            if (Objects.equals(type, Long.class)) {
+                // string -> long
+                return Long.valueOf((cellValueStr));
+            }
+            if (Objects.equals(type, Float.class)) {
+                // string -> float
+                return Float.valueOf((cellValueStr));
+            }
+            if (Objects.equals(type, Short.class)) {
+                // string -> short
+                return Short.valueOf((cellValueStr));
+            }
+            if (Objects.equals(type, Byte.class)) {
+                // string -> byte
+                return Byte.valueOf((cellValueStr));
+            }
+            if (Objects.equals(type, Double.class)) {
+                // string -> double
+                return Double.valueOf((cellValueStr));
+            }
+            if (Objects.equals(type, BigDecimal.class)) {
+                // string -> bigDecimal
+                return new BigDecimal(cellValueStr);
+            }
+            throw new UnsupportedOperationException("不支持的类型转换，尝试将" + cellValue.getClass()
+                    + "转换成" + type.getClass());
+
+        }
+
+        // Number转其它类型
+        if (cellValue instanceof Number) {
+            if (Objects.equals(type, String.class)) {
+                // number -> string
+                return cellValue.toString();
             }
         }
-        return cellValue;
+
+        throw new UnsupportedOperationException("不支持的类型转换，尝试将" + cellValue.getClass()
+                + "转换成" + type.getClass());
+
     }
 
 
@@ -250,8 +290,9 @@ public abstract class ExcelUtils {
 
     /**
      * 获取索引-字段映射
+     *
      * @param mapping 映射关系
-     * @param sheet 表头sheet
+     * @param sheet   表头sheet
      * @return
      */
     private static Map<Integer, String> getIndexFieldMapping(Mapping mapping, Sheet sheet) {
@@ -275,7 +316,7 @@ public abstract class ExcelUtils {
 
     private static Integer findIndexOnRow(Row headRow, String key) {
         for (Cell cell : headRow) {
-            if (Is.equals(key, cell.getStringCellValue())){
+            if (Is.equals(key, cell.getStringCellValue())) {
                 return cell.getColumnIndex();
             }
         }
@@ -290,7 +331,7 @@ public abstract class ExcelUtils {
      */
     private static Object getCellValue(Cell cell) {
         // 根据cell内容格式 -- 分别读取其内容
-        Object value ;
+        Object value;
         if (Objects.isNull(cell)) {
             return "";
         }
@@ -328,20 +369,20 @@ public abstract class ExcelUtils {
 
     /**
      * 分页查询,生成SXSSFWorkbook
+     * 用于分页查询导出
      *
      * @param pageSize
      * @param mapping  表头和字段名映射关系
-     * @param function
+     * @param function 使用pageNum查询出对应的分页数据
      * @return
      */
-    public static SXSSFWorkbook createSXSSFWorkbook(Integer pageSize, Mapping mapping, Function<Integer, List<Map>> function) {
+    public static SXSSFWorkbook createSXSSFWorkbookPagination(Integer pageSize, Mapping mapping, Function<Integer, List<Map>> function) {
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         Sheet detailSheet = workbook.createSheet("sheet1");
         // 表头
         List<String> headList = mapping.getKeys();
         // 字段
         List<String> filedList = mapping.getValues();
-
         ExcelUtils.sheetAppendRows(detailSheet, headList);
         Integer pageNum = 1;
         List<Map> result;
@@ -368,13 +409,48 @@ public abstract class ExcelUtils {
         return workbook;
     }
 
+
+    /**
+     * 生成SXSSFWorkbook
+     *
+     * @param mapping
+     * @param result
+     * @return
+     */
+    public static SXSSFWorkbook createSXSSFWorkbook(Mapping mapping, List<Map> result) {
+        SXSSFWorkbook workbook = new SXSSFWorkbook();
+        Sheet detailSheet = workbook.createSheet("sheet1");
+        // 表头
+        List<String> headList = mapping.getKeys();
+        // 字段
+        List<String> filedList = mapping.getValues();
+        // 填充第一行
+        ExcelUtils.sheetAppendRows(detailSheet, headList);
+        result.forEach(item -> {
+            List<String> sheetData = new ArrayList<>();
+            for (int i = 0; i < filedList.size(); i++) {
+                detailSheet.setColumnWidth(i, 10 * 512);
+                Object o = item.get(filedList.get(i));
+                if (Objects.isNull(o)) {
+                    o = "";
+                }
+                if (o instanceof Date) {
+                    o = DateFormatUtils.format((Date) o, DATE_FORMAT_PATTERN);
+                }
+                sheetData.add(String.valueOf(o));
+            }
+            ExcelUtils.sheetAppendRows(detailSheet, sheetData);
+        });
+        return workbook;
+    }
+
     /**
      * 向excel的sheet中追加一行记录
      *
      * @param sheet
      * @param data
      */
-    public static void sheetAppendRows(Sheet sheet, List<String> data) {
+    private static void sheetAppendRows(Sheet sheet, List<String> data) {
         Row row = sheet.createRow(sheet.getPhysicalNumberOfRows());
         for (int i = 0; i < data.size(); i++) {
             row.createCell(i).setCellValue(data.get(i) == null ? "" : data.get(i));
@@ -388,7 +464,7 @@ public abstract class ExcelUtils {
         try {
             DownloadUtils.downloadExcel(response, workbook, fileName + DateFormatUtils.format(new Date(), "yyyyMMdd") + ".xlsx");
         } catch (Exception e) {
-            throw new RuntimeException("导出失败");
+            throw new RuntimeException("导出失败", e);
         }
     }
 }
