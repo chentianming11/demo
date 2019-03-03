@@ -31,7 +31,7 @@ public abstract class ExcelUtils {
 
     public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    public static <T> List<T> toList(File file, Map<String, String> mapping, Class<T> clz) {
+    public static <T> List<T> toList(File file,  LinkedHashMap<String, String> mapping, Class<T> clz) {
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         Workbook workbook;
         try {
@@ -48,7 +48,7 @@ public abstract class ExcelUtils {
      * 读取一个excel到List<T> 中
      * mapping的key为表头单元格名称，value为对应字段名称
      */
-    public static <T> List<T> toList(InputStream inputStream, Map<String, String> mapping, Class<T> clz) {
+    public static <T> List<T> toList(InputStream inputStream,  LinkedHashMap<String, String> mapping, Class<T> clz) {
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         Workbook workbook = null;
         try {
@@ -64,7 +64,7 @@ public abstract class ExcelUtils {
      * 读取一个excel到List<Map<String,Object>> 中
      * mapping的key为表头单元格名称，value为对应字段名称
      */
-    public static List<Map<String, Object>> toList(File file, Map<String, String> mapping) {
+    public static List<Map<String, Object>> toList(File file,  LinkedHashMap<String, String> mapping) {
 
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         Workbook workbook = null;
@@ -81,7 +81,7 @@ public abstract class ExcelUtils {
      * 读取一个excel到List<Map<String,Object>> 中
      * mapping的key为表头单元格名称，value为对应字段名称
      */
-    public static List<Map<String, Object>> toList(InputStream inputStream, Map<String, String> mapping) {
+    public static List<Map<String, Object>> toList(InputStream inputStream,  LinkedHashMap<String, String> mapping) {
 
         // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
         Workbook workbook = null;
@@ -94,7 +94,7 @@ public abstract class ExcelUtils {
 
     }
 
-    private static <T> List<T> toList(Workbook workbook,  Map<String, String> mapping, Class<T> clz) {
+    private static <T> List<T> toList(Workbook workbook,   LinkedHashMap<String, String> mapping, Class<T> clz) {
         // 获取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
         Map<Integer, String> indexFieldMapping = getIndexFieldMapping(mapping, sheet);
@@ -228,7 +228,7 @@ public abstract class ExcelUtils {
      * @param mapping  表头和字段的映射关系
      * @return
      */
-    private static List<Map<String, Object>> toList(Workbook workbook, Map<String, String> mapping) {
+    private static List<Map<String, Object>> toList(Workbook workbook,  LinkedHashMap<String, String> mapping) {
         // 获取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
         Map<Integer, String> indexFiledMapping = getIndexFieldMapping(mapping, sheet);
@@ -261,22 +261,18 @@ public abstract class ExcelUtils {
      * @param sheet   表头sheet
      * @return
      */
-    private static Map<Integer, String> getIndexFieldMapping(Map<String, String> mapping, Sheet sheet) {
+    private static Map<Integer, String> getIndexFieldMapping( LinkedHashMap<String, String> mapping, Sheet sheet) {
         // 索引-字段映射
         Map<Integer, String> indexFiledMapping = new HashMap<>();
-        Set<String> headSet = mapping.keySet();
-        Collection<String> fieldColl = mapping.values();
-        List<String> heads = new ArrayList<>(headSet);
-        List<String> fields = new ArrayList<>(fieldColl);
         // 读取表头 确定有效列
         Row headRow = sheet.getRow(0);
-        for (int i = 0; i < heads.size(); i++) {
-            Integer index = findIndexOnRow(headRow, heads.get(i));
+        mapping.forEach((head, field) -> {
+            Integer index = findIndexOnRow(headRow, head);
             if (index != null) {
-                indexFiledMapping.put(index, fields.get(i));
-                LOGGER.debug("索引index：{}; 对应字段名称：{}", index, fields.get(i));
+                indexFiledMapping.put(index, field);
+                LOGGER.debug("索引index：{}; 对应字段名称：{}", index, field);
             }
-        }
+        });
         return indexFiledMapping;
     }
 
@@ -343,13 +339,10 @@ public abstract class ExcelUtils {
      * @param function 使用pageNum查询出对应的分页数据
      * @return
      */
-    public static SXSSFWorkbook createSXSSFWorkbookPagination(Integer pageSize, Map<String, String> mapping, Function<Integer, List<Map>> function) {
+    public static SXSSFWorkbook createSXSSFWorkbookPagination(Integer pageSize,LinkedHashMap<String, String> mapping, Function<Integer, List<Map>> function) {
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         Sheet detailSheet = workbook.createSheet("sheet1");
-        Set<String> headSet = mapping.keySet();
-        Collection<String> fieldColl = mapping.values();
-        List<String> heads = new ArrayList<>(headSet);
-        List<String> fields = new ArrayList<>(fieldColl);
+        ArrayList<String> heads = new ArrayList<>(mapping.keySet());
         ExcelUtils.sheetAppendRows(detailSheet, heads);
         Integer pageNum = 1;
         List<Map> result;
@@ -358,9 +351,9 @@ public abstract class ExcelUtils {
             pageNum++;
             result.forEach(item -> {
                 List<String> sheetData = new ArrayList<>();
-                for (int i = 0; i < fields.size(); i++) {
+                for (int i = 0; i < heads.size(); i++) {
                     detailSheet.setColumnWidth(i, 10 * 512);
-                    Object o = item.get(fields.get(i));
+                    Object o = item.get(mapping.get(heads.get(i)));
                     if (Objects.isNull(o)) {
                         o = "";
                     }
@@ -384,7 +377,7 @@ public abstract class ExcelUtils {
      * @param result
      * @return
      */
-    public static SXSSFWorkbook createSXSSFWorkbook(Map<String, String> mapping, List<Map> result) {
+    public static SXSSFWorkbook createSXSSFWorkbook( LinkedHashMap<String, String> mapping, List<Map> result) {
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         Sheet detailSheet = workbook.createSheet("sheet1");
         Set<String> headSet = mapping.keySet();

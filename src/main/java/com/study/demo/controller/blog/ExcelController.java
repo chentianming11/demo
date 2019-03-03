@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public class ExcelController extends BaseController {
     @PostMapping("/import/test")
     public ResponseEntity importTest(MultipartFile file) throws IOException {
 
-        ExcelUtils.Mapping mapping =  ExcelUtils.Mapping.newInstance();
+        LinkedHashMap<String, String> mapping = new LinkedHashMap<>();
         mapping.put("套餐价格（元/月）", "price");
         mapping.put("房源量", "houseNum");
         mapping.put("推广币", "promotion");
