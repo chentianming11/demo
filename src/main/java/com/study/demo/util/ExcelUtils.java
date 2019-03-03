@@ -10,11 +10,9 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -80,17 +78,6 @@ public abstract class ExcelUtils {
 
     }
 
-    /**
-     *  读取一个excel到List<T> 中
-     */
-    public static <T> List<T> toList(MultipartFile file, Mapping mapping, Class<T> clz) {
-        try {
-            return toList(file.getInputStream(), mapping, clz);
-        } catch (IOException e) {
-            throw new RuntimeException("获取文件流异常", e);
-        }
-
-    }
 
     /**
      *   读取一个excel到List<T> 中
@@ -123,18 +110,6 @@ public abstract class ExcelUtils {
 
     }
 
-    /**
-     *   读取一个excel到List<Map<String,Object>> 中
-     */
-    public static List<Map<String, Object>> toList(MultipartFile file, Mapping mapping) {
-
-        // 根据excel文件创建workbook，能自动根据excel版本创建相应的workbook
-        try {
-            return toList(file.getInputStream(),mapping);
-        } catch (Exception e) {
-            throw new RuntimeException("获取文件流异常", e);
-        }
-    }
 
     /**
      *   读取一个excel到List<Map<String,Object>> 中
