@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public class ExcelController extends BaseController {
      * 测试导入
      */
     @PostMapping("/import/test")
-    public ResponseEntity importTest(MultipartFile file){
+    public ResponseEntity importTest(MultipartFile file) throws IOException {
 
         ExcelUtils.Mapping mapping =  ExcelUtils.Mapping.newInstance();
         mapping.put("套餐价格（元/月）", "price");
@@ -58,7 +59,7 @@ public class ExcelController extends BaseController {
         mapping.put("有效期", "validPeriod");
         mapping.put("开通时间", "createdAt");
 
-        List<ProductPackageView> productPackageViews = ExcelUtils.toList(file, mapping, ProductPackageView.class);
+        List<ProductPackageView> productPackageViews = ExcelUtils.toList(file.getInputStream(), mapping, ProductPackageView.class);
         System.out.println(productPackageViews);
         return ok().body(productPackageViews).build();
     }
