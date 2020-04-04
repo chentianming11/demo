@@ -37,15 +37,7 @@ public class TestCache {
                 .removalListener(removalNotification ->
                         System.out.println(removalNotification.getKey() + "被移除了"
                                 + "原因是：" + removalNotification.getCause()))
-                .build(
-                        new CacheLoader<String, Employee>() {
-                            @Override
-                            public Employee load(String s) throws Exception {
-                                System.out.println("加载缓存----");
-                                Employee employee = new Employee("张三", 29, 9000);
-                                return employee;
-                            }
-                        }
+                .build(CacheLoader.from(() -> new Employee())
                 );
 
         ArrayList<Employee> employees = new ArrayList<>();
@@ -56,6 +48,7 @@ public class TestCache {
         employees.add(new Employee("田七", 32, 17000));
         ImmutableMap<String, Employee> map = Maps.uniqueIndex(employees, (employee -> employee.getName()));
         cache.putAll(map);
+
 
         for (int i = 0; i < 20; i++) {
             // 从缓存中获取数据，如果不存在，则调用Callable接口加载数据
